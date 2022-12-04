@@ -72,12 +72,12 @@ public enum DaoFactory {
 	}
 
 	private JdbcTemplate getJdbcTemplate() {
-
+		//každé dao zdieľa jeden jdbc template
 		if (jdbcTemplate == null) {
 			MysqlDataSource dataSource = new MysqlDataSource();
 			if (testing) {
 				dataSource.setDatabaseName("votuj_test");
-				dataSource.setUser("votuj_usertest");
+				dataSource.setUser("votuj_user");
 				dataSource.setPassword("votuj_user01");
 
 			} else {

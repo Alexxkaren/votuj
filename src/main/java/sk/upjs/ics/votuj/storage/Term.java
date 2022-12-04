@@ -40,4 +40,10 @@ public class Term {
 		this.to = to;
 	}
 
+	@Override
+	public String toString() {
+		return "Term (id=" + id + ", " + since + " - " + to + ")";
+	}
+
+	
 }

@@ -155,9 +155,11 @@ ENGINE = InnoDB;
 -- Table `votuj`.`admin`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `votuj`.`admin` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`name`, `password`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -165,7 +167,7 @@ ENGINE = InnoDB;
 -- Table `votuj`.`term`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `votuj`.`term` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `since` INT NOT NULL,
   `to` INT NOT NULL,
   PRIMARY KEY (`id`))

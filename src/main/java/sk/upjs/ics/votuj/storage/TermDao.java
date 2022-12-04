@@ -10,6 +10,6 @@ public interface TermDao {
 
 	Term getByPeriod(Integer since, Integer to);
 
-	List<Term> getAll(Term term);
+	List<Term> getAll();
 
 }
