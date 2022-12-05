@@ -4,10 +4,12 @@ import java.util.List;
 
 public interface CandidateDao {
 
-	List<Candidate> getByParty(Party party);
-
 	Candidate save(Candidate candidate);
+	
+	boolean delete(Long id);
 
 	List<Candidate> getByTermParty(Party party, Term term);
+	
+	Candidate getById(Long id);
 
 }

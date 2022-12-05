@@ -7,5 +7,9 @@ public interface VoteDao {
 	Vote save(Vote vote);
 
 	List<Vote> getByParty(Party party);
+	
+	List<Vote> getAll();
+
+	Vote getById(Long id);
 
 }

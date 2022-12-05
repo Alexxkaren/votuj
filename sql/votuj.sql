@@ -83,19 +83,36 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `votuj`.`term`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `votuj`.`term` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `since` INT NOT NULL,
+  `to` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `votuj`.`program`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `votuj`.`program` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
-  `party_id` INT NOT NULL,
-  `term_from` INT NOT NULL,
-  `term_to` INT NOT NULL,
+  `id_party` INT NOT NULL,
+  `is_active` TINYINT NOT NULL,
+  `id_term` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_program_party1_idx` (`party_id` ASC) VISIBLE,
+  INDEX `fk_program_party1_idx` (`id_party` ASC) VISIBLE,
+  INDEX `fk_program_term1_idx` (`id_term` ASC) VISIBLE,
   CONSTRAINT `fk_program_party1`
-    FOREIGN KEY (`party_id`)
+    FOREIGN KEY (`id_party`)
     REFERENCES `votuj`.`party` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_program_term1`
+    FOREIGN KEY (`id_term`)
+    REFERENCES `votuj`.`term` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -164,32 +181,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `votuj`.`term`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `votuj`.`term` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `since` INT NOT NULL,
-  `to` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `votuj`.`candidate_has_term`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `votuj`.`candidate_has_term` (
-  `candidate_id` INT NOT NULL,
-  `term_id` INT NOT NULL,
-  PRIMARY KEY (`candidate_id`, `term_id`),
-  INDEX `fk_candidate_has_term_term1_idx` (`term_id` ASC) VISIBLE,
-  INDEX `fk_candidate_has_term_candidate1_idx` (`candidate_id` ASC) VISIBLE,
+  `id_candidate` INT NOT NULL,
+  `id_term` INT NOT NULL,
+  PRIMARY KEY (`id_candidate`, `id_term`),
+  INDEX `fk_candidate_has_term_term1_idx` (`id_term` ASC) VISIBLE,
+  INDEX `fk_candidate_has_term_candidate1_idx` (`id_candidate` ASC) VISIBLE,
   CONSTRAINT `fk_candidate_has_term_candidate1`
-    FOREIGN KEY (`candidate_id`)
+    FOREIGN KEY (`id_candidate`)
     REFERENCES `votuj`.`candidate` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_candidate_has_term_term1`
-    FOREIGN KEY (`term_id`)
+    FOREIGN KEY (`id_term`)
     REFERENCES `votuj`.`term` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

@@ -14,12 +14,6 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public List<Candidate> getByParty(Party party) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Candidate save(Candidate candidate) {
 		// TODO Auto-generated method stub
 		return null;
@@ -27,6 +21,18 @@ public class MysqlCandidateDao implements CandidateDao {
 
 	@Override
 	public List<Candidate> getByTermParty(Party party, Term term) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Candidate getById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

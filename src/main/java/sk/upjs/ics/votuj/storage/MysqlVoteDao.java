@@ -25,4 +25,16 @@ public class MysqlVoteDao implements VoteDao {
 		return null;
 	}
 
+	@Override
+	public List<Vote> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vote getById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

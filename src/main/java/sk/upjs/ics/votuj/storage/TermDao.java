@@ -8,7 +8,7 @@ public interface TermDao {
 
 	boolean delete(Long id);
 
-	Term getByPeriod(Integer since, Integer to);
+	Term getById(Long id);
 
 	List<Term> getAll();
 

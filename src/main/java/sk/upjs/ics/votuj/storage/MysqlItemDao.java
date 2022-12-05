@@ -31,4 +31,16 @@ public class MysqlItemDao implements ItemDao {
 		return null;
 	}
 
+	@Override
+	public boolean delete(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Item getById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

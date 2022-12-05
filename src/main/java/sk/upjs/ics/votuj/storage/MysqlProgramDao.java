@@ -31,4 +31,16 @@ public class MysqlProgramDao implements ProgramDao {
 		return null;
 	}
 
+	@Override
+	public boolean delete(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Program getById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

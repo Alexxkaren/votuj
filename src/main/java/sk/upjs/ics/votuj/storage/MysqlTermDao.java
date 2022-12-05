@@ -29,12 +29,6 @@ public class MysqlTermDao implements TermDao {
 	}
 
 	@Override
-	public Term getByPeriod(Integer since, Integer to) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Term> getAll() {
 		// TODO spraviť unit test 
 		// POZOR na to v terme -- sikme apostrofy treba!!!!!!!!!
@@ -51,6 +45,12 @@ public class MysqlTermDao implements TermDao {
 		});
 		return terms;
 		
+	}
+
+	@Override
+	public Term getById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

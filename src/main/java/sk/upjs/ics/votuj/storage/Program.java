@@ -4,20 +4,20 @@ public class Program {
 
 	private Long id;
 	private String name;
-	private Integer termFrom;
-	private Integer termTo;
 	private Party party;
-
+	private boolean is_active;
+	private Term term;
+	
 	public Program() {
 	}
 
-	public Program(Long id, String name, Integer termFrom, Integer termTo, Party party) {
+	public Program(Long id, String name, Party party, boolean is_active, Term term) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.termFrom = termFrom;
-		this.termTo = termTo;
 		this.party = party;
+		this.is_active = is_active;
+		this.term = term;
 	}
 
 	public Long getId() {
@@ -36,22 +36,6 @@ public class Program {
 		this.name = name;
 	}
 
-	public Integer getTermFrom() {
-		return termFrom;
-	}
-
-	public void setTermFrom(Integer termFrom) {
-		this.termFrom = termFrom;
-	}
-
-	public Integer getTermTo() {
-		return termTo;
-	}
-
-	public void setTermTo(Integer termTo) {
-		this.termTo = termTo;
-	}
-
 	public Party getParty() {
 		return party;
 	}
@@ -59,4 +43,23 @@ public class Program {
 	public void setParty(Party party) {
 		this.party = party;
 	}
+
+	public boolean isIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
+
+	public Term getTerm() {
+		return term;
+	}
+
+	public void setTerm(Term term) {
+		this.term = term;
+	}
+	
 }
+
+	
