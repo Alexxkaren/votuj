@@ -8,7 +8,7 @@ public interface ProgramDao {
 	
 	boolean delete(Long id);
 
-	List<Program> getByParty(Party party);
+	List<Program> getByParty(Party party); //naimplementovane
 
 	Program getByTermParty(Term term, Party partry);
 	

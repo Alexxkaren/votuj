@@ -9,7 +9,6 @@ public class MysqlCandidateDao implements CandidateDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlCandidateDao(JdbcTemplate jdbcTemplate) {
-		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
 

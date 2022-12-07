@@ -17,11 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 public class OriginController {
 
 	public static final Logger logger = LoggerFactory.getLogger(OriginController.class);
-	
+
 	@FXML
 	private TextField ageTextField;
 
@@ -38,12 +37,12 @@ public class OriginController {
 	void initialize() {
 		logger.debug("initialize running");
 	}
-	
+
 	@FXML
 	void adminButtonClick(ActionEvent event) {
-		AdminLoginController controller= new AdminLoginController();
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("adminLoginController.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("adminLogin.fxml"));
+			AdminLoginController controller = new AdminLoginController();
 			fxmlLoader.setController(controller);
 
 			Parent parent = fxmlLoader.load();
@@ -51,9 +50,9 @@ public class OriginController {
 			Stage stage = new Stage();
 			stage.setTitle("Login");
 			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL); 
-			stage.show(); 
-			
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.show();
+			ageTextField.getScene().getWindow().hide();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,7 +69,4 @@ public class OriginController {
 
 	}
 
-	
 }
-
-

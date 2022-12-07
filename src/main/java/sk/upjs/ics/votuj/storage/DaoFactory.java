@@ -15,11 +15,19 @@ public enum DaoFactory {
 	private ProgramDao programDao;
 	private TermDao termDao;
 	private VoteDao voteDao;
+	private AdminDao adminDao;
 	private boolean testing = false;
 	private JdbcTemplate jdbcTemplate;
 
 	public void setTesting() {
 		this.testing = true;
+	}
+
+	public AdminDao getAdminDao() {
+		if (adminDao == null) {
+			adminDao = new MysqlAdminDao(getJdbcTemplate());
+		}
+		return adminDao;
 	}
 
 	public CandidateDao getCandidateDao() {
@@ -72,7 +80,7 @@ public enum DaoFactory {
 	}
 
 	private JdbcTemplate getJdbcTemplate() {
-		//každé dao zdieľa jeden jdbc template
+		// každé dao zdieľa jeden jdbc template
 		if (jdbcTemplate == null) {
 			MysqlDataSource dataSource = new MysqlDataSource();
 			if (testing) {
