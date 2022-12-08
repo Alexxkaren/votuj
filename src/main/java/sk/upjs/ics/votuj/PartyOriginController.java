@@ -22,10 +22,10 @@ public class PartyOriginController {
 	private ObservableList<Party> partiesModel;
 
 	private PartyDao partyDao = DaoFactory.INSTANCE.getPartyDao();
-
+      
 	@FXML
 	void initialize() {
-		List<Party> parties = partyDao.getAll();
+		List<Party> parties =  partyDao.getAll();
 		partiesModel = FXCollections.observableArrayList(parties);
 		partiesComboBox.setItems(partiesModel);
 		partiesComboBox.getSelectionModel().selectFirst();
