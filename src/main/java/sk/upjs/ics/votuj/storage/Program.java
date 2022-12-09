@@ -59,6 +59,13 @@ public class Program {
 	public void setTerm(Term term) {
 		this.term = term;
 	}
+
+	@Override
+	public String toString() {
+		return  name + "( party=" + party + ")";
+	}
+	
+	
 	
 }
 

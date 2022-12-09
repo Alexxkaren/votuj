@@ -28,6 +28,8 @@ public class PartyOriginController {
 	private ObservableList<Party> partiesModel;
 
 	private PartyDao partyDao = DaoFactory.INSTANCE.getPartyDao();
+	
+	private Stage stage;
 
 	@FXML
 	void initialize() {
@@ -61,26 +63,25 @@ public class PartyOriginController {
 	@FXML
 	void addPartyButtonClick(ActionEvent event) {
 		PartyEditController controller = new PartyEditController();
-		// TODO nazov okna !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		showPartyEdit(controller);
+		showPartyEdit(controller, "Pridávanie politickej strany");
 	}
 
 	@FXML
 	void editPartyButtonClick(ActionEvent event) {
 		Party selectedParty = partiesComboBox.getSelectionModel().getSelectedItem();
 		PartyEditController controller = new PartyEditController(selectedParty);
-		showPartyEdit(controller);
+		showPartyEdit(controller, "Editovanie politickej strany");
 
 	}
 
-	void showPartyEdit(PartyEditController controller) {
+	void showPartyEdit(PartyEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyEdit.fxml"));
 			fxmlLoader.setController(controller);
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
-			Stage stage = new Stage();
-			stage.setTitle("Deafult");
+			stage = new Stage();
+			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();

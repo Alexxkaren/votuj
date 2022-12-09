@@ -70,4 +70,9 @@ public class Candidate {
 		this.party = party;
 	}
 
+	@Override
+	public String toString() {
+		return "(id=" + id + ") " + name + " "+ surname ;
+	}
+
 }

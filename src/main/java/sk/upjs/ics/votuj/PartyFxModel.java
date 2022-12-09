@@ -28,9 +28,14 @@ public class PartyFxModel {
 	public PartyFxModel(Party party) {
 		this.id = party.getId();
 		setName(party.getName());
-		party.setInfo(party.getInfo());
+		setInfo(party.getInfo());
 		List<Program> list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
 		programs = FXCollections.observableArrayList(list_p);
+		// TODO -- TU treba nejako spravit list kandidatov - podla toho na com sa dohodneme v party edit controlleri
+		//List<Candidate> list_c = DaoFactory.INSTANCE.getPartyDao().ge;
+		//candidates = FXCollections.observableArrayList(list_c);
+		
+		//TODO do niektoreho daa potrebujeme dat ze get all candidates alebo get cadidates by term 
 
 	}
 
@@ -79,8 +84,12 @@ public class PartyFxModel {
 	 * programs; }
 	 */
 
-	public ObservableList<Candidate> getCandidates() {
+	public ObservableList<Candidate> getCandidatesModel() {
 		return candidates;
+	}
+	
+	public List<Candidate> getCandidates() {
+		return new ArrayList<>(candidates);
 	}
 
 	public void setCandidates(ObservableList<Candidate> candidates) {

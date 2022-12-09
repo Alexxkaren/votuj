@@ -39,4 +39,11 @@ public class Party {
 		this.info = info;
 	}
 
+	@Override
+	public String toString() {
+		return name + " (id: " + id + " )";
+	}
+	
+	
+
 }

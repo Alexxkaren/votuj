@@ -44,7 +44,7 @@ public class AdminLoginController {
 				Parent parent = fxmlLoader.load();
 				Scene scene = new Scene(parent);
 				Stage stage = new Stage();
-				stage.setTitle("Editacia politickej strany");
+				stage.setTitle("Politické strany");
 				stage.setScene(scene);
 				stage.initModality(Modality.APPLICATION_MODAL);
 				stage.show();

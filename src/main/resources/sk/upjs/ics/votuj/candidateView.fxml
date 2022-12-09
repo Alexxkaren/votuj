@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="65.0" layoutY="48.0" text="Meno:" />
+      <Label layoutX="65.0" layoutY="102.0" text="Priezvisko:" />
+      <Label layoutX="65.0" layoutY="167.0" text="Číslo kandidáta:" />
+      <Label fx:id="candidateNameLabel" layoutX="173.0" layoutY="48.0" text="meno" />
+      <Label fx:id="candidateSurnameLabel" layoutX="173.0" layoutY="102.0" text="priezvisko" />
+      <Label fx:id="candidateNumberLabel" layoutX="173.0" layoutY="167.0" text="cislo" />
+      <Label layoutX="65.0" layoutY="225.0" text="Info:" />
+      <ListView fx:id="candidateInfoListView" layoutX="173.0" layoutY="225.0" prefHeight="101.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
