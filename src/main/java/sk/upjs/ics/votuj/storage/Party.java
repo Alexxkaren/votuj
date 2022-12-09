@@ -10,7 +10,6 @@ public class Party {
 	}
 
 	public Party(Long id, String name, String info) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.info = info;

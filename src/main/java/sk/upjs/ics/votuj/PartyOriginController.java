@@ -48,7 +48,7 @@ public class PartyOriginController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			Stage stage = new Stage();
-			stage.setTitle("Login");
+			stage.setTitle("Podrobnosti o politickej strane");
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
@@ -60,16 +60,37 @@ public class PartyOriginController {
 
 	@FXML
 	void addPartyButtonClick(ActionEvent event) {
-
-	}
-
-	@FXML
-	void deletePartyButtonClick(ActionEvent event) {
-
+		PartyEditController controller = new PartyEditController();
+		// TODO nazov okna !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		showPartyEdit(controller);
 	}
 
 	@FXML
 	void editPartyButtonClick(ActionEvent event) {
+		Party selectedParty = partiesComboBox.getSelectionModel().getSelectedItem();
+		PartyEditController controller = new PartyEditController(selectedParty);
+		showPartyEdit(controller);
+
+	}
+
+	void showPartyEdit(PartyEditController controller) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyEdit.fxml"));
+			fxmlLoader.setController(controller);
+			Parent parent = fxmlLoader.load();
+			Scene scene = new Scene(parent);
+			Stage stage = new Stage();
+			stage.setTitle("Deafult");
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void deletePartyButtonClick(ActionEvent event) {
 
 	}
 
