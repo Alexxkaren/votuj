@@ -34,23 +34,30 @@ public class PartyEditController {
 		this.party = party;
 		partyFxModel = new PartyFxModel(party);
 	}
+
 	
 	@FXML
     void initialize() {
-		//tu sa deje aby boli už veci vypleneé ke dsa robí edit
 		partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 		partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
-		candidatesListView.setItems(partyFxModel.getCandidatesModel()); 
+		candidatesListView.setItems(partyFxModel.getCandidatesModel());
 		//kandidati sa nezobrazuju lebo problem v PArty FX model
 		programsListView.setItems(partyFxModel.getProgramsModel());
-	}
+		
+		Program program = programsListView.getSelectionModel().getSelectedItem();
+		
+		if (program!=null) {
+			System.out.println("TU SOM!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			partyFxModel = new PartyFxModel(party,program);
+			partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
+			partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
+			candidatesListView.setItems(partyFxModel.getCandidatesModel());
+			//kandidati sa nezobrazuju lebo problem v PArty FX model
+			programsListView.setItems(partyFxModel.getProgramsModel());
+		}
+	};
+
 	
-	//TODO: dokončiť tentocontroller - otazka:
-	// chceme aby sa kandidati zobrazovali vzhladom na program?
-	//alebo chceme aby sa zobrazovali vsetci kandidati za vsetky volebne obdobia
-	// nebolo by dobre spravit aby sa pri edite dalo vybrat obdobie a nasledne 
-	// podla toho sa budu menit aj kandidati aj programy???
-	//SERIOUS QUESTIOOOOOOOON!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {

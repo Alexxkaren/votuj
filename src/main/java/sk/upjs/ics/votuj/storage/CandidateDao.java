@@ -8,8 +8,8 @@ public interface CandidateDao {
 	
 	boolean delete(Long id);
 
-	List<Candidate> getByTermParty(Party party, Term term);
+	List<Candidate> getByTermParty(Party party, Term term); //NAIMPLEMENTOVANE
 	
-	Candidate getById(Long id);
+	Candidate getById(Long id); //NAIMPLEMENTOVANE
 
 }

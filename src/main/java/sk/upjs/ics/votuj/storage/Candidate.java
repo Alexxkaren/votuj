@@ -50,7 +50,7 @@ public class Candidate {
 		return candidate_number;
 	}
 
-	public void setCandidate_number(Integer candidate_number) {
+	public void setCandidateNumber(Integer candidate_number) {
 		this.candidate_number = candidate_number;
 	}
 

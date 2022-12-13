@@ -12,6 +12,7 @@ import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Program;
 
+
 public class PartyFxModel {
 
 	private Long id;
@@ -30,13 +31,19 @@ public class PartyFxModel {
 		setName(party.getName());
 		setInfo(party.getInfo());
 		List<Program> list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		programs = FXCollections.observableArrayList(list_p);
-		// TODO -- TU treba nejako spravit list kandidatov - podla toho na com sa dohodneme v party edit controlleri
-		//List<Candidate> list_c = DaoFactory.INSTANCE.getPartyDao().ge;
-		//candidates = FXCollections.observableArrayList(list_c);
+		programs = FXCollections.observableArrayList(list_p); 
 		
-		//TODO do niektoreho daa potrebujeme dat ze get all candidates alebo get cadidates by term 
-
+	}
+	
+	public PartyFxModel(Party party, Program program) {
+		this.id = party.getId();
+		setName(party.getName());
+		setInfo(party.getInfo());
+		List<Program> list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+		programs = FXCollections.observableArrayList(list_p);
+		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, program.getTerm());
+		candidates = FXCollections.observableArrayList(list_c);
+		
 	}
 
 	public Long getId() {

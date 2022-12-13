@@ -71,7 +71,7 @@ public class PartyOriginController {
 		Party selectedParty = partiesComboBox.getSelectionModel().getSelectedItem();
 		PartyEditController controller = new PartyEditController(selectedParty);
 		showPartyEdit(controller, "Editovanie politickej strany");
-
+  
 	}
 
 	void showPartyEdit(PartyEditController controller, String sceneName) {
