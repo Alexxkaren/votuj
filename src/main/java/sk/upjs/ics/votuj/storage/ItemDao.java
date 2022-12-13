@@ -13,4 +13,6 @@ public interface ItemDao {
 	List<Item> getByProgramCategory(Program program, Category category);
 	
 	Item getById(Long id);
+
+	List<Item> getByTerm(Term term);
 }

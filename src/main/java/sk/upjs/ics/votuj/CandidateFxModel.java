@@ -16,7 +16,7 @@ public class CandidateFxModel {
 	private IntegerProperty candidateNumber = new SimpleIntegerProperty();
 	private StringProperty info = new SimpleStringProperty();
 	private Party party;
-	private Term term; //z candidate_has_term
+	private Term term; //NEVIEM CI TU NEBUDE MUSIET BYT LIST!!!
 	private Candidate candidate;
 	
 	public CandidateFxModel()  {

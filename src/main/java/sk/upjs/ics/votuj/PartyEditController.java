@@ -1,5 +1,6 @@
 package sk.upjs.ics.votuj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
@@ -8,27 +9,33 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import sk.upjs.ics.votuj.storage.Candidate;
+import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
+import sk.upjs.ics.votuj.storage.Item;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Program;
+import sk.upjs.ics.votuj.storage.Term;
 
 public class PartyEditController {
 
 	private Party party;
 	private PartyFxModel partyFxModel;
-	//private CandidateFxModel candidateFxModel;
+	// private CandidateFxModel candidateFxModel;
+	private ObservableList<Candidate> candidatesModel;
+	private ObservableList<Program> programsModel;
+	private ObservableList<Item> itemsModel;
+	private ObservableList<Term> termsModel;
+	private Term termWatched;
 
 	@FXML
 	private ListView<Candidate> candidatesListView;
-	
-	@FXML
-	private ListView<Program> programsListView;
-	
-	private ObservableList<Candidate> candidatesModel;
-	private ObservableList<Program> programsModel;
 
 	@FXML
 	private TextField partyInfoTextField;
@@ -36,7 +43,14 @@ public class PartyEditController {
 	@FXML
 	private TextField partyNameTextField;
 
-	
+	@FXML
+	private TableView<Item> itemsTableView;
+
+	@FXML
+	private ListView<Program> programsListView;
+
+	@FXML
+	private ComboBox<Term> termsComboBox;
 
 	public PartyEditController() {
 		partyFxModel = new PartyFxModel();
@@ -47,43 +61,93 @@ public class PartyEditController {
 		partyFxModel = new PartyFxModel(party);
 	}
 
-	
 	@FXML
-    void initialize() {
-		programsModel = partyFxModel.getProgramsModel();
-		candidatesModel = partyFxModel.getCandidatesModel();
-		
+	void initialize() {
 		partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 		partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
 		
-		programsListView.setItems(programsModel);
-		candidatesListView.setItems(candidatesModel);
+		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll(); 
+		termsModel = FXCollections.observableArrayList(terms);
+		termsComboBox.setItems(termsModel);
 		
-		programsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Program> () {
-			
+		termsComboBox.getSelectionModel().selectFirst();
+		
+		//počiatočne ak nič nie je vybrane --> idk ci to treba este uvidim
+		programsModel = partyFxModel.getProgramsModel();
+		programsListView.setItems(programsModel);
+
+		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termsComboBox.getSelectionModel().getSelectedItem());
+		candidatesModel = FXCollections.observableArrayList(list_c);
+		candidatesListView.setItems(candidatesModel);
+
+		
+		termsComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Term>() {
+
 			@Override
-			public void changed(ObservableValue<? extends Program> observable, Program oldValue, Program newValue) {
-							if (newValue!=null) {
-								updateCandidatesListView();// ak sa zmeni kombobox tak zavolam metodu update table 
-							}
+			public void changed(ObservableValue<? extends Term> observable, Term oldValue, Term newValue) {
+				if (newValue != null) {
+					termWatched = termsComboBox.getSelectionModel().getSelectedItem();
+					System.out.println("TUUUUUUUUUUUUUUUUUU/nTUUUUUUUUUUUU/n" + termWatched);
+					updateCandidatesListView(termWatched);
+					updateProgramsListview(termWatched);
+					updateItemTableView(termWatched);
+				}
 			}
 		});
 		
+		//TableColumn<Item, String> categoryColumn = new TableColumn <>("Kategória");
+		//categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+		//itemsTableView.getColumns().add(categoryColumn); 
+		
+		TableColumn<Item, String> itemColumn = new TableColumn <>("Bod");
+		itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
+		itemsTableView.getColumns().add(itemColumn); 
+		
+		Term term = termsComboBox.getSelectionModel().getSelectedItem();
+		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTerm(term);
+		itemsModel= FXCollections.observableArrayList(list_i);
+		itemsTableView.setItems(itemsModel);
 	};
+
+	void updateCandidatesListView(Term term) {
+//		Program program = programsListView.getSelectionModel().getSelectedItem();
+//		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, program.getTerm());
+//		candidatesModel = FXCollections.observableArrayList(list_c);
+//		candidatesListView.setItems(candidatesModel);
 	
-	void updateCandidatesListView() {
-		Program program = programsListView.getSelectionModel().getSelectedItem();
-		System.out.println(program);
-		System.out.println(program.getTerm());
-		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, program.getTerm());
+		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, term);
 		candidatesModel = FXCollections.observableArrayList(list_c);
 		candidatesListView.setItems(candidatesModel);
+		
 	}
-
 	
+	void updateProgramsListview(Term term) {
+		List<Program> list_p = new ArrayList<>();
+		// TODO tu dajak treba ošetrit ze ked ešte v takom terme nie je nic vytvorene
+		Program p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(term, party);
+		if (p!=null) {
+			list_p.add(p);
+		}
+		//skusit sprvait tak ako v kandidatoch
+		programsModel = FXCollections.observableArrayList(list_p);
+		programsListView.setItems(programsModel);
+		
+	}
+	//TODO -- tu sa dajak zle zobrazuju tie body aj take co sa nemaju
+	void updateItemTableView(Term term) {
+		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTerm(term);
+		// itemsModel = FXCollections.observableArrayList(list_i);
+		itemsModel.setAll(list_i);
+		
+	}
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
+
+	}
+
+	@FXML
+	void addItemButtonclick(ActionEvent event) {
 
 	}
 
@@ -93,7 +157,17 @@ public class PartyEditController {
 	}
 
 	@FXML
+	void addTermButtonClick(ActionEvent event) {
+
+	}
+
+	@FXML
 	void deleteCandidateButtonClick(ActionEvent event) {
+
+	}
+
+	@FXML
+	void deleteItemButtonClick(ActionEvent event) {
 
 	}
 
@@ -103,12 +177,27 @@ public class PartyEditController {
 	}
 
 	@FXML
+	void deleteTermButtonClick(ActionEvent event) {
+
+	}
+
+	@FXML
 	void editCandidateButtonClick(ActionEvent event) {
 
 	}
 
 	@FXML
+	void editItemButtonclick(ActionEvent event) {
+
+	}
+
+	@FXML
 	void editProgramButtonClick(ActionEvent event) {
+
+	}
+
+	@FXML
+	void editTermButtonClick(ActionEvent event) {
 
 	}
 

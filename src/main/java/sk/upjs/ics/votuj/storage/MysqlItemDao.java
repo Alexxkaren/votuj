@@ -36,6 +36,16 @@ public class MysqlItemDao implements ItemDao {
 		return list;
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
+	
+	@Override
+	public List<Item> getByTerm(Term term) {
+		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
+					+ "JOIN program ON program.id = item.id_program "
+					+ "WHERE program.id_term = " + term.getId();
+		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
+		return list;
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	}
 
 	@Override
 	public List<Item> getByProgramCategory(Program program, Category category) {
