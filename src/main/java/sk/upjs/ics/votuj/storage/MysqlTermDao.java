@@ -30,27 +30,29 @@ public class MysqlTermDao implements TermDao {
 
 	@Override
 	public List<Term> getAll() {
-		// TODO spraviť unit test 
-		// POZOR na to v terme -- sikme apostrofy treba!!!!!!!!!
-		String sql = "SELECT id, since, `to` FROM term;"; // sql skript
-		List<Term> terms = jdbcTemplate.query(sql, new RowMapper<Term> (){
-
-			public Term mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Long id = rs.getLong("id");
-				Integer since = rs.getInt("since");
-				Integer to = rs.getInt("to");
-				return new Term(id, since, to);
-			}
-			
-		});
+		String sql = "SELECT id, since, `to` FROM term";
+		List<Term> terms = jdbcTemplate.query(sql, new TermRowMapper());
 		return terms;
-		
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	@Override
 	public Term getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT id, since, `to` FROM term WHERE id = " + id; 
+		return jdbcTemplate.queryForObject(sql, new TermRowMapper());
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	}
+	
+	private class TermRowMapper implements RowMapper<Term> {
+
+		@Override
+		public Term mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Long id = rs.getLong("id");
+			Integer since = rs.getInt("since");
+			Integer to = rs.getInt("to");
+			return new Term(id, since, to);
+		}
+		
 	}
 
 }

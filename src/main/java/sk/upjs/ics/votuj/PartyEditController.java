@@ -1,10 +1,17 @@
 package sk.upjs.ics.votuj;
 
+import java.util.List;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import sk.upjs.ics.votuj.storage.Candidate;
+import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Program;
 
@@ -16,6 +23,12 @@ public class PartyEditController {
 
 	@FXML
 	private ListView<Candidate> candidatesListView;
+	
+	@FXML
+	private ListView<Program> programsListView;
+	
+	private ObservableList<Candidate> candidatesModel;
+	private ObservableList<Program> programsModel;
 
 	@FXML
 	private TextField partyInfoTextField;
@@ -23,8 +36,7 @@ public class PartyEditController {
 	@FXML
 	private TextField partyNameTextField;
 
-	@FXML
-	private ListView<Program> programsListView;
+	
 
 	public PartyEditController() {
 		partyFxModel = new PartyFxModel();
@@ -38,24 +50,35 @@ public class PartyEditController {
 	
 	@FXML
     void initialize() {
+		programsModel = partyFxModel.getProgramsModel();
+		candidatesModel = partyFxModel.getCandidatesModel();
+		
 		partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 		partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
-		candidatesListView.setItems(partyFxModel.getCandidatesModel());
-		//kandidati sa nezobrazuju lebo problem v PArty FX model
-		programsListView.setItems(partyFxModel.getProgramsModel());
 		
-		Program program = programsListView.getSelectionModel().getSelectedItem();
+		programsListView.setItems(programsModel);
+		candidatesListView.setItems(candidatesModel);
 		
-		if (program!=null) {
-			System.out.println("TU SOM!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			partyFxModel = new PartyFxModel(party,program);
-			partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
-			partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
-			candidatesListView.setItems(partyFxModel.getCandidatesModel());
-			//kandidati sa nezobrazuju lebo problem v PArty FX model
-			programsListView.setItems(partyFxModel.getProgramsModel());
-		}
+		programsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Program> () {
+			
+			@Override
+			public void changed(ObservableValue<? extends Program> observable, Program oldValue, Program newValue) {
+							if (newValue!=null) {
+								updateCandidatesListView();// ak sa zmeni kombobox tak zavolam metodu update table 
+							}
+			}
+		});
+		
 	};
+	
+	void updateCandidatesListView() {
+		Program program = programsListView.getSelectionModel().getSelectedItem();
+		System.out.println(program);
+		System.out.println(program.getTerm());
+		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, program.getTerm());
+		candidatesModel = FXCollections.observableArrayList(list_c);
+		candidatesListView.setItems(candidatesModel);
+	}
 
 	
 

@@ -18,7 +18,6 @@ public class MysqlPartyDao implements PartyDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlPartyDao(JdbcTemplate jdbcTemplate) {
-		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -39,6 +38,7 @@ public class MysqlPartyDao implements PartyDao {
 		String sql = "SELECT id, name, info FROM party";
 		List<Party> list = jdbcTemplate.query(sql, new PartyRowMapper());
 		return list;
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class MysqlPartyDao implements PartyDao {
 			alert.show();
 			throw new NoSuchElementException("party with id: " + id + "not in DB");
 		}
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	private class PartyRowMapper implements RowMapper<Party> {

@@ -22,10 +22,16 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
+	public boolean delete(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public List<Candidate> getByTermParty(Party party, Term term) {
 		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate " +
 				"LEFT JOIN candidate_has_term ON candidate_has_term.id_candidate = candidate.id " +
-				"WHERE id_party = " + party.getId() +  "AND candidate_has_term.id_term = " + term.getId();
+				"WHERE id_party = " + party.getId() +  " AND candidate_has_term.id_term = " + term.getId();
 		return jdbcTemplate.query(sql, new CandidateRowMapper() );
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
@@ -39,12 +45,6 @@ public class MysqlCandidateDao implements CandidateDao {
 		
 	}
 	
-	@Override
-	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 	private class CandidateRowMapper implements RowMapper<Candidate> {
 
 		@Override
@@ -52,7 +52,7 @@ public class MysqlCandidateDao implements CandidateDao {
 			Candidate candidate = new Candidate();
 			candidate.setId(rs.getLong("id"));
 			candidate.setName(rs.getString("name"));
-			candidate.setName(rs.getString("surname"));
+			candidate.setSurname(rs.getString("surname"));
 			candidate.setCandidateNumber(rs.getInt("candidate_number"));
 			candidate.setInfo(rs.getString("info"));
 			Party party = DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party"));

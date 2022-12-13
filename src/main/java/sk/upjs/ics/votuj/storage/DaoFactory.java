@@ -16,6 +16,7 @@ public enum DaoFactory {
 	private TermDao termDao;
 	private VoteDao voteDao;
 	private AdminDao adminDao;
+	private RegionDao regionDao;
 	private boolean testing = false;
 	private JdbcTemplate jdbcTemplate;
 
@@ -77,6 +78,13 @@ public enum DaoFactory {
 			voteDao = new MysqlVoteDao(getJdbcTemplate());
 		}
 		return voteDao;
+	}
+	
+	public RegionDao getRegionDao() {
+		if (regionDao == null) {
+			regionDao = new MysqlRegionDao(getJdbcTemplate());
+		}
+		return regionDao;
 	}
 
 	private JdbcTemplate getJdbcTemplate() {

@@ -62,7 +62,7 @@ public class Program {
 
 	@Override
 	public String toString() {
-		return  name + "( party=" + party + ")";
+		return  name + "( party=" + party + " term ="+ term +")";
 	}
 	
 	

@@ -35,6 +35,7 @@ public class PartyFxModel {
 		
 	}
 	
+	// tento konštruktor sa asi bude moc vymazat este uvidime zatial s anikde nepouziva
 	public PartyFxModel(Party party, Program program) {
 		this.id = party.getId();
 		setName(party.getName());

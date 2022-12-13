@@ -11,4 +11,8 @@ public interface CategoryDao {
 	Category getById(Long id);
 	
 	List<Category> getAll();
+	
+	List<Category> getByItem(Item item);
+	
+	
 }
