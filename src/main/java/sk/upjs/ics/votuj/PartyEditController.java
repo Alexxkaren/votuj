@@ -16,7 +16,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sk.upjs.ics.votuj.storage.Candidate;
-import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
 import sk.upjs.ics.votuj.storage.Party;
@@ -76,11 +75,15 @@ public class PartyEditController {
 		programsModel = partyFxModel.getProgramsModel();
 		programsListView.setItems(programsModel);
 
-		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termsComboBox.getSelectionModel().getSelectedItem());
-		candidatesModel = FXCollections.observableArrayList(list_c);
-		candidatesListView.setItems(candidatesModel);
-
+		if (party!=null) {
+			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termsComboBox.getSelectionModel().getSelectedItem());
+			candidatesModel = FXCollections.observableArrayList(list_c);
+		} else {
+			candidatesModel = partyFxModel.getCandidatesModel();
+			
+		}
 		
+		candidatesListView.setItems(candidatesModel);
 		termsComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Term>() {
 
 			@Override
@@ -95,17 +98,26 @@ public class PartyEditController {
 			}
 		});
 		
-		//TableColumn<Item, String> categoryColumn = new TableColumn <>("Kategória");
-		//categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-		//itemsTableView.getColumns().add(categoryColumn); 
+		TableColumn<Item, String> categoryColumn = new TableColumn <>("Kategória");
+		categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+		itemsTableView.getColumns().add(categoryColumn); 
 		
 		TableColumn<Item, String> itemColumn = new TableColumn <>("Bod");
 		itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
 		itemsTableView.getColumns().add(itemColumn); 
 		
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
-		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
-		itemsModel= FXCollections.observableArrayList(list_i);
+		//skusam --> zatial dobre len nech sa to este dobre meni
+		if (party!=null) {
+			List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
+			itemsModel= FXCollections.observableArrayList(list_i);
+		} else {
+			List<Item> list_i = new ArrayList<>();
+			itemsModel= FXCollections.observableArrayList(list_i);
+		}
+		//povodne
+		//List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
+		
 		itemsTableView.setItems(itemsModel);
 	};
 

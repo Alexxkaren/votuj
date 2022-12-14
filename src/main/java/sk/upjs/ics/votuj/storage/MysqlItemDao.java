@@ -46,7 +46,7 @@ public class MysqlItemDao implements ItemDao {
 					+ "WHERE program.id_term = " + term.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 	}
 
 	@Override
@@ -56,6 +56,8 @@ public class MysqlItemDao implements ItemDao {
 					+ "WHERE id_program = " + program.getId() + " AND ihc.id_category = " +category.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 	}
 	
 	//mozno by sa zisla este taka: --> uvidime ci pouzijeme zatial nerobit unit test
@@ -80,6 +82,8 @@ public class MysqlItemDao implements ItemDao {
 				+ "WHERE program.id_term = " + term.getId() + " AND party.id = " + party.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 	}
 
 
@@ -101,6 +105,9 @@ public class MysqlItemDao implements ItemDao {
 			item.setInfo(rs.getString("info"));
 			Program program = DaoFactory.INSTANCE.getProgramDao().getById(rs.getLong("id_program"));
 			item.setProgram(program);
+			//skusam
+			List<Category> categories = DaoFactory.INSTANCE.getCategoryDao().getByItem(item);
+			item.setCategories(categories);
 			return item;
 			
 		}

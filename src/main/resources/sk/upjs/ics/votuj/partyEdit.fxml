@@ -31,9 +31,9 @@
       <Button layoutX="347.0" layoutY="108.0" mnemonicParsing="false" onAction="#editTermButtonClick" text="upraviť" />
       <Button layoutX="416.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteTermButtonClick" text="zmazať" />
       <Label layoutX="45.0" layoutY="334.0" text="Body" />
-      <TableView fx:id="itemsTableView" layoutX="63.0" layoutY="359.0" prefHeight="115.0" prefWidth="200.0" />
-      <Button layoutX="274.0" layoutY="359.0" mnemonicParsing="false" onAction="#addItemButtonclick" text="pridať" />
-      <Button layoutX="274.0" layoutY="392.0" mnemonicParsing="false" onAction="#editItemButtonclick" text="upraviť" />
-      <Button layoutX="274.0" layoutY="430.0" mnemonicParsing="false" onAction="#deleteItemButtonClick" text="odstrániť" />
+      <TableView fx:id="itemsTableView" layoutX="63.0" layoutY="359.0" prefHeight="115.0" prefWidth="330.0" />
+      <Button layoutX="405.0" layoutY="359.0" mnemonicParsing="false" onAction="#addItemButtonclick" text="pridať" />
+      <Button layoutX="402.0" layoutY="404.0" mnemonicParsing="false" onAction="#editItemButtonclick" text="upraviť" />
+      <Button layoutX="397.0" layoutY="435.0" mnemonicParsing="false" onAction="#deleteItemButtonClick" text="odstrániť" />
    </children>
 </AnchorPane>
