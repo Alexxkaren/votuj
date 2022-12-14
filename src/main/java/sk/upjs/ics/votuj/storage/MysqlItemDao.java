@@ -37,6 +37,8 @@ public class MysqlItemDao implements ItemDao {
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	
+	//idk ci toto sa nemoze vymazat --> budeme chciet vsetky body termu bez ohladu na stranu a program?
+	//asi nn -> tu ptm nerobit unit test
 	@Override
 	public List<Item> getByTerm(Term term) {
 		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
@@ -50,8 +52,32 @@ public class MysqlItemDao implements ItemDao {
 	@Override
 	public List<Item> getByProgramCategory(Program program, Category category) {
 		String sql = "SELECT id, name, info, id_program FROM item "
-					+ "JOIN item_has_category ihc ON ihc.id_item = item.id"
+					+ "JOIN item_has_category ihc ON ihc.id_item = item.id "
 					+ "WHERE id_program = " + program.getId() + " AND ihc.id_category = " +category.getId();
+		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
+		return list;
+	}
+	
+	//mozno by sa zisla este taka: --> uvidime ci pouzijeme zatial nerobit unit test
+	@Override
+	public List<Item> getByTermPartyCategory(Term term, Party party, Category category) {
+		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
+				+ "JOIN item_has_category ihc ON ihc.id_item = item.id "
+				+ "JOIN program ON program.id = item.id_program "
+				+ "JOIN term ON term.id = program.id_term "
+				+ "JOIN party ON party.id = program.id_party "
+				+ "WHERE program.id_term = " + term.getId() + " AND party.id = " + party.getId() + " AND ihc.id_category = " +category.getId();
+		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
+		return list;
+	}
+	
+	@Override
+	public List<Item> getByTermParty(Term term, Party party) {
+		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
+				+ "JOIN program ON program.id = item.id_program "
+				+ "JOIN term ON term.id = program.id_term "
+				+ "JOIN party ON party.id = program.id_party "
+				+ "WHERE program.id_term = " + term.getId() + " AND party.id = " + party.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
 	}

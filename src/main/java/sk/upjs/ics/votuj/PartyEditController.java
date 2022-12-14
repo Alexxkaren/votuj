@@ -87,7 +87,7 @@ public class PartyEditController {
 			public void changed(ObservableValue<? extends Term> observable, Term oldValue, Term newValue) {
 				if (newValue != null) {
 					termWatched = termsComboBox.getSelectionModel().getSelectedItem();
-					System.out.println("TUUUUUUUUUUUUUUUUUU/nTUUUUUUUUUUUU/n" + termWatched);
+					//System.out.println("TUUUUUUUUUUUUUUUUUU/nTUUUUUUUUUUUU/n" + termWatched);
 					updateCandidatesListView(termWatched);
 					updateProgramsListview(termWatched);
 					updateItemTableView(termWatched);
@@ -104,17 +104,13 @@ public class PartyEditController {
 		itemsTableView.getColumns().add(itemColumn); 
 		
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
-		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTerm(term);
+		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
 		itemsModel= FXCollections.observableArrayList(list_i);
 		itemsTableView.setItems(itemsModel);
 	};
 
 	void updateCandidatesListView(Term term) {
-//		Program program = programsListView.getSelectionModel().getSelectedItem();
-//		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, program.getTerm());
-//		candidatesModel = FXCollections.observableArrayList(list_c);
-//		candidatesListView.setItems(candidatesModel);
-	
+
 		List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, term);
 		candidatesModel = FXCollections.observableArrayList(list_c);
 		candidatesListView.setItems(candidatesModel);
@@ -133,9 +129,10 @@ public class PartyEditController {
 		programsListView.setItems(programsModel);
 		
 	}
-	//TODO -- tu sa dajak zle zobrazuju tie body aj take co sa nemaju
+	
+	
 	void updateItemTableView(Term term) {
-		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTerm(term);
+		List<Item> list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
 		// itemsModel = FXCollections.observableArrayList(list_i);
 		itemsModel.setAll(list_i);
 		

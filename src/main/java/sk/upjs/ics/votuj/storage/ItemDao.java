@@ -15,4 +15,8 @@ public interface ItemDao {
 	Item getById(Long id);
 
 	List<Item> getByTerm(Term term);
+
+	List<Item> getByTermParty(Term term, Party party);
+
+	List<Item> getByTermPartyCategory(Term term, Party party, Category category);
 }
