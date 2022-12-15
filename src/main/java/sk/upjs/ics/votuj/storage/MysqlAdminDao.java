@@ -18,7 +18,7 @@ public class MysqlAdminDao implements AdminDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlAdminDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+		this.jdbcTemplate = jdbcTemplate; 
 	}
 
 	@Override
