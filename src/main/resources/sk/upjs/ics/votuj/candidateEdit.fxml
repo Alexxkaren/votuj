@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -19,11 +18,8 @@
       <TextField fx:id="candidateNameTextField" layoutX="116.0" layoutY="75.0" />
       <TextField fx:id="candidateSurnameTextField" layoutX="125.0" layoutY="133.0" />
       <TextField fx:id="candidateNumberTextField" layoutX="96.0" layoutY="300.0" />
-      <ListView fx:id="termListView" layoutX="107.0" layoutY="195.0" prefHeight="91.0" prefWidth="200.0" />
-      <Button layoutX="333.0" layoutY="183.0" mnemonicParsing="false" onAction="#addTermButtonClick" text="Pridať obdobie" />
-      <Button layoutX="333.0" layoutY="225.0" mnemonicParsing="false" onAction="#editTermButtonClick" text="Editovať obdobie" />
-      <Button layoutX="333.0" layoutY="261.0" mnemonicParsing="false" onAction="#deleteTermButtonClick" text="Vymazať obdobie" />
       <Button layoutX="425.0" layoutY="442.0" mnemonicParsing="false" onAction="#saveCandidateButtonClick" text="Uložiť" />
-      <TextArea fx:id="infoTextArea" layoutX="91.0" layoutY="342.0" prefHeight="99.0" prefWidth="200.0" />
+      <TextArea fx:id="candidateInfoTextArea" layoutX="91.0" layoutY="342.0" prefHeight="99.0" prefWidth="200.0" />
+      <ComboBox fx:id="candidateTermComboBox" layoutX="125.0" layoutY="192.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
