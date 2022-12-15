@@ -42,7 +42,7 @@ public class Term {
 
 	@Override
 	public String toString() {
-		return "Term (id=" + id + ", " + since + " - " + to + ")";
+		return "(id=" + id + ", " + since + " - " + to + ")";
 	}
 
 	

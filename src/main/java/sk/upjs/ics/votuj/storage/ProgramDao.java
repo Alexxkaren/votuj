@@ -10,7 +10,7 @@ public interface ProgramDao {
 
 	List<Program> getByParty(Party party); //naimplementovane
 
-	Program getByTermParty(Term term, Party partry);
+	List<Program> getByTermParty(Term term, Party partry);
 	
 	Program getById(Long id);
 

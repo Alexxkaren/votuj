@@ -35,12 +35,21 @@ public class MysqlProgramDao implements ProgramDao {
 		return jdbcTemplate.query(sql, new ProgramRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
-
+	/*//stare --> ked tak treba zmenit aj v programDao
 	@Override
 	public Program getByTermParty(Term term, Party party) {
 		String sql = "SELECT id, name, id_party, is_active, id_term FROM program "+
 					 "WHERE id_party = " + party.getId() + " AND id_term = " + term.getId();
 		return jdbcTemplate.queryForObject(sql, new ProgramRowMapper());
+		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	} */
+	
+	@Override
+	public List<Program> getByTermParty(Term term, Party party) {
+		String sql = "SELECT id, name, id_party, is_active, id_term FROM program "+
+					 "WHERE id_party = " + party.getId() + " AND id_term = " + term.getId();
+		
+		return jdbcTemplate.query(sql, new ProgramRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
