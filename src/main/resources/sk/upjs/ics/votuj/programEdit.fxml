@@ -17,6 +17,6 @@
       <TextField fx:id="programNameTextField" layoutX="133.0" layoutY="56.0" />
       <Button layoutX="449.0" layoutY="425.0" mnemonicParsing="false" onAction="#saveProgramButtonClick" prefHeight="44.0" prefWidth="72.0" text="Uložiť" />
       <ComboBox fx:id="programTermComboBox" layoutX="162.0" layoutY="132.0" prefWidth="150.0" />
-      <CheckBox fx:id="activeCheckBox" layoutX="201.0" layoutY="187.0" mnemonicParsing="false" text="Aktívny" />
+      <CheckBox fx:id="activeCheckBox" layoutX="201.0" layoutY="187.0" mnemonicParsing="false" onAction="#changeOfActive" text="Aktívny" />
    </children>
 </AnchorPane>
