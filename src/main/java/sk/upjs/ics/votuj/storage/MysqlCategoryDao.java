@@ -1,11 +1,12 @@
 package sk.upjs.ics.votuj.storage;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
 
 public class MysqlCategoryDao implements CategoryDao {
 
@@ -17,15 +18,35 @@ public class MysqlCategoryDao implements CategoryDao {
 
 	@Override
 	public Category save(Category category) {
-		// TODO Auto-generated method stub
-		return null;
+		return category; 
 	}
 
 	@Override
+	// dorobit
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
+		int delete;
+		try {
+			delete = jdbcTemplate.update("DELETE FROM category WHERE  id= " + id);
+		}catch(DataIntegrityViolationException e) {
+			
+		}
 		return false;
+		
 	}
+	
+	
+	/*
+	 * 
+	 * int changed;
+		try {
+			changed = jdbcTemplate.update("DELETE FROM student WHERE id = " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new EntityUndeletableException(
+					"Student with id: " + id + "is part of some session, cannot be deleted");
+		}
+
+		return changed == 1; 
+	 */
 	
 	@Override
 	public List<Category> getByItem(Item item) {
@@ -64,7 +85,6 @@ public class MysqlCategoryDao implements CategoryDao {
 			
 			return category;
 		}
-		
 	}
 
 
