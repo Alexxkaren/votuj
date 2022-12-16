@@ -32,6 +32,7 @@ public class ItemEditController {
 	private ObservableList<Category> selectedCategoriesModel = FXCollections
 			.observableArrayList(new ArrayList<Category>());
 	private Stage stage;
+	private List<Category> categoriesToDelete = new ArrayList<>();
 
 	@FXML
 	private ComboBox<Category> itemCategoryComboBox;
@@ -86,8 +87,15 @@ public class ItemEditController {
 	}
 
 	@FXML
+	// TODO nech sa stazuje ked neni nic vybrate
 	void deleteCategoryButtonClick(ActionEvent event) {
-
+		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
+		if (category != null) {
+			itemFxModel.getCategoriesModel().remove(category);
+			if (category.getId() != null) {
+				categoriesToDelete.add(category);
+			}
+		}
 	}
 
 	@FXML

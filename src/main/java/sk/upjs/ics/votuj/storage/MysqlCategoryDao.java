@@ -7,6 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 
 public class MysqlCategoryDao implements CategoryDao {
 
@@ -22,31 +25,19 @@ public class MysqlCategoryDao implements CategoryDao {
 	}
 
 	@Override
-	// dorobit
-	public boolean delete(Long id) {
+	public boolean delete(Long id)throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM category WHERE  id= " + id);
 		}catch(DataIntegrityViolationException e) {
-			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiaden bod nie je vybraný, vyberte prosím bod");
+			alert.show();
+			throw new ObjectUndeletableException("Some item has this category.Category can be deleted" );
 		}
-		return false;
-		
+		return delete ==1;
 	}
-	
-	
-	/*
-	 * 
-	 * int changed;
-		try {
-			changed = jdbcTemplate.update("DELETE FROM student WHERE id = " + id);
-		} catch (DataIntegrityViolationException e) {
-			throw new EntityUndeletableException(
-					"Student with id: " + id + "is part of some session, cannot be deleted");
-		}
 
-		return changed == 1; 
-	 */
 	
 	@Override
 	public List<Category> getByItem(Item item) {
