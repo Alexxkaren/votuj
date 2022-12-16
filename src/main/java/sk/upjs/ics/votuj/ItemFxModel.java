@@ -21,6 +21,7 @@ public class ItemFxModel {
 	private Program program;
 	private ObservableList<Category> categories;
 	private Item item;
+	private ObservableList<Category> selectedCategories;
 
 	public ItemFxModel() {
 
@@ -91,7 +92,7 @@ public class ItemFxModel {
 		return new ArrayList<>(categories);
 	}
 
-	public void setCandidates(ObservableList<Category> categories) {
+	public void setCategories(ObservableList<Category> categories) {
 		this.categories = categories;
 	}
 	

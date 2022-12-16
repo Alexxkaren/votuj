@@ -24,11 +24,9 @@ public class PartyOriginController {
 	@FXML
 	private ComboBox<Party> partiesComboBox;
 
-	@FXML
-	private ObservableList<Party> partiesModel;
-
-	private PartyDao partyDao = DaoFactory.INSTANCE.getPartyDao();
 	
+	private ObservableList<Party> partiesModel;
+	private PartyDao partyDao = DaoFactory.INSTANCE.getPartyDao();
 	private Stage stage;
 
 	@FXML

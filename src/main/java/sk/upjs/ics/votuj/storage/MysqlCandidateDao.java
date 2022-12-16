@@ -17,13 +17,13 @@ public class MysqlCandidateDao implements CandidateDao {
 
 	@Override
 	public Candidate save(Candidate candidate) {
-		// TODO Auto-generated method stub
+		// TODO 
 		return null;
 	}
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
+		// TODO 
 		return false;
 	}
 	
@@ -53,7 +53,7 @@ public class MysqlCandidateDao implements CandidateDao {
 			candidate.setId(rs.getLong("id"));
 			candidate.setName(rs.getString("name"));
 			candidate.setSurname(rs.getString("surname"));
-			candidate.setCandidateNumber(rs.getInt("candidate_number"));
+			candidate.setCandidateNumber(rs.getString("candidate_number"));
 			candidate.setInfo(rs.getString("info"));
 			Party party = DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party"));
 			candidate.setParty(party);

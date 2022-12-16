@@ -3,9 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -13,11 +14,14 @@
       <Label layoutX="63.0" layoutY="199.0" prefHeight="18.0" prefWidth="44.0" text="Info" />
       <Label layoutX="63.0" layoutY="288.0" text="Kategória" />
       <TextField fx:id="itemNameTextField" layoutX="114.0" layoutY="100.0" />
-      <TextField fx:id="itemInfoTextField" layoutX="114.0" layoutY="196.0" />
-      <ComboBox fx:id="itemComboBox" layoutX="135.0" layoutY="284.0" prefWidth="150.0" />
-      <Button layoutX="316.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteItemButtonClick" text="Odstrániť bod" />
-      <Button layoutX="316.0" layoutY="275.0" mnemonicParsing="false" onAction="#addItemButtonClick" text="Pridať bod" />
-      <Button layoutX="430.0" layoutY="438.0" mnemonicParsing="false" onAction="#saveItemButtonClick" text="Uložiť" />
-      <Button layoutX="316.0" layoutY="317.0" mnemonicParsing="false" onAction="#editItemButtonClick" text="Upraviť bod" />
+      <ComboBox fx:id="itemCategoryComboBox" layoutX="135.0" layoutY="284.0" prefWidth="150.0" />
+      <Button layoutX="316.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteCategoryButtonClick" text="Odstrániť kategoriu" />
+      <Button layoutX="316.0" layoutY="275.0" mnemonicParsing="false" onAction="#createCategoryButtonClick" text="Vytvoriť novú kategoriu" />
+      <Button layoutX="367.0" layoutY="445.0" mnemonicParsing="false" onAction="#saveItemButtonClick" text="Uložiť" />
+      <Button layoutX="316.0" layoutY="317.0" mnemonicParsing="false" onAction="#editCategoryButtonClick" text="Upraviť kategoriu" />
+      <TextArea fx:id="itemInfoTextArea" layoutX="135.0" layoutY="175.0" prefHeight="65.0" prefWidth="194.0" />
+      <Button layoutX="114.0" layoutY="324.0" mnemonicParsing="false" onAction="#addCategoryButtonClick" text="Pridať kategóriu medzi vybrané" />
+      <Label layoutX="66.0" layoutY="387.0" text="Vybrané:" />
+      <ListView fx:id="selectedCategoriesListView" layoutX="123.0" layoutY="383.0" prefHeight="91.0" prefWidth="183.0" />
    </children>
 </AnchorPane>

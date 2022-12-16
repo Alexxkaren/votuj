@@ -1,13 +1,17 @@
 package sk.upjs.ics.votuj.storage;
 
+import java.util.List;
+
 public class Program {
 
 	private Long id;
 	private String name;
 	private Party party;
-	private boolean is_active;
+	private boolean isActive;
 	private Term term;
+	private List<Item> items;
 	
+
 	public Program() {
 	}
 
@@ -16,7 +20,7 @@ public class Program {
 		this.id = id;
 		this.name = name;
 		this.party = party;
-		this.is_active = is_active;
+		this.isActive = is_active;
 		this.term = term;
 	}
 
@@ -45,11 +49,11 @@ public class Program {
 	}
 
 	public boolean isIs_active() {
-		return is_active;
+		return isActive;
 	}
 
 	public void setIs_active(boolean is_active) {
-		this.is_active = is_active;
+		this.isActive = is_active;
 	}
 
 	public Term getTerm() {
@@ -58,6 +62,14 @@ public class Program {
 
 	public void setTerm(Term term) {
 		this.term = term;
+	}
+	
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
 	}
 
 	@Override

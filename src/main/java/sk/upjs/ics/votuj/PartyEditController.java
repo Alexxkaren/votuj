@@ -14,11 +14,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,7 +33,7 @@ import sk.upjs.ics.votuj.storage.Term;
 
 public class PartyEditController {
 
-	private Party party;
+	private Party party; 
 	private PartyFxModel partyFxModel;
 	// private CandidateFxModel candidateFxModel;
 	private ObservableList<Candidate> candidatesModel;
@@ -189,48 +191,147 @@ public class PartyEditController {
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
+		CandidateEditController controller = new CandidateEditController();
+		showCandidateEdit(controller, "Pridávanie nového kandidáta");
 
 	}
+	
+	@FXML
+	void editCandidateButtonClick(ActionEvent event) {
+		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
+		if (candidate!=null) {
+			CandidateEditController controller = new CandidateEditController(candidate);
+			showCandidateEdit(controller, "Editovanie kandidáta");
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiaden kandidát nie je vybraný, vyberte prosím kandidáta");
+			alert.show();
+			return;
+		}
+
+	}
+	
+	@FXML
+	void deleteCandidateButtonClick(ActionEvent event) {
+		//TODO
+	}
+	
+	void showCandidateEdit(CandidateEditController controller, String sceneName) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("candidateEdit.fxml"));
+			fxmlLoader.setController(controller);
+			Parent parent = fxmlLoader.load();
+			Scene scene = new Scene(parent);
+			stage = new Stage();
+			stage.setTitle(sceneName);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addItemButtonclick(ActionEvent event) {
+		ItemEditController controller = new ItemEditController();
+		showItemEdit(controller, "Pridávanie nového bodu volebného programu");
 
 	}
+	
+	@FXML
+	void deleteItemButtonClick(ActionEvent event) {
+		//TODO
+	}
+	
+	@FXML
+	void editItemButtonclick(ActionEvent event) {
+		Item item = itemsTableView.getSelectionModel().getSelectedItem();
+		if (item!=null) {
+			ItemEditController controller = new ItemEditController(item);
+			//TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
+			//FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej bodov
+			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
+			showItemEdit(controller, "Editovanie bodu volebného programu");
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiaden bod nie je vybraný, vyberte prosím bod");
+			alert.show();
+			return;
+		}
+
+
+	}
+	
+	void showItemEdit(ItemEditController controller, String sceneName) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("itemEdit.fxml"));
+			fxmlLoader.setController(controller);
+			Parent parent = fxmlLoader.load();
+			Scene scene = new Scene(parent);
+			stage = new Stage();
+			stage.setTitle(sceneName);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
-
-	}
-
-	@FXML
-	void deleteCandidateButtonClick(ActionEvent event) {
-
-	}
-
-	@FXML
-	void deleteItemButtonClick(ActionEvent event) {
+		ProgramEditController controller = new ProgramEditController();
+		showProgramEdit(controller, "Pridávanie nového volebného programu");
 
 	}
 
 	@FXML
 	void deleteProgramButtonClick(ActionEvent event) {
-
+		//TODO
 	}
 
-	@FXML
-	void editCandidateButtonClick(ActionEvent event) {
-
-	}
-
-	@FXML
-	void editItemButtonclick(ActionEvent event) {
-
-	}
 
 	@FXML
 	void editProgramButtonClick(ActionEvent event) {
+		
+		Program program = programsListView.getSelectionModel().getSelectedItem();
+		if (program!=null) {
+			ProgramEditController controller = new ProgramEditController(program);
+			//TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
+			//FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej bodov
+			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
+			showProgramEdit(controller, "Editovanie volebného programu");
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiaden program nie je vybraný, vyberte prosím program");
+			alert.show();
+			return;
+		}
 
 	}
+	
+	void showProgramEdit(ProgramEditController controller, String sceneName) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("programEdit.fxml"));
+			fxmlLoader.setController(controller);
+			Parent parent = fxmlLoader.load();
+			Scene scene = new Scene(parent);
+			stage = new Stage();
+			stage.setTitle(sceneName);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	////////////////////////////////////////////////
 
 	@FXML
 	void savePartyButtonClick(ActionEvent event) {

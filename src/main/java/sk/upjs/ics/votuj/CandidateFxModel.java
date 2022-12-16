@@ -1,10 +1,15 @@
 package sk.upjs.ics.votuj;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import sk.upjs.ics.votuj.storage.Candidate;
+import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Term;
 
@@ -13,10 +18,11 @@ public class CandidateFxModel {
 	private Long id;
 	private StringProperty name = new SimpleStringProperty();
 	private StringProperty surname = new SimpleStringProperty();
-	private IntegerProperty candidateNumber = new SimpleIntegerProperty();
+	private StringProperty candidateNumber = new SimpleStringProperty();
 	private StringProperty info = new SimpleStringProperty();
 	private Party party;
-	private Term term; //NEVIEM CI TU NEBUDE MUSIET BYT LIST!!!
+	private ObservableList<Term> terms;
+	//private Term term; //NEVIEM CI TU NEBUDE MUSIET BYT LIST!!!
 	private Candidate candidate;
 	
 	public CandidateFxModel()  {
@@ -27,12 +33,26 @@ public class CandidateFxModel {
 		this.id = candidate.getId();
 		setName(candidate.getName());
 		setSurname(candidate.getSurname());
-		setCandidateNumber(candidate.getCandidate_number());
+		setCandidateNumber(candidate.getCandidateNumber());
 		setInfo(candidate.getInfo());
 		setParty(party);
+		setTerms(terms);
 		
 	}
 	
+	public void setTerms(ObservableList<Term> terms) {
+		this.terms = terms;
+		
+	}
+	
+	public List<Term> getTerms() {
+		return new ArrayList<>(terms);
+	}
+	
+	public ObservableList<Term> getTermsModel() {
+		return terms;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -67,15 +87,15 @@ public class CandidateFxModel {
 	}
 	
 	
-	public IntegerProperty getCandidateNumberProperty() {
+	public StringProperty getCandidateNumberProperty() {
 		return candidateNumber;
 	}
 
-	public Integer getCandidateNumber() {
+	public String getCandidateNumber() {
 		return candidateNumber.get();
 	}
 	
-	public void setCandidateNumber(int candidateNumber) {
+	public void setCandidateNumber(String candidateNumber) {
 		this.candidateNumber.set(candidateNumber);
 	}
 	
@@ -103,8 +123,9 @@ public class CandidateFxModel {
 	
 	
 	
-	
 	public Candidate getCandidate() {
-		return new Candidate(id, getName(), getSurname(),getCandidateNumber(), getInfo(),getParty());
+		return new Candidate(id, getName(), getSurname(),getCandidateNumber(), getInfo(),getParty(), getTerms());
 	}
+
+	
 }

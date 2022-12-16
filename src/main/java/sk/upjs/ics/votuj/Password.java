@@ -22,4 +22,11 @@ public class Password {
 		BCryptPasswordEncoder c = new BCryptPasswordEncoder();
 		return c.matches(userPasswd, dbsPasswd);
 	}
+	/*
+	public static void main(String[] args) {
+		Password p = new Password();
+		String nove = p.createPassword("u");
+		System.out.println(nove);
+	} 
+	*/
 }
