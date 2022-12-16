@@ -34,8 +34,8 @@ public class AdminLoginController {
 
 		AdminDao adminDao = DaoFactory.INSTANCE.getAdminDao();
 		Admin admin = adminDao.getByName(loginName);
-
-		if (admin.getPassword().equals(loginPassword)) {
+		Password p = new Password();
+		if (p.isCorrect(admin.getPassword(),loginPassword)) {
 			PartyOriginController controller = new PartyOriginController();
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyOrigin.fxml"));

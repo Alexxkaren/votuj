@@ -1,25 +1,41 @@
 package sk.upjs.ics.votuj.storage;
 
+import java.util.List;
+
 public class Candidate {
 
 	private Long id;
 	private String name;
 	private String surname;
-	private Integer candidate_number;
+	private String candidateNumber;
 	private String info;
 	private Party party;
+	private List<Term> terms;
 
 	public Candidate() {
 	}
 
-	public Candidate(Long id, String name, String surname, Integer candidate_number, String info, Party party) {
+	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party, List<Term> terms) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-		this.candidate_number = candidate_number;
+		this.candidateNumber = candidateNumber;
 		this.info = info;
 		this.party = party;
+		this.terms = terms;
+	}
+
+	public List<Term> getTerms() {
+		return terms;
+	}
+
+	public void setTerms(List<Term> terms) {
+		this.terms = terms;
+	}
+
+	public void setCandidate_number(String candidate_number) {
+		this.candidateNumber = candidateNumber;
 	}
 
 	public Long getId() {
@@ -46,12 +62,12 @@ public class Candidate {
 		this.surname = surname;
 	}
 
-	public Integer getCandidate_number() {
-		return candidate_number;
+	public String getCandidateNumber() {
+		return candidateNumber;
 	}
 
-	public void setCandidateNumber(Integer candidate_number) {
-		this.candidate_number = candidate_number;
+	public void setCandidateNumber(String candidateNumber) {
+		this.candidateNumber = candidateNumber;
 	}
 
 	public String getInfo() {
