@@ -1,5 +1,7 @@
 package sk.upjs.ics.votuj.storage;
 
+import java.util.Objects;
+
 public class Term {
 
 	private Long id;
@@ -44,6 +46,25 @@ public class Term {
 	public String toString() {
 		return "(id=" + id + ", " + since + " - " + to + ")";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, since, to);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Term other = (Term) obj;
+		return Objects.equals(id, other.id) && Objects.equals(since, other.since) && Objects.equals(to, other.to);
+	}
+	
+	
 
 	
 }

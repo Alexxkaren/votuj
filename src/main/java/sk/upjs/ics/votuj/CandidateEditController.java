@@ -11,10 +11,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import sk.upjs.ics.votuj.storage.Candidate;
 import sk.upjs.ics.votuj.storage.DaoFactory;
+import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Term;
 
 public class CandidateEditController {
 	
+	private Party party;
 	private Candidate candidate;
 	private CandidateFxModel candidateFxModel;
 	private ObservableList<Term> termsModel;
@@ -36,13 +38,15 @@ public class CandidateEditController {
     
     
     
-    public CandidateEditController() {
-    	candidateFxModel = new CandidateFxModel();
+    public CandidateEditController(Party party) {
+    	this.party = party;
+    	candidateFxModel = new CandidateFxModel(party);
 	}
 
-	public CandidateEditController(Candidate candidate) {
+	public CandidateEditController(Candidate candidate, Party party) {
+		this.party = party;
 		this.candidate = candidate;
-		candidateFxModel = new CandidateFxModel(candidate);
+		candidateFxModel = new CandidateFxModel(candidate, party);
 	}
 
 	@FXML

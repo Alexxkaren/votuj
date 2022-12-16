@@ -1,5 +1,7 @@
 package sk.upjs.ics.votuj.storage;
 
+import java.util.Objects;
+
 public class Party {
 
 	private Long id;
@@ -43,6 +45,30 @@ public class Party {
 	public String toString() {
 		return name + " (id: " + id + " )";
 	}
+	
+	
+	public String toStringInfo() {
+		return info;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, info, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Party other = (Party) obj;
+		return Objects.equals(id, other.id) && Objects.equals(info, other.info) && Objects.equals(name, other.name);
+	}
+	
+	
 	
 	
 

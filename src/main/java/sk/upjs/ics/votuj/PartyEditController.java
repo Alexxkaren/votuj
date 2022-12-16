@@ -1,7 +1,6 @@
 package sk.upjs.ics.votuj;
 
 import java.io.IOException;
-import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +14,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,7 +32,7 @@ import sk.upjs.ics.votuj.storage.Term;
 
 public class PartyEditController {
 
-	private Party party; 
+	private Party party;
 	private PartyFxModel partyFxModel;
 	// private CandidateFxModel candidateFxModel;
 	private ObservableList<Candidate> candidatesModel;
@@ -81,8 +80,12 @@ public class PartyEditController {
 
 		termsComboBox.getSelectionModel().selectFirst();
 
-		// počiatočne ak nič nie je vybrane --> idk ci to treba este uvidim
-		programsModel = partyFxModel.getProgramsModel();
+		List<Program> list_p = new ArrayList<>();
+		if (party != null) {
+			list_p = DaoFactory.INSTANCE.getProgramDao()
+					.getByTermParty(termsComboBox.getSelectionModel().getSelectedItem(), party);
+		}
+		programsModel = FXCollections.observableArrayList(list_p);
 		programsListView.setItems(programsModel);
 
 		if (party != null) {
@@ -91,7 +94,6 @@ public class PartyEditController {
 			candidatesModel = FXCollections.observableArrayList(list_c);
 		} else {
 			candidatesModel = partyFxModel.getCandidatesModel();
-
 		}
 
 		candidatesListView.setItems(candidatesModel);
@@ -191,16 +193,16 @@ public class PartyEditController {
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
-		CandidateEditController controller = new CandidateEditController();
+		CandidateEditController controller = new CandidateEditController(party);
 		showCandidateEdit(controller, "Pridávanie nového kandidáta");
-
+		//TU alert netreba party bude furt vybrana
 	}
-	
+
 	@FXML
 	void editCandidateButtonClick(ActionEvent event) {
 		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
-		if (candidate!=null) {
-			CandidateEditController controller = new CandidateEditController(candidate);
+		if (candidate != null) {
+			CandidateEditController controller = new CandidateEditController(candidate, party);
 			showCandidateEdit(controller, "Editovanie kandidáta");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -210,12 +212,12 @@ public class PartyEditController {
 		}
 
 	}
-	
+
 	@FXML
 	void deleteCandidateButtonClick(ActionEvent event) {
-		//TODO
+		// TODO
 	}
-	
+
 	void showCandidateEdit(CandidateEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("candidateEdit.fxml"));
@@ -231,28 +233,38 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addItemButtonclick(ActionEvent event) {
-		ItemEditController controller = new ItemEditController();
-		showItemEdit(controller, "Pridávanie nového bodu volebného programu");
+		Program program = programsListView.getSelectionModel().getSelectedItem();
+		if (program != null) {
+			ItemEditController controller = new ItemEditController(program);
+			showItemEdit(controller, "Pridávanie nového bodu volebného programu");
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiaden program nie je vybraný, bod musíte priradiť programu, vyberte prosím program");
+			alert.show();
+			return;
+		}
 
 	}
-	
+
 	@FXML
 	void deleteItemButtonClick(ActionEvent event) {
-		//TODO
+		// TODO
 	}
-	
+
 	@FXML
 	void editItemButtonclick(ActionEvent event) {
 		Item item = itemsTableView.getSelectionModel().getSelectedItem();
-		if (item!=null) {
-			ItemEditController controller = new ItemEditController(item);
-			//TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
-			//FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej bodov
+		if (item != null) {
+			ItemEditController controller = new ItemEditController(item,
+					programsListView.getSelectionModel().getSelectedItem());
+			// TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
+			// FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej
+			// bodov
 			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
 			showItemEdit(controller, "Editovanie bodu volebného programu");
 		} else {
@@ -262,9 +274,8 @@ public class PartyEditController {
 			return;
 		}
 
-
 	}
-	
+
 	void showItemEdit(ItemEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("itemEdit.fxml"));
@@ -280,30 +291,30 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
-		ProgramEditController controller = new ProgramEditController();
+		ProgramEditController controller = new ProgramEditController(party);
 		showProgramEdit(controller, "Pridávanie nového volebného programu");
-
+		//TU alert netreba lebo party bude furt vybrata
 	}
 
 	@FXML
 	void deleteProgramButtonClick(ActionEvent event) {
-		//TODO
+		// TODO
 	}
-
 
 	@FXML
 	void editProgramButtonClick(ActionEvent event) {
-		
+
 		Program program = programsListView.getSelectionModel().getSelectedItem();
-		if (program!=null) {
-			ProgramEditController controller = new ProgramEditController(program);
-			//TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
-			//FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej bodov
+		if (program != null) {
+			ProgramEditController controller = new ProgramEditController(program, party);
+			// TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
+			// FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej
+			// bodov
 			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
 			showProgramEdit(controller, "Editovanie volebného programu");
 		} else {
@@ -314,7 +325,7 @@ public class PartyEditController {
 		}
 
 	}
-	
+
 	void showProgramEdit(ProgramEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("programEdit.fxml"));
@@ -330,7 +341,7 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////////////////
 
 	@FXML

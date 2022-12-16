@@ -23,11 +23,12 @@ public class ItemFxModel {
 	private Item item;
 	private ObservableList<Category> selectedCategories;
 
-	public ItemFxModel() {
-
+	public ItemFxModel(Program program) {
+		this.program = program;
 	}
 
-	public ItemFxModel(Item item) {
+	public ItemFxModel(Item item, Program program) {
+		this.program = program;
 		this.id = item.getId();
 		setName(item.getName());
 		setInfo(item.getInfo());

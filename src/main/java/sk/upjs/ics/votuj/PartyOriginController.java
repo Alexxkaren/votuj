@@ -48,7 +48,7 @@ public class PartyOriginController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			Stage stage = new Stage();
-			stage.setTitle("Podrobnosti o politickej strane");
+			stage.setTitle("Náhľad politickej strany");
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();

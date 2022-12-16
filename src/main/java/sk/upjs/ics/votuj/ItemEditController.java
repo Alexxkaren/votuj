@@ -13,19 +13,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import sk.upjs.ics.votuj.storage.Candidate;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
+import sk.upjs.ics.votuj.storage.Program;
 
 public class ItemEditController {
 
+	private Program program;
 	private Item item;
 	private ItemFxModel itemFxModel;
 	private ObservableList<Category> categoriesModel;
@@ -46,13 +47,15 @@ public class ItemEditController {
 	@FXML
 	private ListView<Category> selectedCategoriesListView;
 
-	public ItemEditController() {
-		itemFxModel = new ItemFxModel();
+	public ItemEditController(Program program) {
+		this.program = program;
+		itemFxModel = new ItemFxModel(program);
 	}
 
-	public ItemEditController(Item item) {
+	public ItemEditController(Item item, Program program) {
+		this.program = program;
 		this.item = item;
-		itemFxModel = new ItemFxModel(item);
+		itemFxModel = new ItemFxModel(item, program);
 	}
 
 	@FXML

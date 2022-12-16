@@ -25,11 +25,12 @@ public class CandidateFxModel {
 	//private Term term; //NEVIEM CI TU NEBUDE MUSIET BYT LIST!!!
 	private Candidate candidate;
 	
-	public CandidateFxModel()  {
-		
+	public CandidateFxModel(Party party)  {
+		this.party = party;
 	}
 	
-	public CandidateFxModel (Candidate candidate) {
+	public CandidateFxModel (Candidate candidate, Party party) {
+		this.party = party;
 		this.id = candidate.getId();
 		setName(candidate.getName());
 		setSurname(candidate.getSurname());

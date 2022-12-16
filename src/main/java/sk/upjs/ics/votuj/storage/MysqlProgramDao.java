@@ -69,7 +69,7 @@ public class MysqlProgramDao implements ProgramDao {
 			program.setName(rs.getString("name"));
 			program.setParty(DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party")));
 			//program.setParty(party);
-			program.setIs_active(rs.getBoolean("is_active"));
+			program.setIsActive(rs.getBoolean("is_active"));
 			Term term = DaoFactory.INSTANCE.getTermDao().getById(rs.getLong("id_term"));
 			program.setTerm(term);
 			return program;

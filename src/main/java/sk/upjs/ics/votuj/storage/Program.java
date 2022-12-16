@@ -1,6 +1,7 @@
 package sk.upjs.ics.votuj.storage;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Program {
 
@@ -48,11 +49,11 @@ public class Program {
 		this.party = party;
 	}
 
-	public boolean isIs_active() {
+	public boolean isActive() {
 		return isActive;
 	}
 
-	public void setIs_active(boolean is_active) {
+	public void setIsActive(boolean is_active) {
 		this.isActive = is_active;
 	}
 
@@ -76,6 +77,30 @@ public class Program {
 	public String toString() {
 		return  name + "( party=" + party + " term ="+ term +")";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, items, name, party, term);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Program other = (Program) obj;
+		return Objects.equals(id, other.id) && Objects.equals(items, other.items) && Objects.equals(name, other.name)
+				&& Objects.equals(party, other.party) && Objects.equals(term, other.term);
+	}
+	
+	
+
+
+	
+	
 	
 	
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -17,18 +18,21 @@ public class ProgramFxModel {
 	private Long id;
 	private StringProperty name = new SimpleStringProperty();
 	private Party party;
-	private BooleanProperty isActive;
+	private BooleanProperty isActive = new SimpleBooleanProperty();
 	private Term term;
 	private ObservableList<Item> items;
 	
 	
-	public ProgramFxModel() {
+	public ProgramFxModel(Party party) {
+		this.party = party;
 
 	}
 
-	public ProgramFxModel(Program program) {
+	public ProgramFxModel(Program program, Party party) {
+		this.party = party;
 		this.id = program.getId();
 		setName(program.getName());
+		setIsActive(program.isActive());
 		setParty(party);
 		setTerm(term);
 		setItems(items);
@@ -64,6 +68,7 @@ public class ProgramFxModel {
 	
 	public void setIsActive(boolean isActive) {
 		this.isActive.set(isActive);
+		
 	}
 	///
 	
