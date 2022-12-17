@@ -36,6 +36,7 @@ public class PartyViewController {
 	private Party party;
 	private Term term;
 	private PartyFxModel partyFxModel;
+	private ProgramFxModel programFxModel;
 	private ObservableList<Term> termsModel;
 	private ObservableList<Item> itemsModel;
 	private ObservableList<Candidate> candidatesModel;
@@ -74,10 +75,11 @@ public class PartyViewController {
 		termsModel = FXCollections.observableArrayList(terms);
 		partyTermComboBox.setItems(termsModel);
 		partyTermComboBox.getSelectionModel().selectFirst();
-		
-		//TUUUUUUUUUUUUUU pri smere v druho terme sa zobrazuje dajaky drist idk preco 
-		List<Program> list= DaoFactory.INSTANCE.getProgramDao().getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
-		programNameLabel.setText(list.get(0).toString());//tu get name
+
+		// TUUUUUUUUUUUUUU pri smere v druho terme sa zobrazuje dajaky drist idk preco
+		List<Program> list = DaoFactory.INSTANCE.getProgramDao()
+				.getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
+		programNameLabel.setText(list.get(0).getName());// tu get name
 
 		if (party != null) {
 			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party,
@@ -101,7 +103,7 @@ public class PartyViewController {
 			}
 
 		});
-		
+
 		TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
 		categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
 		itemsTableView.getColumns().add(categoryColumn);
@@ -128,7 +130,14 @@ public class PartyViewController {
 	}
 
 	private void updateProgramNameLabel(Term termWatched) {
-		programNameLabel.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
+		List<Program> list_p = new ArrayList<>();
+		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
+		if (list_p.size() != 0) {
+			programFxModel = new ProgramFxModel(list_p.get(0), party);
+		} else {
+			programFxModel = new ProgramFxModel(party);
+		}
+		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
 	}
 
 	private void updateCandidatesListView(Term termWatched) {
@@ -140,7 +149,6 @@ public class PartyViewController {
 
 	@FXML
 	void candidateInfoButtonClick(ActionEvent event) {
-		
 
 		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
 		if (candidate != null) {
