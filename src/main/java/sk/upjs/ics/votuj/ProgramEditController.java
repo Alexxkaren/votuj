@@ -10,8 +10,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import sk.upjs.ics.votuj.storage.DaoFactory;
@@ -64,12 +66,11 @@ public class ProgramEditController {
 		programTermComboBox.setItems(termsModel);
 		programTermComboBox.getSelectionModel().selectFirst();
 
-		List<Item> list_i = new ArrayList<>();
+		List<Item> list_p = new ArrayList<>();
 		if (program != null) {
-			list_i = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
-			
+			list_p = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
 		}
-		itemsModel = FXCollections.observableArrayList(list_i);
+		itemsModel = FXCollections.observableArrayList(list_p);
 		programItemTableView.setItems(itemsModel);
 
 		if (isActiveModel.get()) {
@@ -78,16 +79,34 @@ public class ProgramEditController {
 			activeCheckBox.setSelected(false);
 		}
 
-		allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		for (Program p : allPrograms) {
-			if (program == null && p.isActive()) {
-				activeCheckBox.setDisable(true);
-			
-			} else if (program != null && !p.equals(program) && p.isActive()) {
-				activeCheckBox.setDisable(true);
-			
+		if (party!=null) {
+			allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+			for (Program p : allPrograms) {
+				if (program == null && p.isActive()) {
+					activeCheckBox.setDisable(true);
+				
+				} else if (program != null && !p.equals(program) && p.isActive()) {
+					activeCheckBox.setDisable(true);
+				}
 			}
+		}
+		
+		if (program!=null) {
+			TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
+			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+			programItemTableView.getColumns().add(categoryColumn);
 
+			TableColumn<Item, String> itemColumn = new TableColumn<>("Bod");
+			itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
+			programItemTableView.getColumns().add(itemColumn);
+
+			Term term = programTermComboBox.getSelectionModel().getSelectedItem();
+			List<Item> list_i = new ArrayList<>();
+			if (party != null) {
+				list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
+			}
+			itemsModel = FXCollections.observableArrayList(list_i);
+			programItemTableView.setItems(itemsModel);
 		}
 
 	}

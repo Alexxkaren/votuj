@@ -21,11 +21,13 @@ public class CandidateFxModel {
 	private StringProperty candidateNumber = new SimpleStringProperty();
 	private StringProperty info = new SimpleStringProperty();
 	private Party party;
+	private Term term;
 	private ObservableList<Term> terms;
 	//private Term term; //NEVIEM CI TU NEBUDE MUSIET BYT LIST!!!
 	private Candidate candidate;
 	
-	public CandidateFxModel(Party party)  {
+	public CandidateFxModel(Party party, Term term)  {
+		this.term = term;
 		this.party = party;
 	}
 	

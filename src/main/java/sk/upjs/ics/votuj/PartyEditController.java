@@ -19,6 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -47,7 +48,7 @@ public class PartyEditController {
 	private ListView<Candidate> candidatesListView;
 
 	@FXML
-	private TextField partyInfoTextField;
+	private TextArea partyInfoTextArea;
 
 	@FXML
 	private TextField partyNameTextField;
@@ -72,7 +73,7 @@ public class PartyEditController {
 
 	@FXML
 	void initialize() {
-		partyInfoTextField.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
+		partyInfoTextArea.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 		partyNameTextField.textProperty().bindBidirectional(partyFxModel.getNameProperty());
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
@@ -182,12 +183,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -200,9 +201,10 @@ public class PartyEditController {
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
-		CandidateEditController controller = new CandidateEditController(party);
+		Term term = termsComboBox.getSelectionModel().getSelectedItem();
+		CandidateEditController controller = new CandidateEditController(party, term);
 		showCandidateEdit(controller, "Pridávanie nového kandidáta");
-		//TU alert netreba party bude furt vybrana
+		// TU alert netreba party bude furt vybrana
 	}
 
 	@FXML
@@ -232,12 +234,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -247,7 +249,7 @@ public class PartyEditController {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////// 
 
 	@FXML
 	void addItemButtonclick(ActionEvent event) {
@@ -296,12 +298,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -317,7 +319,7 @@ public class PartyEditController {
 	void addProgramButtonClick(ActionEvent event) {
 		ProgramEditController controller = new ProgramEditController(party);
 		showProgramEdit(controller, "Pridávanie nového volebného programu");
-		//TU alert netreba lebo party bude furt vybrata
+		// TU alert netreba lebo party bude furt vybrata
 	}
 
 	@FXML
@@ -352,12 +354,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);

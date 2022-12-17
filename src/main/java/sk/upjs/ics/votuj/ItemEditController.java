@@ -13,11 +13,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Category;
@@ -35,6 +35,7 @@ public class ItemEditController {
 			.observableArrayList(new ArrayList<Category>());
 	private Stage stage;
 	private List<Category> categoriesToDelete = new ArrayList<>();
+	private List<Category> listOfSelectedCategories = new ArrayList<>();
 
 	@FXML
 	private ComboBox<Category> itemCategoryComboBox;
@@ -69,7 +70,9 @@ public class ItemEditController {
 		categoriesModel = FXCollections.observableArrayList(categories);
 		itemCategoryComboBox.setItems(categoriesModel);
 
-		// itemCategoryComboBox.getSelectionModel().selectFirst();
+		listOfSelectedCategories = item.getCategories();
+		selectedCategoriesModel.setAll(listOfSelectedCategories);
+		selectedCategoriesListView.setItems(selectedCategoriesModel);
 
 	}
 
@@ -91,6 +94,23 @@ public class ItemEditController {
 	}
 
 	@FXML
+	void deleteAddedCategoryButtonClick(ActionEvent event) {
+		Category cat = selectedCategoriesListView.getSelectionModel().getSelectedItem();
+		if (cat != null) {
+			listOfSelectedCategories.remove(cat);
+			selectedCategoriesModel.setAll(listOfSelectedCategories);
+			selectedCategoriesListView.setItems(selectedCategoriesModel);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText(
+					"Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete odstrániť z vybraných");
+			alert.show();
+			return;
+		}
+
+	}
+
+	@FXML
 	// TODO nech sa stazuje ked neni nic vybrate
 	void deleteCategoryButtonClick(ActionEvent event) {
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
@@ -99,6 +119,11 @@ public class ItemEditController {
 			if (category.getId() != null) {
 				categoriesToDelete.add(category);
 			}
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete odstrániť.");
+			alert.show();
+			return;
 		}
 	}
 
@@ -112,12 +137,25 @@ public class ItemEditController {
 	@FXML
 	void editCategoryButtonClick(ActionEvent event) {
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
-		if (category!=null) {
-			CategoryEditController controller = new CategoryEditController(category);
-			showCategoryEdit(controller, "Editovanie kategórie");
+
+		if (category != null) {
+			System.out.println("vybrana: " + category.toString());
+			System.out.println("list vybranych: " + listOfSelectedCategories.toString());
+			System.out.println(listOfSelectedCategories.contains(category));
+			
+			if (!listOfSelectedCategories.contains(category)) {
+				CategoryEditController controller = new CategoryEditController(category);
+				showCategoryEdit(controller, "Editovanie kategórie");
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText(
+						"Kategória, ktorú chcete upraviť je medzi vybranými kategóriami. Najprv ju odstráňte z vybraných kategórií a potom ju editujte.");
+				alert.show();
+				return;
+			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Žiadna kategoria nie je vybrana, vyberte prosím kategoriu");
+			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete editovať.");
 			alert.show();
 			return;
 		}
@@ -127,7 +165,7 @@ public class ItemEditController {
 	void saveItemButtonClick(ActionEvent event) {
 
 	}
-	
+
 	void showCategoryEdit(CategoryEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("categoryEdit.fxml"));
@@ -135,12 +173,12 @@ public class ItemEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);

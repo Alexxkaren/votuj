@@ -8,10 +8,10 @@
    <children>
       <Label layoutX="65.0" layoutY="48.0" text="Meno:" />
       <Label layoutX="65.0" layoutY="102.0" text="Priezvisko:" />
-      <Label layoutX="65.0" layoutY="167.0" text="Číslo kandidáta:" />
+      <Label layoutX="65.0" layoutY="167.0" prefHeight="18.0" prefWidth="142.0" text="Číslo kandidáta:" />
       <Label fx:id="candidateNameLabel" layoutX="173.0" layoutY="48.0" text="meno" />
       <Label fx:id="candidateSurnameLabel" layoutX="173.0" layoutY="102.0" text="priezvisko" />
-      <Label fx:id="candidateNumberLabel" layoutX="173.0" layoutY="167.0" text="cislo" />
+      <Label fx:id="candidateNumberLabel" layoutX="337.0" layoutY="167.0" prefHeight="18.0" prefWidth="55.0" text="cislo" />
       <Label layoutX="65.0" layoutY="225.0" text="Info:" />
       <TextArea fx:id="candidateInfoTextArea" editable="false" layoutX="107.0" layoutY="243.0" prefHeight="122.0" prefWidth="410.0" />
    </children>

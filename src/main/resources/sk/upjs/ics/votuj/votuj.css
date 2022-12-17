@@ -119,7 +119,29 @@
 .check-box{
     -fx-text-fill: #003049;
 
+}
 
+.table-view .column-header-background{
+    -fx-background-color: #669BBC
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: #F6F4EE;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+
+.table-view .cell{
+    -fx-text-fill: #003049;
+}
+
+
+.table-view .filler{
+    -fx-background-color: transparent;
 }
 
 .radio-button .radio{
@@ -133,8 +155,4 @@
     -fx-background-radius: 15px;
     -fx-padding: 8px;
     -fx-fill-color: #003049;
-}
-
-.password-field{
-
 }
