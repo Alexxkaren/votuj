@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -40,10 +41,15 @@ public class AdminLoginController {
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyOrigin.fxml"));
 				fxmlLoader.setController(controller);
-
 				Parent parent = fxmlLoader.load();
 				Scene scene = new Scene(parent);
 				Stage stage = new Stage();
+				
+				String css = this.getClass().getResource("votuj.css").toExternalForm();
+				scene.getStylesheets().add(css); 
+				Image icon = new Image("single_logo.png");
+				stage.getIcons().add(icon);
+				
 				stage.setTitle("Politické strany");
 				stage.setScene(scene);
 				stage.initModality(Modality.APPLICATION_MODAL);

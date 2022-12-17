@@ -9,23 +9,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="namePartyLabel" layoutX="163.0" layoutY="43.0" text="Názov">
+      <Label fx:id="namePartyLabel" layoutX="274.0" layoutY="43.0" text="Názov">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <Label layoutX="68.0" layoutY="48.0" text="Politická strana:" />
-      <Label layoutX="68.0" layoutY="99.0" text="Info o strane:" />
-      <Label layoutX="65.0" layoutY="191.0" text="Kandidáti:" />
-      <Label layoutX="68.0" layoutY="322.0" text="Program" />
-      <ListView fx:id="candidatesListView" layoutX="76.0" layoutY="213.0" prefHeight="94.0" prefWidth="334.0" />
-      <Button layoutX="431.0" layoutY="187.0" mnemonicParsing="false" onAction="#candidateInfoButtonClick" text="Info o kandidátovi" />
-      <Label layoutX="76.0" layoutY="70.0" text="Obdobie: " />
-      <TableView fx:id="itemsTableView" layoutX="68.0" layoutY="376.0" prefHeight="94.0" prefWidth="303.0" />
-      <TextArea fx:id="partyInfoTextArea" editable="false" layoutX="137.0" layoutY="117.0" prefHeight="73.0" prefWidth="244.0" wrapText="true" />
-      <ComboBox fx:id="partyTermComboBox" layoutX="168.0" layoutY="75.0" prefWidth="150.0" />
-      <Label fx:id="programNameLabel" layoutX="154.0" layoutY="322.0" text="nazov programu" />
+      <Label layoutX="68.0" layoutY="92.0" text="Info o strane:" />
+      <Label layoutX="68.0" layoutY="267.0" text="Kandidáti:" />
+      <Label layoutX="64.0" layoutY="406.0" prefHeight="18.0" prefWidth="113.0" text="Program:" />
+      <ListView fx:id="candidatesListView" layoutX="121.0" layoutY="293.0" prefHeight="94.0" prefWidth="334.0" />
+      <Button layoutX="461.0" layoutY="293.0" mnemonicParsing="false" onAction="#candidateInfoButtonClick" prefHeight="26.0" prefWidth="176.0" text="Info o kandidátovi" />
+      <Label layoutX="68.0" layoutY="224.0" text="Obdobie: " />
+      <TableView fx:id="itemsTableView" layoutX="64.0" layoutY="451.0" prefHeight="116.0" prefWidth="522.0" />
+      <TextArea fx:id="partyInfoTextArea" editable="false" layoutX="121.0" layoutY="123.0" prefHeight="74.0" prefWidth="334.0" wrapText="true" />
+      <ComboBox fx:id="partyTermComboBox" layoutX="163.0" layoutY="220.0" prefHeight="26.0" prefWidth="260.0" />
+      <Label fx:id="programNameLabel" layoutX="213.0" layoutY="406.0" prefHeight="18.0" prefWidth="316.0" text="nazov programu" />
    </children>
 </AnchorPane>

@@ -5,19 +5,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="37.0" layoutY="39.0" mnemonicParsing="false" onAction="#adminButtonClick" prefHeight="44.0" prefWidth="90.0" text="Admin" />
-      <Button layoutX="275.0" layoutY="429.0" mnemonicParsing="false" onAction="#goToVoteButtonClick" prefHeight="44.0" prefWidth="90.0" text="Hlasovať" />
-      <Button layoutX="387.0" layoutY="429.0" mnemonicParsing="false" onAction="#goToCompareButtonClick" prefHeight="44.0" prefWidth="129.0" text="Porovnať programy" />
-      <Label layoutX="82.0" layoutY="204.0" prefHeight="18.0" prefWidth="41.0" text="Vek" />
-      <Label layoutX="82.0" layoutY="123.0" prefHeight="18.0" prefWidth="71.0" text="Region" />
-      <Label layoutX="82.0" layoutY="285.0" text="Pohlavie" />
-      <ComboBox fx:id="regionComboBox" layoutX="78.0" layoutY="152.0" prefWidth="150.0" />
-      <TextField fx:id="ageTextField" layoutX="79.0" layoutY="238.0" />
-      <RadioButton fx:id="maleRadioButton" layoutX="74.0" layoutY="325.0" mnemonicParsing="false" text="muž" />
-      <RadioButton fx:id="femaleRadioButton" layoutX="153.0" layoutY="325.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="62.0" text="žena" />
+      <Button fx:id="adminButton" layoutX="82.0" layoutY="504.0" mnemonicParsing="false" onAction="#adminButtonClick" prefHeight="44.0" prefWidth="101.0" text="Admin" />
+      <Button layoutX="477.0" layoutY="429.0" mnemonicParsing="false" onAction="#goToVoteButtonClick" prefHeight="44.0" prefWidth="122.0" text="Hlasovať" />
+      <Button layoutX="478.0" layoutY="504.0" mnemonicParsing="false" onAction="#goToCompareButtonClick" prefHeight="44.0" prefWidth="122.0" text="Programy" />
+      <Label layoutX="81.0" layoutY="224.0" prefHeight="18.0" prefWidth="41.0" text="Vek" />
+      <Label layoutX="80.0" layoutY="139.0" prefHeight="18.0" prefWidth="71.0" text="Region" />
+      <Label layoutX="80.0" layoutY="342.0" text="Pohlavie" />
+      <ComboBox fx:id="regionComboBox" layoutX="124.0" layoutY="179.0" prefHeight="26.0" prefWidth="223.0" />
+      <TextField fx:id="ageTextField" layoutX="125.0" layoutY="256.0" />
+      <RadioButton fx:id="maleRadioButton" layoutX="124.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="92.0" text="muž" />
+      <RadioButton fx:id="femaleRadioButton" layoutX="264.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="141.0" text="žena" />
+      <ImageView fitHeight="94.0" fitWidth="269.0" layoutX="78.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@male_logo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

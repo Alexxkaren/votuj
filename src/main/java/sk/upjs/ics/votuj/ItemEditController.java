@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -134,6 +135,12 @@ public class ItemEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);

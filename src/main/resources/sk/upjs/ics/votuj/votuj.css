@@ -1,0 +1,140 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('Raleway-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('Raleway-SemiBold.ttf');
+}
+
+.root {
+    -fx-background-color: #F6F4EE;
+    -fx-font-family: 'Raleway Medium';
+    -fx-font-size: 18px;
+    -fx-text-fill: #003049;
+}
+
+
+.label {
+    -fx-font-family: 'Raleway SemiBold';
+    -fx-text-fill: #003049;
+}
+  
+.combo-box{
+    -fx-text-fill: #003049;
+    -fx-border-radius: 5; 
+    -fx-border-width: 1;
+    -fx-font-family: 'Raleway Medium';
+    -fx-background-color: #ebe8df;  
+    -fx-border-color: #003049;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-text-fill: #003049 ;
+    -fx-background-color: #335f91 ;
+}
+
+
+.anchorPane{
+    -fx-background-color: #003049;
+}
+
+.button {
+    -fx-font-family: 'Raleway Medium';
+    -fx-text-fill: #F6F4EE;
+    -fx-font-size: 100%;
+    -fx-padding: 5 10 5 10;
+    -fx-border-radius: 10; 
+    -fx-border: 0;
+    -fx-background-color: linear-gradient(to bottom, #003049, #134074);
+    /*-fx-background-color: radial-gradient(focus-distance 0% , center 50% 50% , radius 55% , #003049, #134074);*/
+
+}
+.button:hover {
+  -fx-background-color : #335f91;
+}
+
+#adminButton{
+    -fx-text-fill: #003049;
+    -fx-font-size: 100%;
+    -fx-background-color: linear-gradient(to bottom, #ebe8df, #e8e5dc);
+    -fx-padding: 5 10 5 10;
+    -fx-border-radius: 10; 
+    -fx-border: 0;
+   
+}
+
+#namePartyLabel {
+    -fx-font-family: 'Raleway Medium';
+    -fx-font-size: 28px;
+    -fx-text-fill: #003049;
+
+}
+
+#programNameLabel {
+    -fx-font-family: 'Raleway Medium';
+    -fx-font-size: 25px;
+    -fx-text-fill: #003049;
+}
+
+.list-view{
+    -fx-border-radius: 5; 
+    -fx-border-width: 1;
+    -fx-border-color: #003049;
+}
+
+.list-view .list-cell:even {
+  -fx-background-color: #f5f4ef;
+  -fx-text-fill: #003049;
+}
+.list-view .list-cell:odd {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #003049;
+}
+
+.list-view .list-cell:selected{
+    -fx-text-fill: #F6F4EE ;
+    -fx-background-color:  #134074; 
+}
+
+.text-field {
+    -fx-text-fill: #003049;
+    -fx-border-radius: 5; 
+    -fx-border-width: 1;
+    -fx-background-color: #ebe8df;  
+    -fx-border-color: #003049;
+
+}
+
+.text-area{
+    -fx-text-fill: #003049;
+    -fx-border-radius: 5; 
+    -fx-border-width: 1;
+    -fx-background-color: #ebe8df;  
+    -fx-border-color: #003049;
+
+}
+
+.check-box{
+    -fx-text-fill: #003049;
+
+
+}
+
+.radio-button .radio{
+    -fx-text-fill: #003049;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #003049;
+}
+
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
+    -fx-fill-color: #003049;
+}
+
+.password-field{
+
+}

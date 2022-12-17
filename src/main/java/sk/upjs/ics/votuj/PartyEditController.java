@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Candidate;
@@ -181,6 +182,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -225,6 +232,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -283,6 +296,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -333,6 +352,12 @@ public class PartyEditController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);

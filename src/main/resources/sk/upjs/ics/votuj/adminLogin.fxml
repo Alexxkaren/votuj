@@ -4,14 +4,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="74.0" layoutY="103.0" prefHeight="18.0" prefWidth="79.0" text="meno" />
-      <Label layoutX="74.0" layoutY="241.0" text="heslo" />
-      <TextField fx:id="loginNameTextField" layoutX="74.0" layoutY="130.0" />
-      <Button layoutX="408.0" layoutY="435.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="43.0" prefWidth="90.0" text="Vstúpiť" />
-      <PasswordField fx:id="passwordTextField" layoutX="69.0" layoutY="273.0" prefHeight="26.0" prefWidth="158.0" />
+      <Label layoutX="88.0" layoutY="143.0" prefHeight="18.0" prefWidth="136.0" text="meno" />
+      <Label layoutX="88.0" layoutY="291.0" prefHeight="18.0" prefWidth="136.0" text="heslo" />
+      <TextField fx:id="loginNameTextField" layoutX="121.0" layoutY="196.0" prefHeight="26.0" prefWidth="243.0" />
+      <Button layoutX="497.0" layoutY="497.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="43.0" prefWidth="90.0" text="Vstúpiť" />
+      <PasswordField fx:id="passwordTextField" layoutX="121.0" layoutY="338.0" prefHeight="26.0" prefWidth="243.0" />
+      <ImageView fitHeight="85.0" fitWidth="266.0" layoutX="88.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@male_logo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

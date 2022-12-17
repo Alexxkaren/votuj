@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -44,10 +45,15 @@ public class OriginController {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("adminLogin.fxml"));
 			AdminLoginController controller = new AdminLoginController();
 			fxmlLoader.setController(controller);
-
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
-			Stage stage = new Stage();
+			Stage stage = new Stage();  
+			
+			String css = this.getClass().getResource("votuj.css").toExternalForm();
+			scene.getStylesheets().add(css); 
+			Image icon = new Image("single_logo.png");
+			stage.getIcons().add(icon);
+			
 			stage.setTitle("Login");
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
