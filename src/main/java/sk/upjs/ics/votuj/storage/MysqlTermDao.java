@@ -39,17 +39,17 @@ public class MysqlTermDao implements TermDao {
 			System.out.println("SOM V SAVE!!!!!!!!!!!!!!!!!!!");
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("term");
-			saveInsert.usingColumns("since", "to");
+			saveInsert.usingColumns("since", "`to`");
 			saveInsert.usingGeneratedKeyColumns("id");
 			Map<String, Object> values = new HashMap<>();
 			values.put("since", term.getSince());
-			values.put("to", term.getTo());
+			values.put("`to`", term.getTo());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Term(id,term.getSince(), term.getTo());
 		/////////////////////////////////////////UPDATE/////////////////
 		} else {
-			String sql = "UPDATE term SET since= ?, to=? " 
-					+ "WHERE id =?";
+			String sql = "UPDATE term SET since= ?, `to`=? " 
+					+ "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, term.getSince(), term.getTo(), term.getId());
 			if (updated == 1) {
 				return term; 
@@ -70,8 +70,7 @@ public class MysqlTermDao implements TermDao {
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Term with id: " + id + "cannot be deleted, some candidate/program already has this term");
 		}
-		
-		
+				
 		return changed == 1;
 	}
 

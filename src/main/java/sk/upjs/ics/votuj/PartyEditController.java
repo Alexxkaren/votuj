@@ -3,6 +3,7 @@ package sk.upjs.ics.votuj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +16,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
@@ -33,7 +36,6 @@ import sk.upjs.ics.votuj.storage.ObjectUndeletableException;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Program;
 import sk.upjs.ics.votuj.storage.Term;
-import sk.upjs.ics.votuj.storage.TermDao;
 
 public class PartyEditController {
 
@@ -178,10 +180,34 @@ public class PartyEditController {
 
 	@FXML
 	void deleteTermButtonClick(ActionEvent event) {
+		boolean successful = false;
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
 		if (term != null) {
 			try {
-				DaoFactory.INSTANCE.getTermDao().delete(term.getId());
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Upozornenie!");
+				alert.setHeaderText("Potvrdenie vymazania");
+				alert.setContentText("Volebné obdobie od " + term.getSince() + " - do " + term.getTo() + " s id: "
+						+ term.getId() + " bude vymazané");
+				ButtonType btDelete = new ButtonType("Vymazať");
+				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+				
+				alert.getButtonTypes().setAll(btDelete, btCancel);
+				
+				dialog = alert.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+				
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == btDelete) { 
+					successful = DaoFactory.INSTANCE.getTermDao().delete(term.getId());
+					termsModel.clear();
+					List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+					termsModel.addAll(terms);
+					termsComboBox.setItems(termsModel);
+				}
+				
+				
 			} catch (ObjectUndeletableException e) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setContentText("Snažíte sa vymazať volebné obdobie, ktoré je už používané");
@@ -191,7 +217,7 @@ public class PartyEditController {
 				alert.show();
 				e.printStackTrace();
 				return;
-				
+
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -201,6 +227,13 @@ public class PartyEditController {
 			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
+		}
+		
+		if (successful) {
+			termsModel.clear();
+			List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+			termsModel.addAll(terms);
+			termsComboBox.setItems(termsModel);
 		}
 
 	}
@@ -222,16 +255,16 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
-			
-			if (controller.getSavedTerm() !=null) {
-				System.out.println("TUUUUUUU SMEEEEEEEEE");
+
+			if (controller.getSavedTerm() != null) {
 				termsModel.clear();
 				List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 				termsModel.addAll(terms);
 				termsComboBox.setItems(termsModel);
-				
+				termsComboBox.getSelectionModel().select(controller.getSavedTerm());
+
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

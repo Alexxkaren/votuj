@@ -62,12 +62,14 @@ public class TermEditController {
 		}
 		Long foreignId = null;
 		List<Term> allTerms = DaoFactory.INSTANCE.getTermDao().getAll();
+		
 		for (Term t : allTerms) {
-			if (t.getSince() == term.getSince() && t.getTo() == term.getTo()) {
+			if ((t.getSince().equals(term.getSince())) && (t.getTo().equals(term.getTo()))) {
+				foreignId = t.getId();
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Upozornenie!");
 				alert.setContentText(
-						"Pokúšate sa pridať také obdobie, ktoré sa už nachádza v databáze! s id:" + foreignId);
+						"Pokúšate sa pridať také obdobie, ktoré sa už nachádza v databáze s id:" + foreignId);
 				dialog = alert.getDialogPane();
 				dialog.getStylesheets().add(css);
 				dialog.getStyleClass().add("dialog");
@@ -77,7 +79,7 @@ public class TermEditController {
 		}
 
 		try {
-			if (term.getId() != null) {
+			if (term != null) {
 				savedTerm = DaoFactory.INSTANCE.getTermDao().save(term);
 			}
 		} catch (NullPointerException e) {
