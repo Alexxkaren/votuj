@@ -16,7 +16,6 @@ public class Candidate {
 	}
 
 	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party, List<Term> terms) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -24,6 +23,15 @@ public class Candidate {
 		this.info = info;
 		this.party = party;
 		this.terms = terms;
+	}
+
+	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party) {
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.candidateNumber = candidateNumber;
+		this.info = info;
+		this.party = party;
 	}
 
 	public List<Term> getTerms() {

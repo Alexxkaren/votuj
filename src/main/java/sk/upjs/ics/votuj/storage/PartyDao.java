@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public interface PartyDao {
 
-	Party save(Party party);
+	Party save(Party party) throws NoSuchElementException,NullPointerException;
 
 	boolean delete(Long id);
 

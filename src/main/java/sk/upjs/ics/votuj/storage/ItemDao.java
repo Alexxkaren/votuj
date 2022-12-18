@@ -1,10 +1,11 @@
 package sk.upjs.ics.votuj.storage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface ItemDao {
 
-	Item save(Item item);
+	Item save(Item item) throws NoSuchElementException,NullPointerException;
 	
 	boolean delete(Long id);
 

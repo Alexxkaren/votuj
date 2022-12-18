@@ -26,7 +26,6 @@ public class MysqlTermDao implements TermDao {
 	public Term save(Term term) throws NullPointerException, NoSuchElementException {
 		if (term==null) {
 			throw new NullPointerException("Cannot save null");
-			//da sa tu vyhodit alert?
 		}
 		if (term.getSince()==null) {
 			throw new NullPointerException("Term since cannot be null");
@@ -36,7 +35,6 @@ public class MysqlTermDao implements TermDao {
 		}
 		//////////////////////////////////////INSERT///////////////////ú
 		if (term.getId() == null) { 
-			System.out.println("SOM V SAVE!!!!!!!!!!!!!!!!!!!");
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("term");
 			saveInsert.usingColumns("since", "`to`");

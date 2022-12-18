@@ -1,10 +1,11 @@
 package sk.upjs.ics.votuj.storage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface CategoryDao {
 
-	Category save(Category category);
+	Category save(Category category) throws NoSuchElementException,NullPointerException;
 
 	boolean delete(Long id);
 	

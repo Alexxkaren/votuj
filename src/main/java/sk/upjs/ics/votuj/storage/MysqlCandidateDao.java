@@ -2,10 +2,18 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class MysqlCandidateDao implements CandidateDao {
 
@@ -16,35 +24,83 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public Candidate save(Candidate candidate) {
-		// TODO 
-		return null;
+	public Candidate save(Candidate candidate) throws NoSuchElementException, NullPointerException {
+		if (candidate == null) {
+			throw new NullPointerException("Cannot save null");
+		}
+		if (candidate.getName() == null) {
+			throw new NullPointerException("Candidate name cannot be null");
+		}
+		if (candidate.getSurname() == null) {
+			throw new NullPointerException("Candidate surname cannot be null");
+		}
+		if (candidate.getCandidateNumber() == null) {
+			throw new NullPointerException("Candidate number cannot be null");
+		}
+		if (candidate.getInfo() == null) {
+			throw new NullPointerException("Candidate info cannot be null");
+		}
+		if (candidate.getParty() == null) {
+			throw new NullPointerException("Candidate party cannot be null");
+		}
+		// insert
+		if (candidate.getId() == null) {
+			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
+			saveInsert.withTableName("candidate");
+			saveInsert.usingColumns("name", "surname", "candidate_number", "info", "id_party");
+			saveInsert.usingGeneratedKeyColumns("id");
+			Map<String, Object> values = new HashMap<>();
+			values.put("name", candidate.getName());
+			values.put("surname", candidate.getSurname());
+			values.put("candidate_number", candidate.getCandidateNumber());
+			values.put("info", candidate.getInfo());
+			values.put("id_party", candidate.getParty().getId());
+			long id = saveInsert.executeAndReturnKey(values).longValue();
+			return new Candidate(id, candidate.getName(), candidate.getSurname(), candidate.getCandidateNumber(),
+					candidate.getInfo(), candidate.getParty());
+			// update
+		} else {
+			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "
+					+ "WHERE id = ? ";
+			int updated = jdbcTemplate.update(sql, candidate.getName(), candidate.getSurname(),
+					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty().getId(),
+					candidate.getId());
+			if (updated == 1) {
+				return candidate;
+			} else {
+				throw new NoSuchElementException("candidate with id: " + candidate.getId() + " not in DB.");
+			}
+		}
 	}
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO 
-		return false;
+		int delete;
+		try {
+			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new ObjectUndeletableException("Some party has this candidate.Candidate can not be deleted");
+		}
+		return delete == 1;
 	}
-	
+
 	@Override
 	public List<Candidate> getByTermParty(Party party, Term term) {
-		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate " +
-				"LEFT JOIN candidate_has_term ON candidate_has_term.id_candidate = candidate.id " +
-				"WHERE id_party = " + party.getId() +  " AND candidate_has_term.id_term = " + term.getId();
-		return jdbcTemplate.query(sql, new CandidateRowMapper() );
+		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate "
+				+ "LEFT JOIN candidate_has_term ON candidate_has_term.id_candidate = candidate.id "
+				+ "WHERE id_party = " + party.getId() + " AND candidate_has_term.id_term = " + term.getId();
+		return jdbcTemplate.query(sql, new CandidateRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
-	
+
 	@Override
 	public Candidate getById(Long id) {
-		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate " +
-					 "WHERE id = " + id;
-		return jdbcTemplate.queryForObject(sql, new CandidateRowMapper() );
+		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate " + "WHERE id = " + id;
+		return jdbcTemplate.queryForObject(sql, new CandidateRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
+
 	}
-	
+
 	private class CandidateRowMapper implements RowMapper<Candidate> {
 
 		@Override
@@ -57,12 +113,10 @@ public class MysqlCandidateDao implements CandidateDao {
 			candidate.setInfo(rs.getString("info"));
 			Party party = DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party"));
 			candidate.setParty(party);
-			
+
 			return candidate;
 		};
 
 	};
-	
-
 
 }
