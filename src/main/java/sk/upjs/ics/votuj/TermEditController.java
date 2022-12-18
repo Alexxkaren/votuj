@@ -57,19 +57,38 @@ public class TermEditController {
 		dialog.getStyleClass().add("dialog");
 		
 		Term term = termFxModel.getTerm();
-		if (term.getSince()==null || term.getTo() == null) {
+		if (term.getSince()==null || term.getTo() == null || term.getSince()==0 ||term.getTo()==0) {
 			alert.setContentText("Od aj do musia byť vyplnené, prosím doplňte.");
 			alert.show();
+			return;
 		}
+		System.out.println("povodne: " + term.getSince());		
+		System.out.println("povodne: " + term.getTo()); 
 		Long foreignId = null;
 		List<Term> allTerms = DaoFactory.INSTANCE.getTermDao().getAll();
-		
 		for (Term t : allTerms) {
+			System.out.println(t.getSince());
+			System.out.println(t.getTo());
+			
+			int x = term.getSince();
+			int y = term.getTo();
+			int a = (int) t.getSince();
+			int b = (int) t.getTo();
+			
 			if ((t.getSince().equals(term.getSince())) && (t.getTo().equals(term.getTo()))) {
 				foreignId = t.getId();
-			
 				alert.setContentText(
 						"Pokúšate sa pridať také obdobie, ktoré sa už nachádza v databáze s id:" + foreignId);
+				alert.show();
+				return;
+			}
+			
+			if (((x<a) && (y>a)) || 
+					((x<b) && (y>b)) || 
+					((x>=a) && (y<=b)) ) {
+				foreignId = t.getId();
+				alert.setContentText(
+						"Pokúšate sa pridať také obdobie, ktoré sa prekrýva s obdobím v databáze: " + t.getSince() + " - " + t.getTo());
 				alert.show();
 				return;
 			}
