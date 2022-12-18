@@ -1,15 +1,16 @@
 package sk.upjs.ics.votuj.storage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface VoteDao {
 
-	Vote save(Vote vote);
+	Vote save(Vote vote) throws NoSuchElementException, NullPointerException; //NAIMPLEMENTOVANE
 
-	List<Vote> getByParty(Party party);
+	List<Vote> getByParty(Party party);  //NAIMPLEMENTOVANE
 	
-	List<Vote> getAll();
+	List<Vote> getAll(); //NAIMPLEMENTOVANE
 
-	Vote getById(Long id);
+	Vote getById(Long id);//NAIMPLEMENTOVANE
 
 }

@@ -112,7 +112,7 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public boolean delete(Long id) throws ObjectUndeletableException{
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id);

@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface RegionDao {
 	
-	Region getById(Long Id);
+	Region getById(Long Id); // NAIMPLEMENTOVANE
 	
-	List<Region> getAll();
+	List<Region> getAll(); // NAIMPLEMENTOVANE
 	
 
 }

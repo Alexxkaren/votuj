@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public interface TermDao {
 
-	Term save(Term term) throws NullPointerException, NoSuchElementException;
+	Term save(Term term) throws NullPointerException, NoSuchElementException; // NAIMPLEMENTOVANE
 
-	boolean delete(Long id) throws ObjectUndeletableException ;
+	boolean delete(Long id) throws ObjectUndeletableException ; // NAIMPLEMENTOVANE
 
 	Term getById(Long id); //TODO podla unit testu throws
 
