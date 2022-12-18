@@ -2,13 +2,17 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -22,15 +26,48 @@ public class MysqlPartyDao implements PartyDao {
 	}
 
 	@Override
-	public Party save(Party party) {
-		// TODO Auto-generated method stub
-		return null;
+	public Party save(Party party) throws NoSuchElementException,NullPointerException {
+		if (party == null) {
+			throw new NullPointerException("Cannot save null");
+		}
+		if (party.getName() == null) {
+			throw new NullPointerException("Party name cannot be null");
+		}
+		if (party.getInfo() == null) {
+			throw new NullPointerException("Program info cannot be null");
+		}
+		// insert
+		if (party.getId() == null) {
+			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
+			saveInsert.withTableName("party");
+			saveInsert.usingColumns("name", "info");
+			saveInsert.usingGeneratedKeyColumns("id");
+			Map<String, Object> values = new HashMap<>();
+			values.put("name", party.getName());
+			values.put("info", party.getInfo());
+			long id = saveInsert.executeAndReturnKey(values).longValue();
+			return new Party(id, party.getName(), party.getInfo());
+			// update
+		} else {
+			String sql = "UPDATE party SET name= ?, info=? " + "WHERE id = ? ";
+			int updated = jdbcTemplate.update(sql, party.getName(), party.getInfo(), party.getId());
+			if (updated == 1) {
+				return party;
+			} else {
+				throw new NoSuchElementException("party with id: " + party.getId() + " not in DB.");
+			}
+		}
 	}
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		int delete;
+		try {
+			delete = jdbcTemplate.update("DELETE FROM party WHERE  id= " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new ObjectUndeletableException("Some candidate is in this political party. Party can not be deleted");
+		}
+		return delete == 1;
 	}
 
 	@Override

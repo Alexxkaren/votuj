@@ -2,7 +2,6 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +24,14 @@ public class MysqlCategoryDao implements CategoryDao {
 	}
 
 	@Override
-	public Category save(Category category) throws NoSuchElementException, NullPointerException{
+	public Category save(Category category) throws NoSuchElementException,NullPointerException{
 		if (category == null) {
 			throw new NullPointerException("Cannot save null");
 		}
 		if (category.getName() == null) {
 			throw new NullPointerException("Category name cannot be null");
 		}
-		//////////////////////////////////////INSERT///////////////////
+		// insert
 		if (category.getId() == null) {
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("category");
@@ -42,9 +41,9 @@ public class MysqlCategoryDao implements CategoryDao {
 			values.put("name", category.getName());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Category(id, category.getName());
-			///////////////////////////////////////// UPDATE/////////////////
+			// update
 		} else {
-			String sql = "UPDATE category SET name=? " + "WHERE id = ? ";
+			String sql = "UPDATE category SET name= ? " + "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, category.getName(), category.getId());
 			if (updated == 1) {
 				return category;
@@ -57,13 +56,13 @@ public class MysqlCategoryDao implements CategoryDao {
 
 	@Override
 	public boolean delete(Long id) throws ObjectUndeletableException {
-		int wasDeleted;
+		int delete;
 		try {
-			wasDeleted = jdbcTemplate.update("DELETE FROM category WHERE  id= " + id);
+			delete = jdbcTemplate.update("DELETE FROM category WHERE  id= " + id);
 		} catch (DataIntegrityViolationException e) {
-			throw new ObjectUndeletableException("Some item has this category.Category cannot be deleted");
+			throw new ObjectUndeletableException("Some item has this category.Category can not be deleted");
 		}
-		return wasDeleted == 1;
+		return delete == 1;
 	}
 
 	@Override

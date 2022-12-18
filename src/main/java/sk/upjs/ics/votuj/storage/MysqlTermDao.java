@@ -26,7 +26,6 @@ public class MysqlTermDao implements TermDao {
 	public Term save(Term term) throws NullPointerException, NoSuchElementException {
 		if (term==null) {
 			throw new NullPointerException("Cannot save null");
-			//da sa tu vyhodit alert?
 		}
 		if (term.getSince()==null) {
 			throw new NullPointerException("Term since cannot be null");
