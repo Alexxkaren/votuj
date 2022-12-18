@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="65.0" layoutY="48.0" text="Meno:" />
-      <Label layoutX="65.0" layoutY="102.0" text="Priezvisko:" />
-      <Label layoutX="65.0" layoutY="167.0" prefHeight="18.0" prefWidth="142.0" text="Číslo kandidáta:" />
-      <Label fx:id="candidateNameLabel" layoutX="173.0" layoutY="48.0" text="meno" />
-      <Label fx:id="candidateSurnameLabel" layoutX="173.0" layoutY="102.0" text="priezvisko" />
-      <Label fx:id="candidateNumberLabel" layoutX="337.0" layoutY="167.0" prefHeight="18.0" prefWidth="55.0" text="cislo" />
-      <Label layoutX="65.0" layoutY="225.0" text="Info:" />
-      <TextArea fx:id="candidateInfoTextArea" editable="false" layoutX="107.0" layoutY="243.0" prefHeight="122.0" prefWidth="410.0" />
+      <Label layoutX="72.0" layoutY="30.0" text="Meno:" />
+      <Label layoutX="68.0" layoutY="74.0" text="Priezvisko:" />
+      <Label layoutX="68.0" layoutY="121.0" prefHeight="18.0" prefWidth="142.0" text="Číslo kandidáta:" />
+      <Label fx:id="candidateNameLabel" layoutX="214.0" layoutY="30.0" text="meno" />
+      <Label fx:id="candidateSurnameLabel" layoutX="204.0" layoutY="74.0" text="priezvisko" />
+      <Label fx:id="candidateNumberLabel" layoutX="245.0" layoutY="121.0" prefHeight="18.0" prefWidth="55.0" text="cislo" />
+      <Label layoutX="72.0" layoutY="251.0" text="Info:" />
+      <TextArea fx:id="candidateInfoTextArea" editable="false" layoutX="127.0" layoutY="269.0" prefHeight="96.0" prefWidth="390.0" />
+      <Label layoutX="68.0" layoutY="156.0" prefHeight="18.0" prefWidth="78.0" text="Obdobia: " />
+      <ListView fx:id="candidateTermsListView" layoutX="127.0" layoutY="174.0" prefHeight="72.0" prefWidth="390.0" />
    </children>
 </AnchorPane>

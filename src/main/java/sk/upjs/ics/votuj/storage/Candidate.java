@@ -23,11 +23,12 @@ public class Candidate {
 		this.candidateNumber = candidateNumber;
 		this.info = info;
 		this.party = party;
-		if (terms !=null) {
+		/*if (terms !=null) {
 			this.terms = terms;
 		} else {
 			this.terms = new ArrayList<>();
-		}
+		}*/
+		this.terms = terms;
 	}
 	
 	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party) {

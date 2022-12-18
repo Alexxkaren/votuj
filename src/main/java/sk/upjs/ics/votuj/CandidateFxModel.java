@@ -43,8 +43,9 @@ public class CandidateFxModel {
 		// List<Term> terms =
 		// DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
 		// this.terms.addAll(terms);
-		//this.terms.addAll(candidate.getTerms());
-		//setTerms(this.terms);
+		List<Term> tt = DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
+		this.terms.addAll(tt);
+		setTerms(this.terms);
 
 	}
 
@@ -54,11 +55,12 @@ public class CandidateFxModel {
 	}
 
 	public List<Term> getTerms() {
-		if (terms != null) {
+		/*if (terms != null) {
 			return new ArrayList<>(terms);
 		} else {
 			return new ArrayList<>();
-		}
+		}*/
+		return new ArrayList<>(terms);
 	}
 
 	public ObservableList<Term> getTermsModel() {
