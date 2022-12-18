@@ -2,10 +2,16 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+
 
 
 public class MysqlTermDao implements TermDao {
@@ -17,15 +23,56 @@ public class MysqlTermDao implements TermDao {
 	}
 
 	@Override
-	public Term save(Term term) {
-		// TODO Auto-generated method stub
-		return null;
+	public Term save(Term term) throws NullPointerException, NoSuchElementException {
+		if (term==null) {
+			throw new NullPointerException("Cannot save null");
+			//da sa tu vyhodit alert?
+		}
+		if (term.getSince()==null) {
+			throw new NullPointerException("Term since cannot be null");
+		}
+		if (term.getTo()==null) {
+			throw new NullPointerException("Term to cannot be null");
+		}
+		//////////////////////////////////////INSERT///////////////////ú
+		if (term.getId() == null) { 
+			System.out.println("SOM V SAVE!!!!!!!!!!!!!!!!!!!");
+			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
+			saveInsert.withTableName("term");
+			saveInsert.usingColumns("since", "to");
+			saveInsert.usingGeneratedKeyColumns("id");
+			Map<String, Object> values = new HashMap<>();
+			values.put("since", term.getSince());
+			values.put("to", term.getTo());
+			long id = saveInsert.executeAndReturnKey(values).longValue();
+			return new Term(id,term.getSince(), term.getTo());
+		/////////////////////////////////////////UPDATE/////////////////
+		} else {
+			String sql = "UPDATE term SET since= ?, to=? " 
+					+ "WHERE id =?";
+			int updated = jdbcTemplate.update(sql, term.getSince(), term.getTo(), term.getId());
+			if (updated == 1) {
+				return term; 
+			} else {
+				throw new NoSuchElementException("term with id: " + term.getId() + " not in DB.");
+			}
+		}
+			
+		
+		
 	}
 
 	@Override
-	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Long id) throws ObjectUndeletableException {
+		int changed;
+		try {
+			changed = jdbcTemplate.update("DELETE FROM term WHERE id = " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new ObjectUndeletableException("Term with id: " + id + "cannot be deleted, some candidate/program already has this term");
+		}
+		
+		
+		return changed == 1;
 	}
 
 	@Override

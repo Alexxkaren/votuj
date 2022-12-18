@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.control.PasswordField;
@@ -19,6 +20,9 @@ import sk.upjs.ics.votuj.storage.AdminDao;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 
 public class AdminLoginController {
+	
+	private DialogPane dialog;
+	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
 	@FXML
 	private TextField loginNameTextField;
@@ -45,7 +49,6 @@ public class AdminLoginController {
 				Scene scene = new Scene(parent);
 				Stage stage = new Stage();
 				
-				String css = this.getClass().getResource("votuj.css").toExternalForm();
 				scene.getStylesheets().add(css); 
 				Image icon = new Image("single_logo.png");
 				stage.getIcons().add(icon);
@@ -62,6 +65,9 @@ public class AdminLoginController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Zadane heslo je nespravne. Skontrolujte svoje prihlasovacie meno a heslo");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}

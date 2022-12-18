@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -36,6 +37,8 @@ public class ItemEditController {
 	private Stage stage;
 	private List<Category> categoriesToDelete = new ArrayList<>();
 	private List<Category> listOfSelectedCategories = new ArrayList<>();
+	private DialogPane dialog;
+	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
 	@FXML
 	private ComboBox<Category> itemCategoryComboBox;
@@ -87,6 +90,9 @@ public class ItemEditController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -104,6 +110,9 @@ public class ItemEditController {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText(
 					"Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete odstrániť z vybraných");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -121,10 +130,19 @@ public class ItemEditController {
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Upozornenie!");
 			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete odstrániť.");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
+	}
+	
+	@FXML
+	void saveItemButtonClick(ActionEvent event) {
+
 	}
 
 	@FXML
@@ -138,33 +156,34 @@ public class ItemEditController {
 	void editCategoryButtonClick(ActionEvent event) {
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
 
-		if (category != null) {
-			System.out.println("vybrana: " + category.toString());
-			System.out.println("list vybranych: " + listOfSelectedCategories.toString());
-			System.out.println(listOfSelectedCategories.contains(category));
-			
+		if (category != null) {			
 			if (!listOfSelectedCategories.contains(category)) {
 				CategoryEditController controller = new CategoryEditController(category);
 				showCategoryEdit(controller, "Editovanie kategórie");
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Upozornenie!");
 				alert.setContentText(
 						"Kategória, ktorú chcete upraviť je medzi vybranými kategóriami. Najprv ju odstráňte z vybraných kategórií a potom ju editujte.");
+				dialog = alert.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
 				alert.show();
 				return;
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Upozornenie!");
 			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete editovať.");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
 	}
-
-	@FXML
-	void saveItemButtonClick(ActionEvent event) {
-
-	}
+	
+	
 
 	void showCategoryEdit(CategoryEditController controller, String sceneName) {
 		try {

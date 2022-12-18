@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,9 +29,11 @@ import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Candidate;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
+import sk.upjs.ics.votuj.storage.ObjectUndeletableException;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Program;
 import sk.upjs.ics.votuj.storage.Term;
+import sk.upjs.ics.votuj.storage.TermDao;
 
 public class PartyEditController {
 
@@ -43,6 +46,8 @@ public class PartyEditController {
 	private ObservableList<Term> termsModel;
 	private Term termWatched;
 	private Stage stage;
+	private DialogPane dialog;
+	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
 	@FXML
 	private ListView<Candidate> candidatesListView;
@@ -173,7 +178,31 @@ public class PartyEditController {
 
 	@FXML
 	void deleteTermButtonClick(ActionEvent event) {
-		// TODO
+		Term term = termsComboBox.getSelectionModel().getSelectedItem();
+		if (term != null) {
+			try {
+				DaoFactory.INSTANCE.getTermDao().delete(term.getId());
+			} catch (ObjectUndeletableException e) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Snažíte sa vymazať volebné obdobie, ktoré je už používané");
+				dialog = alert.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+				alert.show();
+				e.printStackTrace();
+				return;
+				
+			}
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiadne volebné obdobie nie je vybrané na vymazanie");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+		}
+
 	}
 
 	void showTermEdit(TermEditController controller, String sceneName) {
@@ -193,6 +222,16 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
+			
+			if (controller.getSavedTerm() !=null) {
+				System.out.println("TUUUUUUU SMEEEEEEEEE");
+				termsModel.clear();
+				List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+				termsModel.addAll(terms);
+				termsComboBox.setItems(termsModel);
+				
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -216,6 +255,9 @@ public class PartyEditController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiaden kandidát nie je vybraný, vyberte prosím kandidáta");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -249,7 +291,7 @@ public class PartyEditController {
 		}
 	}
 
-	//////////////////////////////////////////////////////////////// 
+	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addItemButtonclick(ActionEvent event) {
@@ -260,6 +302,9 @@ public class PartyEditController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiaden program nie je vybraný, bod musíte priradiť programu, vyberte prosím program");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -277,14 +322,13 @@ public class PartyEditController {
 		if (item != null) {
 			ItemEditController controller = new ItemEditController(item,
 					programsListView.getSelectionModel().getSelectedItem());
-			// TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
-			// FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej
-			// bodov
-			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
 			showItemEdit(controller, "Editovanie bodu volebného programu");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiaden bod nie je vybraný, vyberte prosím bod");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -319,7 +363,6 @@ public class PartyEditController {
 	void addProgramButtonClick(ActionEvent event) {
 		ProgramEditController controller = new ProgramEditController(party);
 		showProgramEdit(controller, "Pridávanie nového volebného programu");
-		// TU alert netreba lebo party bude furt vybrata
 	}
 
 	@FXML
@@ -333,14 +376,13 @@ public class PartyEditController {
 		Program program = programsListView.getSelectionModel().getSelectedItem();
 		if (program != null) {
 			ProgramEditController controller = new ProgramEditController(program, party);
-			// TU ASI TREBA POSLAT AJ VYBRANU KATEGORIU TOHO BODU ASIK
-			// FUUUUUUUUUUUUUUUUUCK Tam nemoz ebyt combobox lebo tam treba pridat viacej
-			// bodov
-			// AJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ
 			showProgramEdit(controller, "Editovanie volebného programu");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiaden program nie je vybraný, vyberte prosím program");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
@@ -355,7 +397,6 @@ public class PartyEditController {
 			Scene scene = new Scene(parent);
 			stage = new Stage();
 
-			String css = this.getClass().getResource("votuj.css").toExternalForm();
 			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);

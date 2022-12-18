@@ -156,3 +156,31 @@
     -fx-padding: 8px;
     -fx-fill-color: #003049;
 }
+
+
+.dialog{
+    -fx-background-color: #F6F4EE;
+    -fx-font-family: 'Raleway Medium';
+    -fx-font-size: 18px;
+    -fx-text-fill: red;
+}
+.dialog > .button-bar > .container{
+   -fx-background-color: #F6F4EE;
+}
+
+.dialog .button{
+    -fx-text-fill: #003049;
+    -fx-font-size: 15px;
+    -fx-background-color: linear-gradient(to bottom, #ebe8df, #e8e5dc);
+    -fx-padding: 5 10 5 10;
+    -fx-border-radius: 10; 
+    -fx-border: 0;
+}
+
+}
+.dialog:header .header-panel .label{
+    -fx-font-family: 'Raleway Medium';
+    -fx-font-size: 2px;
+    -fx-text-fill: red;
+    -fx-background-color: #F6F4EE;
+}
