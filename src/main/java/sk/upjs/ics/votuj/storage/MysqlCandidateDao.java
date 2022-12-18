@@ -22,7 +22,7 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public Candidate save(Candidate candidate, Term term) throws NoSuchElementException, NullPointerException {
+	public Candidate save(Candidate candidate, List<Term> termss) throws NoSuchElementException, NullPointerException {
 		if (candidate == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -43,8 +43,8 @@ public class MysqlCandidateDao implements CandidateDao {
 		}
 		// insert
 		if (candidate.getId() == null) {
-			List<Term> tt = new ArrayList<>();
-			tt.add(term);
+			//List<Term> tt = new ArrayList<>();
+			//tt.add(term);
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("candidate");
 			saveInsert.usingColumns("name", "surname", "candidate_number", "info", "id_party");
@@ -57,7 +57,7 @@ public class MysqlCandidateDao implements CandidateDao {
 			values.put("id_party", candidate.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			Candidate candidate2 =  new Candidate(id, candidate.getName(), candidate.getSurname(), candidate.getCandidateNumber(),
-					candidate.getInfo(), candidate.getParty(), tt);
+					candidate.getInfo(), candidate.getParty(), termss);
 			//TU DAKDE POTREBUJEM ABY TEN CANDIDATE MAL LIST TERMOV KED JE NOVY!!!!!
 			saveTerms(candidate2); //druhy naviazany save
 			return candidate2;
@@ -66,7 +66,12 @@ public class MysqlCandidateDao implements CandidateDao {
 			System.out.println("UPDATED CANDIDATE HAS THIS TERMS:");
 			System.out.println(candidate.getTerms().toString());
 			System.out.println("I ADD CURRENT");
-			System.out.println(candidate.getTerms().add(term));
+			//System.out.println(candidate.getTerms().addAll(termss));
+			for (Term t : termss) {
+				if (!candidate.getTerms().contains(t)) {
+					candidate.getTerms().add(t);
+				}
+			}
 			System.out.println("RESULT:");
 			System.out.println(candidate.getTerms().toString());
 			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "
@@ -75,10 +80,11 @@ public class MysqlCandidateDao implements CandidateDao {
 					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty().getId(),
 					candidate.getId());
 			if (updated == 1) {
-				//String sqlDelete = "DELETE from candidate_has_term " 
-						//+ "WHERE id_candidate= " + candidate.getId();
-				//jdbcTemplate.update(sqlDelete);
-				//saveTerms(candidate);
+				String sqlDelete = "DELETE from candidate_has_term " 
+						+ "WHERE id_candidate= " + candidate.getId();
+				jdbcTemplate.update(sqlDelete);
+				saveTerms(candidate);
+				System.out.println(candidate.getTerms().toString());
 				return candidate;
 			} else {
 				throw new NoSuchElementException("candidate with id: " + candidate.getId() + " not in DB.");

@@ -11,12 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import sk.upjs.ics.votuj.storage.Candidate;
+import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Term;
@@ -30,6 +32,9 @@ public class CandidateEditController {
 	private CandidateFxModel candidateFxModel;
 	private ObservableList<Term> termsModel;
 	private ObservableList<Candidate> candidatesModel;
+	private List<Term> listOfSelectedTerms = new ArrayList<>();
+	private ObservableList<Term> selectedTermsModel = FXCollections.observableArrayList(new ArrayList<Term>());
+
 	private DialogPane dialog;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
@@ -47,6 +52,9 @@ public class CandidateEditController {
 
 	@FXML
 	private ComboBox<Term> candidateTermComboBox;
+
+	@FXML
+	private ListView<Term> selectedTermsListView;
 
 	public CandidateEditController(Party party, Term term) {
 		this.term = term;
@@ -67,17 +75,68 @@ public class CandidateEditController {
 		candidateNumberTextField.textProperty().bindBidirectional(candidateFxModel.getCandidateNumberProperty());
 		candidateSurnameTextField.textProperty().bindBidirectional(candidateFxModel.getSurnameProperty());
 		candidateInfoTextArea.textProperty().bindBidirectional(candidateFxModel.getInfoProperty());
-		
-		if (term != null) {
-			List<Term> terms = new ArrayList<>();
-			terms.add(term);
-			termsModel = FXCollections.observableArrayList(terms);
-		} else {
-			List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
-			termsModel = FXCollections.observableArrayList(terms);
-		}
+		selectedTermsListView.setItems(selectedTermsModel);
+
+		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+		termsModel = FXCollections.observableArrayList(terms);
 		candidateTermComboBox.setItems(termsModel);
-		candidateTermComboBox.getSelectionModel().selectFirst();
+		if (candidate!=null) {
+			listOfSelectedTerms = DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
+			
+		} else {
+			listOfSelectedTerms.add(this.term);
+		}
+		selectedTermsModel.setAll(listOfSelectedTerms);
+		selectedTermsListView.setItems(selectedTermsModel);
+		// STARE
+		/*
+		 * if (term != null) { List<Term> terms2 = new ArrayList<>(); terms.add(term);
+		 * termsModel = FXCollections.observableArrayList(terms2); } else { List<Term>
+		 * terms2 = DaoFactory.INSTANCE.getTermDao().getAll(); termsModel =
+		 * FXCollections.observableArrayList(terms2); }
+		 * candidateTermComboBox.setItems(termsModel);
+		 * candidateTermComboBox.getSelectionModel().selectFirst();
+		 */
+
+	}
+
+	@FXML
+	void addTermButtonClick(ActionEvent event) {
+		Term term = candidateTermComboBox.getSelectionModel().getSelectedItem();
+		if (term != null) {
+			if (!listOfSelectedTerms.contains(term)) {
+				listOfSelectedTerms.add(term);
+				selectedTermsModel.setAll(listOfSelectedTerms);
+				selectedTermsListView.setItems(selectedTermsModel);
+			}
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiadne volebné obdobie nie je vybrané, vyberte prosím obdobie");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+		}
+	}
+
+	@FXML
+	void deleteAddedTermButtonClick(ActionEvent event) {
+		Term term = selectedTermsListView.getSelectionModel().getSelectedItem();
+		if (term != null) {
+			listOfSelectedTerms.remove(term);
+			selectedTermsModel.setAll(listOfSelectedTerms);
+			selectedTermsListView.setItems(selectedTermsModel);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText(
+					"Žiadne volebné obdobie nie je vybrané, vyberte prosím obdobie ktoré chcete odstrániť z vybraných");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+		}
 
 	}
 
@@ -88,10 +147,10 @@ public class CandidateEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		
+
 		Candidate candidate = candidateFxModel.getCandidate();
-		List<Term> termss = candidateFxModel.getTerms();
-		
+		List<Term> termss = listOfSelectedTerms;
+
 		if (candidate.getName() == null) {
 			alert.setContentText("Meno musí byť vyplnené, prosím doplňte.");
 			alert.show();
@@ -107,12 +166,12 @@ public class CandidateEditController {
 			alert.show();
 			return;
 		}
-		if(candidate.getInfo()==null) {
+		if (candidate.getInfo() == null) {
 			alert.setContentText("Info musí byť vyplnené, prosím doplňte.");
 			alert.show();
 			return;
 		}
-		if(candidate.getParty()==null) {
+		if (candidate.getParty() == null) {
 			alert.setContentText("Politická strana musí byť vyplnená, prosím doplňte.");
 			alert.show();
 			return;
@@ -120,13 +179,13 @@ public class CandidateEditController {
 
 		try {
 			if (candidate != null) {
-				//savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
-				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, term);
-				
-				//mam term a mam kadidata - potrebujem ho ulozit do term_has_candidate
+				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
+				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
+
+				// mam term a mam kadidata - potrebujem ho ulozit do term_has_candidate
 				System.out.println("sa uložil!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				System.out.println("jeho meno: " + savedCandidate.getName());
-			
+
 			}
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();

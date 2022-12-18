@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public interface CandidateDao {
 
-	Candidate save(Candidate candidate, Term term) throws NoSuchElementException, NullPointerException;
+	//Candidate save(Candidate candidate, Term term) throws NoSuchElementException, NullPointerException;
 
 	
 	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE	
@@ -13,6 +13,9 @@ public interface CandidateDao {
 	List<Candidate> getByTermParty(Party party, Term term); //NAIMPLEMENTOVANE
 	
 	Candidate getById(Long id); //NAIMPLEMENTOVANE
+
+
+	Candidate save(Candidate candidate, List<Term> terms) throws NoSuchElementException, NullPointerException;
 
 	
 }
