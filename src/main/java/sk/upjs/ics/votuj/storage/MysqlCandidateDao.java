@@ -2,6 +2,7 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 public class MysqlCandidateDao implements CandidateDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -24,7 +22,7 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public Candidate save(Candidate candidate) throws NoSuchElementException, NullPointerException {
+	public Candidate save(Candidate candidate, Term term) throws NoSuchElementException, NullPointerException {
 		if (candidate == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -45,6 +43,8 @@ public class MysqlCandidateDao implements CandidateDao {
 		}
 		// insert
 		if (candidate.getId() == null) {
+			List<Term> tt = new ArrayList<>();
+			tt.add(term);
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("candidate");
 			saveInsert.usingColumns("name", "surname", "candidate_number", "info", "id_party");
@@ -56,16 +56,29 @@ public class MysqlCandidateDao implements CandidateDao {
 			values.put("info", candidate.getInfo());
 			values.put("id_party", candidate.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Candidate(id, candidate.getName(), candidate.getSurname(), candidate.getCandidateNumber(),
-					candidate.getInfo(), candidate.getParty());
+			Candidate candidate2 =  new Candidate(id, candidate.getName(), candidate.getSurname(), candidate.getCandidateNumber(),
+					candidate.getInfo(), candidate.getParty(), tt);
+			//TU DAKDE POTREBUJEM ABY TEN CANDIDATE MAL LIST TERMOV KED JE NOVY!!!!!
+			saveTerms(candidate2); //druhy naviazany save
+			return candidate2;
 			// update
 		} else {
+			System.out.println("UPDATED CANDIDATE HAS THIS TERMS:");
+			System.out.println(candidate.getTerms().toString());
+			System.out.println("I ADD CURRENT");
+			System.out.println(candidate.getTerms().add(term));
+			System.out.println("RESULT:");
+			System.out.println(candidate.getTerms().toString());
 			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "
 					+ "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, candidate.getName(), candidate.getSurname(),
 					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty().getId(),
 					candidate.getId());
 			if (updated == 1) {
+				//String sqlDelete = "DELETE from candidate_has_term " 
+						//+ "WHERE id_candidate= " + candidate.getId();
+				//jdbcTemplate.update(sqlDelete);
+				//saveTerms(candidate);
 				return candidate;
 			} else {
 				throw new NoSuchElementException("candidate with id: " + candidate.getId() + " not in DB.");
@@ -73,10 +86,36 @@ public class MysqlCandidateDao implements CandidateDao {
 		}
 	}
 
+	private void saveTerms(Candidate candidate) {
+		//vieme ze termov nebude viac ako 1000
+		//my nemozeme mat kandidata bez termu 
+		/*
+		if (candidate.getTerms().isEmpty()) {
+			//throw new NullPointerException("Candidate doesn´t have any term");
+			return;
+		}*/
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT INTO candidate_has_term (id_candidate, id_term) VALUES ");
+		for (Term term : candidate.getTerms()) {
+			if (term==null || term.getId()==null) {
+				throw new NullPointerException("Candidate has term that is null id of term or is null");
+			}
+			sb.append("(").append(candidate.getId());
+			sb.append(",").append(term.getId());
+			sb.append("),");
+		}
+		System.out.println(sb.toString());
+		String sql = sb.substring(0,sb.length()-1);
+		System.out.println(sql);
+		jdbcTemplate.update(sql);
+	}
+
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(Long id) throws ObjectUndeletableException{
 		int delete;
 		try {
+			jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id);
 			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Some party has this candidate.Candidate can not be deleted");
@@ -100,6 +139,8 @@ public class MysqlCandidateDao implements CandidateDao {
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
+	
+	
 
 	private class CandidateRowMapper implements RowMapper<Candidate> {
 

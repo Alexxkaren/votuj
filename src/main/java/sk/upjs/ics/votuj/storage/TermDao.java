@@ -12,5 +12,7 @@ public interface TermDao {
 	Term getById(Long id); //TODO podla unit testu throws
 
 	List<Term> getAll(); //TODO podla unit testu throws
+	
+	List<Term> getByCandidate(Candidate candidate);
 
 }

@@ -103,10 +103,7 @@ public class ItemEditController {
 			alert.show();
 			return;
 		}
-		System.out.println("add choice");
-		System.out.println("vybrane kat v modeli:");
-		System.out.println(selectedCategoriesModel.toString());
-
+		
 	}
 
 	@FXML
@@ -126,10 +123,7 @@ public class ItemEditController {
 			alert.show();
 			return;
 		}
-		System.out.println("delete choice");
-		System.out.println("vybrane kat v modeli:");
-		System.out.println(selectedCategoriesModel.toString());
-
+		
 	}
 
 	@FXML
@@ -140,14 +134,9 @@ public class ItemEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		System.out.println("vybrane kat v modeli:");
-		System.out.println(selectedCategoriesModel.toString());
-		System.out.println("kat ktoru chcem vymazat");
 		
 		boolean successful = false;
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
-		System.out.println(category);
-		System.out.println("je v modeli: " + listOfSelectedCategories.contains(category));
 		List<Category> categories = new ArrayList<>();
 		if (category != null ) {
 			if (!listOfSelectedCategories.contains(category)){

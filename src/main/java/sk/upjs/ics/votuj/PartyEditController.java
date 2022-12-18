@@ -30,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Candidate;
+import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
 import sk.upjs.ics.votuj.storage.ObjectUndeletableException;
@@ -86,8 +87,9 @@ public class PartyEditController {
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
 		termsComboBox.setItems(termsModel);
-
 		termsComboBox.getSelectionModel().selectFirst();
+		/////////////////////////pridane
+		termWatched = termsComboBox.getSelectionModel().getSelectedItem();
 
 		List<Program> list_p = new ArrayList<>();
 		if (party != null) {
@@ -164,6 +166,7 @@ public class PartyEditController {
 		itemsModel.setAll(list_i);
 
 	}
+
 ///////////////////////////////////////////////////////////////////////
 	@FXML
 	void addTermButtonClick(ActionEvent event) {
@@ -174,11 +177,10 @@ public class PartyEditController {
 	@FXML
 	void editTermButtonClick(ActionEvent event) {
 		Term selectedTerm = termsComboBox.getSelectionModel().getSelectedItem();
-		if(selectedTerm!=null) {
+		if (selectedTerm != null) {
 			TermEditController controller = new TermEditController(selectedTerm);
 			showTermEdit(controller, "Editovanie volebného obdobia");
-		}
-		else {
+		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiadne volebné obdobie nie je vybrané na vymazanie");
 			dialog = alert.getDialogPane();
@@ -195,7 +197,7 @@ public class PartyEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		
+
 		boolean successful = false;
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
 		List<Term> terms = new ArrayList<>();
@@ -208,23 +210,22 @@ public class PartyEditController {
 						+ term.getId() + " bude vymazané. Naozaj chcete vymazať?");
 				ButtonType btDelete = new ButtonType("Vymazať");
 				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
-				
+
 				alertW.getButtonTypes().setAll(btDelete, btCancel);
-				
+
 				dialog = alertW.getDialogPane();
 				dialog.getStylesheets().add(css);
 				dialog.getStyleClass().add("dialog");
-				
+
 				Optional<ButtonType> result = alertW.showAndWait();
-				if (result.get() == btDelete) { 
+				if (result.get() == btDelete) {
 					successful = DaoFactory.INSTANCE.getTermDao().delete(term.getId());
 					termsModel.clear();
 					terms = DaoFactory.INSTANCE.getTermDao().getAll();
 					termsModel.addAll(terms);
 					termsComboBox.setItems(termsModel);
 				}
-				
-				
+
 			} catch (ObjectUndeletableException e) {
 				alert.setContentText("Snažíte sa vymazať volebné obdobie, ktoré je už používané");
 				alert.show();
@@ -237,7 +238,7 @@ public class PartyEditController {
 			alert.show();
 			return;
 		}
-		
+
 		if (successful) {
 			termsModel.clear();
 			terms = DaoFactory.INSTANCE.getTermDao().getAll();
@@ -292,7 +293,7 @@ public class PartyEditController {
 	void editCandidateButtonClick(ActionEvent event) {
 		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
 		if (candidate != null) {
-			CandidateEditController controller = new CandidateEditController(candidate, party);
+			CandidateEditController controller = new CandidateEditController(candidate, party, termWatched);
 			showCandidateEdit(controller, "Editovanie kandidáta");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -308,7 +309,64 @@ public class PartyEditController {
 
 	@FXML
 	void deleteCandidateButtonClick(ActionEvent event) {
-		// TODO
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+
+		boolean successful = false;
+		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
+		List<Candidate> candidates = new ArrayList<>();
+
+		if (candidate != null) {
+			try {
+				Alert alertW = new Alert(AlertType.WARNING);
+				alertW.setTitle("Upozornenie!");
+				alertW.setHeaderText("Potvrdenie vymazania");
+				alertW.setContentText(
+						"Kandidát " + candidate.getName() + " " + candidate.getSurname() + " s volebným číslom "
+								+ candidate.getCandidateNumber() +" a s id: " + candidate.getId() + " bude vymazaný. Naozaj ho chcete vymazať?");
+				ButtonType btDelete = new ButtonType("Vymazať");
+				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+
+				alertW.getButtonTypes().setAll(btDelete, btCancel);
+
+				dialog = alertW.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+
+				Optional<ButtonType> result = alertW.showAndWait();
+				if (result.get() == btDelete) {
+					successful = DaoFactory.INSTANCE.getCandidateDao().delete(candidate.getId());
+					candidatesModel.clear();
+					candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+					candidatesModel.addAll(candidates);
+					candidatesListView.setItems(candidatesModel);
+				}
+
+			} catch (ObjectUndeletableException e) {
+				///////////////////////////////// úúúúúúú/////ú///////////////////////
+				//////////////////// CO SEM?
+				alert.setContentText("Snažíte sa vymazať kandidáta ktorý už je používaný");
+				alert.show();
+				e.printStackTrace();
+				return;
+
+			}
+		} else {
+			alert.setContentText("Žiaden kandidát nie je vybraný na vymazanie");
+			alert.show();
+			return;
+		}
+
+		if (successful) {
+			candidatesModel.clear();
+			candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+			candidatesModel.addAll(candidates);
+			candidatesListView.setItems(candidatesModel);
+		}
+
 	}
 
 	void showCandidateEdit(CandidateEditController controller, String sceneName) {
@@ -328,6 +386,17 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
+
+			if (controller.getSavedCandidate() != null) {
+				
+				candidatesModel.clear();
+				List<Candidate> candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+				candidatesModel.addAll(candidates);
+				candidatesListView.setItems(candidatesModel);
+				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
+				System.out.println(candidates.toString());
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

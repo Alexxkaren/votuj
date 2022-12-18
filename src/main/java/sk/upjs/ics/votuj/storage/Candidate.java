@@ -1,5 +1,6 @@
 package sk.upjs.ics.votuj.storage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Candidate {
@@ -22,9 +23,13 @@ public class Candidate {
 		this.candidateNumber = candidateNumber;
 		this.info = info;
 		this.party = party;
-		this.terms = terms;
+		if (terms !=null) {
+			this.terms = terms;
+		} else {
+			this.terms = new ArrayList<>();
+		}
 	}
-
+	
 	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party) {
 		this.id = id;
 		this.name = name;
@@ -33,7 +38,7 @@ public class Candidate {
 		this.info = info;
 		this.party = party;
 	}
-
+	
 	public List<Term> getTerms() {
 		return terms;
 	}
@@ -43,7 +48,7 @@ public class Candidate {
 	}
 
 	public void setCandidate_number(String candidate_number) {
-		this.candidateNumber = candidateNumber;
+		this.candidateNumber = candidate_number;
 	}
 
 	public Long getId() {

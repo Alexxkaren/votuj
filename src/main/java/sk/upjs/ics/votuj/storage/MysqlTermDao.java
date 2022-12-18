@@ -2,6 +2,7 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,17 @@ public class MysqlTermDao implements TermDao {
 		String sql = "SELECT id, since, `to` FROM term WHERE id = " + id; 
 		return jdbcTemplate.queryForObject(sql, new TermRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	}
+	
+	@Override
+	public List<Term> getByCandidate(Candidate candidate) {
+		String sql = "SELECT id, since, `to` FROM  term "
+					+ "JOIN candidate_has_term cht ON cht.id_term = term.id "
+					+ "WHERE cht.id_candidate = " + candidate.getId();
+		List<Term> listT = jdbcTemplate.query(sql, new TermRowMapper());
+		return listT;
+		
+		
 	}
 	
 	private class TermRowMapper implements RowMapper<Term> {
