@@ -2,7 +2,6 @@ package sk.upjs.ics.votuj.storage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 public class MysqlProgramDao implements ProgramDao {
 
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlProgramDao(JdbcTemplate jdbcTemplate) {
-		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -66,7 +61,7 @@ public class MysqlProgramDao implements ProgramDao {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(Long id)throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM program WHERE  id= " + id);

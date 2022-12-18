@@ -12,15 +12,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class MysqlItemDao implements ItemDao {
 
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlItemDao(JdbcTemplate jdbcTemplate) {
-		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -63,7 +60,7 @@ public class MysqlItemDao implements ItemDao {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(Long id)throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM item WHERE  id= " + id);

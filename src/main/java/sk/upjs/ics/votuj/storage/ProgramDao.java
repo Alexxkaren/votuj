@@ -5,14 +5,14 @@ import java.util.NoSuchElementException;
 
 public interface ProgramDao {
 
-	Program save(Program program)throws NoSuchElementException,NullPointerException;
+	Program save(Program program)throws NoSuchElementException,NullPointerException; // NAIMPLEMENTOVANE
 	
-	boolean delete(Long id);
+	boolean delete(Long id)throws ObjectUndeletableException;// NAIMPLEMENTOVANE
 
-	List<Program> getByParty(Party party); //naimplementovane
+	List<Program> getByParty(Party party); // NAIMPLEMENTOVANE
 
-	List<Program> getByTermParty(Term term, Party partry);
+	List<Program> getByTermParty(Term term, Party partry); // NAIMPLEMENTOVANE
 	
-	Program getById(Long id);
+	Program getById(Long id); // NAIMPLEMENTOVANE
 
 }

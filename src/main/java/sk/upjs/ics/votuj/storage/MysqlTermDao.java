@@ -33,7 +33,7 @@ public class MysqlTermDao implements TermDao {
 		if (term.getTo()==null) {
 			throw new NullPointerException("Term to cannot be null");
 		}
-		//////////////////////////////////////INSERT///////////////////ú
+		// insert
 		if (term.getId() == null) { 
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("term");
@@ -44,7 +44,7 @@ public class MysqlTermDao implements TermDao {
 			values.put("`to`", term.getTo());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Term(id,term.getSince(), term.getTo());
-		/////////////////////////////////////////UPDATE/////////////////
+		// update
 		} else {
 			String sql = "UPDATE term SET since= ?, `to`=? " 
 					+ "WHERE id = ? ";

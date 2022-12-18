@@ -12,9 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 public class MysqlCandidateDao implements CandidateDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -74,7 +71,7 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id);
