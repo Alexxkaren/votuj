@@ -89,8 +89,9 @@ public class ItemEditController {
 	void addCategoryButtonClick(ActionEvent event) {
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
 		if (category != null) {
-			if (!selectedCategoriesModel.contains(category)) {
-				selectedCategoriesModel.add(category);
+			if (!listOfSelectedCategories.contains(category)) {
+				listOfSelectedCategories.add(category);
+				selectedCategoriesModel.setAll(listOfSelectedCategories);
 				selectedCategoriesListView.setItems(selectedCategoriesModel);
 			}
 		} else {
@@ -102,6 +103,9 @@ public class ItemEditController {
 			alert.show();
 			return;
 		}
+		System.out.println("add choice");
+		System.out.println("vybrane kat v modeli:");
+		System.out.println(selectedCategoriesModel.toString());
 
 	}
 
@@ -122,6 +126,9 @@ public class ItemEditController {
 			alert.show();
 			return;
 		}
+		System.out.println("delete choice");
+		System.out.println("vybrane kat v modeli:");
+		System.out.println(selectedCategoriesModel.toString());
 
 	}
 
@@ -133,39 +140,50 @@ public class ItemEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-
+		System.out.println("vybrane kat v modeli:");
+		System.out.println(selectedCategoriesModel.toString());
+		System.out.println("kat ktoru chcem vymazat");
+		
 		boolean successful = false;
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
+		System.out.println(category);
+		System.out.println("je v modeli: " + listOfSelectedCategories.contains(category));
 		List<Category> categories = new ArrayList<>();
-		if (category != null) {
-			try {
-				Alert alertW = new Alert(AlertType.WARNING);
-				alertW.setTitle("Upozornenie!");
-				alertW.setHeaderText("Potvrdenie vymazania");
-				alertW.setContentText("Kategória s názvom: " + category.getName() + " a id: " + category.getId()
-						+ " bude vymazaná. Naozaj chcete vymazať?");
-				ButtonType btDelete = new ButtonType("Vymazať");
-				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+		if (category != null ) {
+			if (!listOfSelectedCategories.contains(category)){
+				try {
+					Alert alertW = new Alert(AlertType.WARNING);
+					alertW.setTitle("Upozornenie!");
+					alertW.setHeaderText("Potvrdenie vymazania");
+					alertW.setContentText("Kategória s názvom: " + category.getName() + " a id: " + category.getId()
+							+ " bude vymazaná. Naozaj chcete vymazať?");
+					ButtonType btDelete = new ButtonType("Vymazať");
+					ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
 
-				alertW.getButtonTypes().setAll(btDelete, btCancel);
+					alertW.getButtonTypes().setAll(btDelete, btCancel);
 
-				dialog = alertW.getDialogPane();
-				dialog.getStylesheets().add(css);
-				dialog.getStyleClass().add("dialog");
+					dialog = alertW.getDialogPane();
+					dialog.getStylesheets().add(css);
+					dialog.getStyleClass().add("dialog");
 
-				Optional<ButtonType> result = alertW.showAndWait();
-				if (result.get() == btDelete) {
-					successful = DaoFactory.INSTANCE.getCategoryDao().delete(category.getId());
-					categoriesModel.clear();
-					categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
-					categoriesModel.addAll(categories);
-					itemCategoryComboBox.setItems(categoriesModel);
+					Optional<ButtonType> result = alertW.showAndWait();
+					if (result.get() == btDelete) {
+						successful = DaoFactory.INSTANCE.getCategoryDao().delete(category.getId());
+						categoriesModel.clear();
+						categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
+						categoriesModel.addAll(categories);
+						itemCategoryComboBox.setItems(categoriesModel);
+					}
+
+				} catch (ObjectUndeletableException e) {
+					alert.setContentText("Snažíte sa vymazať kategóriu, ktorá už obsahuje body - odstráňte najprv body ktoré obsahuje");
+					alert.show();
+					e.printStackTrace();
+					return;
 				}
-
-			} catch (ObjectUndeletableException e) {
-				alert.setContentText("Snažíte sa vymazať kategóriu, kotrá už obsahuje body");
+			} else {
+				alert.setContentText("Kategória ktorú chcete odstrániť je medzi vybranými kategóriami. Odstráňte ju z vybraných kategórií a potom opakujte pokus o vymazanie.");
 				alert.show();
-				e.printStackTrace();
 				return;
 			}
 		} else {
