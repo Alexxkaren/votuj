@@ -3,6 +3,7 @@ package sk.upjs.ics.votuj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
@@ -24,10 +27,13 @@ import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
+import sk.upjs.ics.votuj.storage.ObjectUndeletableException;
 import sk.upjs.ics.votuj.storage.Program;
+import sk.upjs.ics.votuj.storage.Term;
 
 public class ItemEditController {
-
+	// TO DO DO BUDUCNA -- AK budeme mat cas tak poupratvat duplicitny a triplicitny
+	// kod do samostatnych metod!!
 	private Program program;
 	private Item item;
 	private ItemFxModel itemFxModel;
@@ -35,7 +41,7 @@ public class ItemEditController {
 	private ObservableList<Category> selectedCategoriesModel = FXCollections
 			.observableArrayList(new ArrayList<Category>());
 	private Stage stage;
-	private List<Category> categoriesToDelete = new ArrayList<>();
+	private List<Category> categoriesToDelete = new ArrayList<>(); // TOTO NETREBA PTM VYMAZ
 	private List<Category> listOfSelectedCategories = new ArrayList<>();
 	private DialogPane dialog;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
@@ -120,29 +126,60 @@ public class ItemEditController {
 	}
 
 	@FXML
-	// TODO nech sa stazuje ked neni nic vybrate
+	// sa bude mazat rovno
 	void deleteCategoryButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+
+		boolean successful = false;
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
+		List<Category> categories = new ArrayList<>();
 		if (category != null) {
-			itemFxModel.getCategoriesModel().remove(category);
-			if (category.getId() != null) {
-				categoriesToDelete.add(category);
+			try {
+				Alert alertW = new Alert(AlertType.WARNING);
+				alertW.setTitle("Upozornenie!");
+				alertW.setHeaderText("Potvrdenie vymazania");
+				alertW.setContentText("Kategória s názvom: " + category.getName() + " a id: " + category.getId()
+						+ " bude vymazaná. Naozaj chcete vymazať?");
+				ButtonType btDelete = new ButtonType("Vymazať");
+				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+
+				alertW.getButtonTypes().setAll(btDelete, btCancel);
+
+				dialog = alertW.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+
+				Optional<ButtonType> result = alertW.showAndWait();
+				if (result.get() == btDelete) {
+					successful = DaoFactory.INSTANCE.getCategoryDao().delete(category.getId());
+					categoriesModel.clear();
+					categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
+					categoriesModel.addAll(categories);
+					itemCategoryComboBox.setItems(categoriesModel);
+				}
+
+			} catch (ObjectUndeletableException e) {
+				alert.setContentText("Snažíte sa vymazať kategóriu, kotrá už obsahuje body");
+				alert.show();
+				e.printStackTrace();
+				return;
 			}
 		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Upozornenie!");
 			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete odstrániť.");
-			dialog = alert.getDialogPane();
-			dialog.getStylesheets().add(css);
-			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
-	}
-	
-	@FXML
-	void saveItemButtonClick(ActionEvent event) {
 
+		if (successful) {
+			categoriesModel.clear();
+			categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
+			categoriesModel.addAll(categories);
+			itemCategoryComboBox.setItems(categoriesModel);
+		}
 	}
 
 	@FXML
@@ -154,36 +191,30 @@ public class ItemEditController {
 
 	@FXML
 	void editCategoryButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+
 		Category category = itemCategoryComboBox.getSelectionModel().getSelectedItem();
 
-		if (category != null) {			
+		if (category != null) {
 			if (!listOfSelectedCategories.contains(category)) {
 				CategoryEditController controller = new CategoryEditController(category);
 				showCategoryEdit(controller, "Editovanie kategórie");
 			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Upozornenie!");
 				alert.setContentText(
 						"Kategória, ktorú chcete upraviť je medzi vybranými kategóriami. Najprv ju odstráňte z vybraných kategórií a potom ju editujte.");
-				dialog = alert.getDialogPane();
-				dialog.getStylesheets().add(css);
-				dialog.getStyleClass().add("dialog");
 				alert.show();
 				return;
 			}
 		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Upozornenie!");
 			alert.setContentText("Žiadna kategória nie je vybraná, vyberte prosím kategóriu, ktorú chcete editovať.");
-			dialog = alert.getDialogPane();
-			dialog.getStylesheets().add(css);
-			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
 	}
-	
-	
 
 	void showCategoryEdit(CategoryEditController controller, String sceneName) {
 		try {
@@ -193,7 +224,6 @@ public class ItemEditController {
 			Scene scene = new Scene(parent);
 			stage = new Stage();
 
-			String css = this.getClass().getResource("votuj.css").toExternalForm();
 			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
@@ -202,9 +232,24 @@ public class ItemEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
+
+			if (controller.getSavedCategory() != null) {
+				categoriesModel.clear();
+				List<Category> categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
+				categoriesModel.addAll(categories);
+				itemCategoryComboBox.setItems(categoriesModel);
+				// UVIDIME CI TOTO
+				// itemCategoryComboBox.getSelectionModel().select(controller.getSavedCategory());
+
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@FXML
+	void saveItemButtonClick(ActionEvent event) {
+
 	}
 
 }

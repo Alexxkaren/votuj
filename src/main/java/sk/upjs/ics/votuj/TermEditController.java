@@ -62,13 +62,10 @@ public class TermEditController {
 			alert.show();
 			return;
 		}
-		System.out.println("povodne: " + term.getSince());		
-		System.out.println("povodne: " + term.getTo()); 
+		
 		Long foreignId = null;
 		List<Term> allTerms = DaoFactory.INSTANCE.getTermDao().getAll();
 		for (Term t : allTerms) {
-			System.out.println(t.getSince());
-			System.out.println(t.getTo());
 			
 			int x = term.getSince();
 			int y = term.getTo();
@@ -79,6 +76,13 @@ public class TermEditController {
 				foreignId = t.getId();
 				alert.setContentText(
 						"Pokúšate sa pridať také obdobie, ktoré sa už nachádza v databáze s id:" + foreignId);
+				alert.show();
+				return;
+			}
+			
+			if (x>y) {
+				alert.setContentText(
+						"Pokúšate sa pridať také obdobie, ktoré sa končí skôr ako sa začína ");
 				alert.show();
 				return;
 			}
@@ -97,7 +101,10 @@ public class TermEditController {
 		try {
 			if (term != null) {
 				savedTerm = DaoFactory.INSTANCE.getTermDao().save(term);
-			}
+			}/* else {
+				alert.setContentText("Pokúšate sa uložiť neexistujúce obdobie");
+				alert.show();
+			}*/ // dead code ------------------> pouvažuj
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e) {

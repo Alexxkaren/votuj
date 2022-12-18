@@ -36,7 +36,6 @@ public class MysqlTermDao implements TermDao {
 		}
 		//////////////////////////////////////INSERT///////////////////ú
 		if (term.getId() == null) { 
-			System.out.println("SOM V SAVE!!!!!!!!!!!!!!!!!!!");
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("term");
 			saveInsert.usingColumns("since", "`to`");
@@ -61,14 +60,14 @@ public class MysqlTermDao implements TermDao {
 
 	@Override
 	public boolean delete(Long id) throws ObjectUndeletableException {
-		int changed;
+		int wasDeleted;
 		try {
-			changed = jdbcTemplate.update("DELETE FROM term WHERE id = " + id);
+			wasDeleted = jdbcTemplate.update("DELETE FROM term WHERE id = " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Term with id: " + id + "cannot be deleted, some candidate/program already has this term");
 		}
 				
-		return changed == 1;
+		return wasDeleted == 1;
 	}
 
 	@Override

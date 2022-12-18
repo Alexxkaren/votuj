@@ -9,8 +9,8 @@ public interface TermDao {
 
 	boolean delete(Long id) throws ObjectUndeletableException ;
 
-	Term getById(Long id);
+	Term getById(Long id); //TODO podla unit testu throws
 
-	List<Term> getAll();
+	List<Term> getAll(); //TODO podla unit testu throws
 
 }

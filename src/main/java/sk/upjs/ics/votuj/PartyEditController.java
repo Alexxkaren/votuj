@@ -164,7 +164,7 @@ public class PartyEditController {
 		itemsModel.setAll(list_i);
 
 	}
-
+///////////////////////////////////////////////////////////////////////
 	@FXML
 	void addTermButtonClick(ActionEvent event) {
 		TermEditController controller = new TermEditController();
@@ -191,58 +191,56 @@ public class PartyEditController {
 
 	@FXML
 	void deleteTermButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+		
 		boolean successful = false;
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
+		List<Term> terms = new ArrayList<>();
 		if (term != null) {
 			try {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Upozornenie!");
-				alert.setHeaderText("Potvrdenie vymazania");
-				alert.setContentText("Volebné obdobie od " + term.getSince() + " - do " + term.getTo() + " s id: "
-						+ term.getId() + " bude vymazané");
+				Alert alertW = new Alert(AlertType.WARNING);
+				alertW.setTitle("Upozornenie!");
+				alertW.setHeaderText("Potvrdenie vymazania");
+				alertW.setContentText("Volebné obdobie od " + term.getSince() + " - do " + term.getTo() + " s id: "
+						+ term.getId() + " bude vymazané. Naozaj chcete vymazať?");
 				ButtonType btDelete = new ButtonType("Vymazať");
 				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
 				
-				alert.getButtonTypes().setAll(btDelete, btCancel);
+				alertW.getButtonTypes().setAll(btDelete, btCancel);
 				
-				dialog = alert.getDialogPane();
+				dialog = alertW.getDialogPane();
 				dialog.getStylesheets().add(css);
 				dialog.getStyleClass().add("dialog");
 				
-				Optional<ButtonType> result = alert.showAndWait();
+				Optional<ButtonType> result = alertW.showAndWait();
 				if (result.get() == btDelete) { 
 					successful = DaoFactory.INSTANCE.getTermDao().delete(term.getId());
 					termsModel.clear();
-					List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+					terms = DaoFactory.INSTANCE.getTermDao().getAll();
 					termsModel.addAll(terms);
 					termsComboBox.setItems(termsModel);
 				}
 				
 				
 			} catch (ObjectUndeletableException e) {
-				Alert alert = new Alert(AlertType.ERROR);
 				alert.setContentText("Snažíte sa vymazať volebné obdobie, ktoré je už používané");
-				dialog = alert.getDialogPane();
-				dialog.getStylesheets().add(css);
-				dialog.getStyleClass().add("dialog");
 				alert.show();
 				e.printStackTrace();
 				return;
 
 			}
 		} else {
-			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiadne volebné obdobie nie je vybrané na vymazanie");
-			dialog = alert.getDialogPane();
-			dialog.getStylesheets().add(css);
-			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
 		
 		if (successful) {
 			termsModel.clear();
-			List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
+			terms = DaoFactory.INSTANCE.getTermDao().getAll();
 			termsModel.addAll(terms);
 			termsComboBox.setItems(termsModel);
 		}
