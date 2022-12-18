@@ -56,10 +56,7 @@ public class MysqlTermDao implements TermDao {
 			} else {
 				throw new NoSuchElementException("term with id: " + term.getId() + " not in DB.");
 			}
-		}
-			
-		
-		
+		}		
 	}
 
 	@Override

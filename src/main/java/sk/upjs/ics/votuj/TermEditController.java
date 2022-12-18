@@ -50,14 +50,15 @@ public class TermEditController {
 
 	@FXML
 	void saveTermButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+		
 		Term term = termFxModel.getTerm();
-		if (term.getSince() == null || term.getTo() == null) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Upozornenie!");
+		if (term.getSince()==null || term.getTo() == null) {
 			alert.setContentText("Od aj do musia byť vyplnené, prosím doplňte.");
-			dialog = alert.getDialogPane();
-			dialog.getStylesheets().add(css);
-			dialog.getStyleClass().add("dialog");
 			alert.show();
 		}
 		Long foreignId = null;
@@ -66,13 +67,9 @@ public class TermEditController {
 		for (Term t : allTerms) {
 			if ((t.getSince().equals(term.getSince())) && (t.getTo().equals(term.getTo()))) {
 				foreignId = t.getId();
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Upozornenie!");
+			
 				alert.setContentText(
 						"Pokúšate sa pridať také obdobie, ktoré sa už nachádza v databáze s id:" + foreignId);
-				dialog = alert.getDialogPane();
-				dialog.getStylesheets().add(css);
-				dialog.getStyleClass().add("dialog");
 				alert.show();
 				return;
 			}

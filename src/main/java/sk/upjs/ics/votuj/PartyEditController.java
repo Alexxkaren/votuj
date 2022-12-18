@@ -174,8 +174,19 @@ public class PartyEditController {
 	@FXML
 	void editTermButtonClick(ActionEvent event) {
 		Term selectedTerm = termsComboBox.getSelectionModel().getSelectedItem();
-		TermEditController controller = new TermEditController(selectedTerm);
-		showTermEdit(controller, "Editovanie volebného obdobia");
+		if(selectedTerm!=null) {
+			TermEditController controller = new TermEditController(selectedTerm);
+			showTermEdit(controller, "Editovanie volebného obdobia");
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Žiadne volebné obdobie nie je vybrané na vymazanie");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+		}
 	}
 
 	@FXML
