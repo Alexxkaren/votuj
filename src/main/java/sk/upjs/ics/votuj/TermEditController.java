@@ -55,23 +55,23 @@ public class TermEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		
+
 		Term term = termFxModel.getTerm();
-		if (term.getSince()==null || term.getTo() == null || term.getSince()==0 ||term.getTo()==0) {
+		if (term.getSince() == null || term.getTo() == null || term.getSince() == 0 || term.getTo() == 0) {
 			alert.setContentText("Od aj do musia byť vyplnené, prosím doplňte.");
 			alert.show();
 			return;
 		}
-		
+
 		Long foreignId = null;
 		List<Term> allTerms = DaoFactory.INSTANCE.getTermDao().getAll();
 		for (Term t : allTerms) {
-			
+
 			int x = term.getSince();
 			int y = term.getTo();
 			int a = (int) t.getSince();
 			int b = (int) t.getTo();
-			
+
 			if ((t.getSince().equals(term.getSince())) && (t.getTo().equals(term.getTo()))) {
 				foreignId = t.getId();
 				alert.setContentText(
@@ -79,20 +79,17 @@ public class TermEditController {
 				alert.show();
 				return;
 			}
-			
-			if (x>y) {
-				alert.setContentText(
-						"Pokúšate sa pridať také obdobie, ktoré sa končí skôr ako sa začína ");
+
+			if (x > y) {
+				alert.setContentText("Pokúšate sa pridať také obdobie, ktoré sa končí skôr ako sa začína ");
 				alert.show();
 				return;
 			}
-			
-			if (((x<a) && (y>a)) || 
-					((x<b) && (y>b)) || 
-					((x>=a) && (y<=b)) ) {
+
+			if (((x < a) && (y > a)) || ((x < b) && (y > b)) || ((x >= a) && (y <= b))) {
 				foreignId = t.getId();
-				alert.setContentText(
-						"Pokúšate sa pridať také obdobie, ktoré sa prekrýva s obdobím v databáze: " + t.getSince() + " - " + t.getTo());
+				alert.setContentText("Pokúšate sa pridať také obdobie, ktoré sa prekrýva s obdobím v databáze: "
+						+ t.getSince() + " - " + t.getTo());
 				alert.show();
 				return;
 			}
@@ -101,10 +98,11 @@ public class TermEditController {
 		try {
 			if (term != null) {
 				savedTerm = DaoFactory.INSTANCE.getTermDao().save(term);
-			}/* else {
-				alert.setContentText("Pokúšate sa uložiť neexistujúce obdobie");
-				alert.show();
-			}*/ // dead code ------------------> pouvažuj
+			} /*
+				 * else { alert.setContentText("Pokúšate sa uložiť neexistujúce obdobie");
+				 * alert.show(); }
+				 */
+			// dead code ------------------> pouvažuj
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e) {

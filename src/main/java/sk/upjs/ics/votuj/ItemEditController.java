@@ -178,7 +178,7 @@ public class ItemEditController {
 				} catch (ObjectUndeletableException e) {
 					alert.setContentText("Snažíte sa vymazať kategóriu, ktorá už obsahuje body - odstráňte najprv body ktoré obsahuje");
 					alert.show();
-					e.printStackTrace();
+					//e.printStackTrace(); MA TU TOTO BYT?
 					return;
 				}
 			} else {

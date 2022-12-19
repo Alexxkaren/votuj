@@ -361,7 +361,11 @@ public class PartyEditController {
 				if (result.get() == btDelete) {
 					successful = DaoFactory.INSTANCE.getCandidateDao().delete(candidate.getId());
 					candidatesModel.clear();
-					candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+					if (party != null) {
+						candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+					} else {
+						candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(savedParty, termWatched);
+					}
 					candidatesModel.addAll(candidates);
 					candidatesListView.setItems(candidatesModel);
 				}
@@ -383,7 +387,11 @@ public class PartyEditController {
 
 		if (successful) {
 			candidatesModel.clear();
-			candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+			if (party != null) {
+				candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+			} else {
+				candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(savedParty, termWatched);
+			}
 			candidatesModel.addAll(candidates);
 			candidatesListView.setItems(candidatesModel);
 		}
@@ -421,8 +429,7 @@ public class PartyEditController {
 						termWatched);
 				candidatesModel.addAll(candidates);
 				candidatesListView.setItems(candidatesModel);
-				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
-				System.out.println(candidates.toString());
+
 			}
 
 		} catch (IOException e) {
@@ -565,8 +572,7 @@ public class PartyEditController {
 				List<Item> items = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, lokParty);
 				itemsModel.addAll(items);
 				itemsTableView.setItems(itemsModel);
-				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
-				System.out.println(items.toString());
+
 			}
 
 		} catch (IOException e) {
@@ -592,8 +598,14 @@ public class PartyEditController {
 			return;
 		}
 		// }
-		ProgramEditController controller = new ProgramEditController(party);
-		showProgramEdit(controller, "Pridávanie nového volebného programu");
+		if (party!=null) {
+			ProgramEditController controller = new ProgramEditController(party);
+			showProgramEdit(controller, "Pridávanie nového volebného programu");
+		} else {
+			ProgramEditController controller = new ProgramEditController(savedParty);
+			showProgramEdit(controller, "Pridávanie nového volebného programu");
+		}
+		
 	}
 
 	@FXML
@@ -632,9 +644,9 @@ public class PartyEditController {
 				}
 
 			} catch (ObjectUndeletableException e) {
-				alert.setContentText("Snažíte sa vymazať program, ktoré je má body a obdobie");
+				alert.setContentText("Snažíte sa vymazať program, ktorý má body");
 				alert.show();
-				e.printStackTrace();
+				//e.printStackTrace();
 				return;
 
 			}
@@ -693,8 +705,14 @@ public class PartyEditController {
 
 			if (controller.getSavedProgram() != null) {
 				programsModel.clear();
-				programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
-						party);
+				if (party!=null) {
+					programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
+							party);
+				} else {
+					programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
+							savedParty);
+				}
+				
 				programsModel.addAll(programs);
 				programsListView.setItems(programsModel);
 

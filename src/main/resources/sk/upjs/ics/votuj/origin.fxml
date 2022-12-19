@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,8 +20,11 @@
       <Label layoutX="80.0" layoutY="342.0" text="Pohlavie" />
       <ComboBox fx:id="regionComboBox" layoutX="124.0" layoutY="179.0" prefHeight="26.0" prefWidth="223.0" />
       <TextField fx:id="ageTextField" layoutX="125.0" layoutY="256.0" />
-      <RadioButton fx:id="maleRadioButton" layoutX="124.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="92.0" text="muž" />
-      <RadioButton fx:id="femaleRadioButton" layoutX="264.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="141.0" text="žena" />
+      <RadioButton fx:id="maleRadioButton" layoutX="124.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="92.0" text="muž">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="femaleRadioButton" layoutX="264.0" layoutY="390.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="141.0" text="žena" toggleGroup="$group" />
       <ImageView fitHeight="94.0" fitWidth="269.0" layoutX="78.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@male_logo.png" />

@@ -36,11 +36,11 @@ class MysqlVoteDaoTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Vote vote = new Vote();
-		vote.setAge(1);
+		vote.setAge("1");
 		vote.setMale(true);
 		vote.setDate(LocalDateTime.now());
 		Region region = regionDao.save(new Region(null, "ZEME CESKA DOMOV MUJ"));
-		vote.setRegion(region.getId());
+		vote.setRegion(region);
 		savedRegion = region;
 		savedParty = partyDao.save(new Party(null, "1", "2"));
 		vote.setParty(savedParty);
@@ -56,17 +56,17 @@ class MysqlVoteDaoTest {
 	@Test
 	void insertTest() {
 		Vote vote = new Vote();
-		vote.setAge(1);
+		vote.setAge("1");
 		vote.setMale(true);
 		vote.setDate(LocalDateTime.now());
-		vote.setRegion(savedRegion.getId());
+		vote.setRegion(savedRegion);
 		vote.setParty(savedParty);
 		int size = voteDao.getAll().size();
 		Vote saved = voteDao.save(vote);
 		assertEquals(size + 1, voteDao.getAll().size());
 		assertNotNull(saved.getId());
 		assertEquals(vote.getAge(), saved.getAge());
-		assertEquals(vote.isMale(), saved.isMale());
+		assertEquals(vote.getMale(), saved.getMale());
 		assertEquals(vote.getDate(), saved.getDate());
 		assertEquals(vote.getRegion(), saved.getRegion());
 		assertEquals(vote.getParty().getId(), saved.getParty().getId());
@@ -74,19 +74,22 @@ class MysqlVoteDaoTest {
 		assertThrows(NullPointerException.class, () -> voteDao.save(null), "Vote cannot be null");
 		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote(null, null, false, null, null, null)),
 				"Age cannot be null");
-		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote(null, 1, false, null, null, null)),
+		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 0, "1", false, null, null, null)),
+	
 				"Date cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> voteDao.save(new Vote(null, 1, false, LocalDateTime.now(), null, null)), "Region cannot be null");
+				() -> voteDao.save(new Vote((long) 0, "1", false, LocalDateTime.now(), null, null)),
+				"Region cannot be null");
+	
 		assertThrows(NullPointerException.class,
-				() -> voteDao.save(new Vote(null, 1, false, LocalDateTime.now(), savedRegion.getId(), null)),
+				() -> voteDao.save(new Vote((long) 0, "1", false, LocalDateTime.now(), savedRegion, null)),
 				"Party cannot be null");
 
 	}
 
 	@Test
 	void updateTest() {
-		Vote updated = new Vote(savedVote.getId(), savedVote.getAge(), savedVote.isMale(), savedVote.getDate(),
+		Vote updated = new Vote(savedVote.getId(), savedVote.getAge(), savedVote.getMale(), savedVote.getDate(),
 				savedVote.getRegion(), savedVote.getParty());
 		int size = voteDao.getAll().size();
 		voteDao.save(updated);
@@ -94,20 +97,20 @@ class MysqlVoteDaoTest {
 		Vote fromDB = voteDao.getById(updated.getId());
 		assertEquals(updated.getId(), fromDB.getId());
 		assertEquals(updated.getAge(), fromDB.getAge());
-		assertEquals(updated.isMale(), fromDB.isMale());
+		assertEquals(updated.getMale(), fromDB.getMale());
 		// assertEquals(updated.getDate(), fromDB.getDate()); //not yet working
-		assertEquals(updated.getRegion(), fromDB.getRegion());
+		assertEquals(updated.getRegion().getId(), fromDB.getRegion().getId());
 		assertEquals(updated.getParty().getId(), fromDB.getParty().getId());
 		assertThrows(NullPointerException.class, () -> voteDao.save(null), "Vote cannot be null");
 		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 1, null, false, null, null, null)),
 				"Age cannot be null");
-		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 1, 1, false, null, null, null)),
+		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 1, "1", false, null, null, null)),
 				"Date cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> voteDao.save(new Vote((long) 1, 1, false, LocalDateTime.now(), null, null)),
+				() -> voteDao.save(new Vote((long) 1, "1", false, LocalDateTime.now(), null, null)),
 				"Region cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> voteDao.save(new Vote((long) 1, 1, false, LocalDateTime.now(), savedRegion.getId(), null)),
+				() -> voteDao.save(new Vote((long) 1, "1", false, LocalDateTime.now(), savedRegion, null)),
 				"Party cannot be null");
 
 	}
@@ -125,9 +128,9 @@ class MysqlVoteDaoTest {
 		Vote fromDB = voteDao.getById(savedVote.getId());
 		assertEquals(savedVote.getId(), fromDB.getId());
 		assertEquals(savedVote.getAge(), fromDB.getAge());
-		assertEquals(savedVote.isMale(), fromDB.isMale());
-		// assertEquals(savedVote.getDate(), fromDB.getDate()); //not yet working
-		assertEquals(savedVote.getRegion(), fromDB.getRegion());
+		assertEquals(savedVote.getMale(), fromDB.getMale());
+	//	assertEquals(savedVote.getDate(), fromDB.getDate()); //not yet working
+		assertEquals(savedVote.getRegion().getId(), fromDB.getRegion().getId());
 		assertEquals(savedVote.getParty(), fromDB.getParty());
 		assertThrows(EmptyResultDataAccessException.class, () -> voteDao.getById(null));
 	}

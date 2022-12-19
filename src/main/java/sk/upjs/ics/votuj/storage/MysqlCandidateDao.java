@@ -54,7 +54,9 @@ public class MysqlCandidateDao implements CandidateDao {
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", candidate.getName());
 			values.put("surname", candidate.getSurname());
-			values.put("candidate_number", candidate.getCandidateNumber());
+			//ZMENA
+			//values.put("candidate_number", candidate.getCandidateNumber());
+			values.put("candidate_number", Integer.parseInt(candidate.getCandidateNumber()));
 			values.put("info", candidate.getInfo());
 			values.put("id_party", candidate.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
@@ -69,11 +71,15 @@ public class MysqlCandidateDao implements CandidateDao {
 			System.out.println(candidate.getTerms().toString());
 			System.out.println("I ADD CURRENT");
 			//System.out.println(candidate.getTerms().addAll(termss));
+			/*povodne
 			for (Term t : termss) {
 				if (!candidate.getTerms().contains(t)) {
 					candidate.getTerms().add(t);
 				}
-			}
+			}*/
+			//nove
+			candidate.setTerms(termss);
+			System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQq");
 			System.out.println("RESULT:");
 			System.out.println(candidate.getTerms().toString());
 			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "

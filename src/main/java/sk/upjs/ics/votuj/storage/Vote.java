@@ -5,23 +5,39 @@ import java.time.LocalDateTime;
 public class Vote {
 
 	private Long id;
-	private Integer age;
+	//private Integer age;
+	private String age;////////////////////////
 	private boolean male;
 	private LocalDateTime date;
-	private Long id_region;
+	private Region region;
 	private Party party;
 
 	public Vote() {
 	}
+	
+	public Vote(Vote vote, Party party) {
+		this.id = vote.getId();
+		this.age = vote.getAge();
+		this.male = vote.getMale();
+		this.date = vote.getDate();
+		this.region = vote.getRegion();
+		this.party = party;
+	}
 
-	public Vote(Long id, Integer age, boolean male, LocalDateTime date, Long region, Party party) {
-		super();
+	public Vote(Long id, String age, boolean male, LocalDateTime date, Region region, Party party) {
 		this.id = id;
 		this.age = age;
 		this.male = male;
 		this.date = date;
-		this.id_region = region;
+		this.region = region;
 		this.party = party;
+	}
+	public Vote(Long id, String age, boolean male, LocalDateTime date, Region region) {
+		this.id = id;
+		this.age = age;
+		this.male = male;
+		this.date = date;
+		this.region = region;
 	}
 
 	public Long getId() {
@@ -32,15 +48,15 @@ public class Vote {
 		this.id = id;
 	}
 
-	public Integer getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
-	public boolean isMale() {
+	public boolean getMale() {
 		return male;
 	}
 
@@ -56,12 +72,12 @@ public class Vote {
 		this.date = date;
 	}
 
-	public Long getRegion() {
-		return id_region;
+	public Region getRegion() {
+		return region;
 	}
 
-	public void setRegion(Long region) {
-		this.id_region = region;
+	public void setRegion(Region region) {
+		this.region = region;
 	}
 
 	public Party getParty() {
@@ -71,5 +87,13 @@ public class Vote {
 	public void setParty(Party party) {
 		this.party = party;
 	}
+
+	@Override
+	public String toString() {
+		return "[id=" + id + ", age=" + age + ", male=" + male + ", date=" + date + ", region=" + region
+				+ ", party=" + party + "]";
+	}
+	
+	
 
 }
