@@ -12,7 +12,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="54.0" layoutY="32.0" prefHeight="18.0" prefWidth="79.0" text="Názov" />
-      <TextField fx:id="partyNameTextField" layoutX="237.0" layoutY="28.0" prefHeight="26.0" prefWidth="223.0" />
+      <TextField fx:id="partyNameTextField" layoutX="141.0" layoutY="37.0" prefHeight="26.0" prefWidth="337.0" />
       <Label fx:id="partyInfoTextField" layoutX="58.0" layoutY="97.0" prefHeight="18.0" prefWidth="38.0" text="Info" />
       <Label layoutX="54.0" layoutY="225.0" text="Kandidáti" />
       <ListView fx:id="candidatesListView" layoutX="66.0" layoutY="254.0" prefHeight="55.0" prefWidth="199.0" />
@@ -24,7 +24,7 @@
       <ListView fx:id="programsListView" layoutX="66.0" layoutY="334.0" prefHeight="67.0" prefWidth="199.0" />
       <Button layoutX="399.0" layoutY="353.0" mnemonicParsing="false" onAction="#editProgramButtonClick" prefHeight="26.0" prefWidth="106.0" text="Upraviť" />
       <Button layoutX="517.0" layoutY="353.0" mnemonicParsing="false" onAction="#deleteProgramButtonClick" prefHeight="26.0" prefWidth="106.0" text="Odstrániť" />
-      <Button layoutX="570.0" layoutY="596.0" mnemonicParsing="false" onAction="#savePartyButtonClick" text="Uložiť" />
+      <Button layoutX="493.0" layoutY="60.0" mnemonicParsing="false" onAction="#savePartyButtonClick" text="Uložiť názov a info" />
       <Label layoutX="53.0" layoutY="156.0" prefHeight="18.0" prefWidth="118.0" text="Obdobie" />
       <ComboBox fx:id="termsComboBox" layoutX="68.0" layoutY="187.0" prefHeight="26.0" prefWidth="199.0" />
       <Button layoutX="281.0" layoutY="186.0" mnemonicParsing="false" onAction="#addTermButtonClick" prefHeight="26.0" prefWidth="106.0" text="Pridať" />
@@ -35,6 +35,6 @@
       <Button layoutX="96.0" layoutY="560.0" mnemonicParsing="false" onAction="#addItemButtonclick" prefHeight="26.0" prefWidth="106.0" text="pridať" />
       <Button layoutX="271.0" layoutY="560.0" mnemonicParsing="false" onAction="#editItemButtonclick" prefHeight="26.0" prefWidth="106.0" text="upraviť" />
       <Button layoutX="451.0" layoutY="560.0" mnemonicParsing="false" onAction="#deleteItemButtonClick" prefHeight="26.0" prefWidth="106.0" text="odstrániť" />
-      <TextArea fx:id="partyInfoTextArea" layoutX="109.0" layoutY="73.0" prefHeight="67.0" prefWidth="509.0" />
+      <TextArea fx:id="partyInfoTextArea" layoutX="141.0" layoutY="73.0" prefHeight="67.0" prefWidth="338.0" />
    </children>
 </AnchorPane>

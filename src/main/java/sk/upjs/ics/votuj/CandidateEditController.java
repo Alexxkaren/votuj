@@ -148,6 +148,13 @@ public class CandidateEditController {
 		dialog.getStyleClass().add("dialog");
 
 		Candidate candidate = candidateFxModel.getCandidate();
+		//candidate.setParty(this.party);
+		System.out.println("UKLADAM KANDIDATA TOHTO:");
+		System.out.println(candidate.toString());
+		System.out.println("DO STRANY TEJTO");
+		System.out.println(candidateFxModel.getParty().toString());
+		System.out.println(this.party.toString());
+		
 		List<Term> termss = listOfSelectedTerms;
 
 		if (candidate.getName() == null) {

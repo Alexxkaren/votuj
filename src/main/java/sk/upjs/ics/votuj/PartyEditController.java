@@ -3,6 +3,7 @@ package sk.upjs.ics.votuj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javafx.beans.value.ChangeListener;
@@ -41,6 +42,7 @@ public class PartyEditController {
 
 	private Party party;
 	private PartyFxModel partyFxModel;
+	private Party savedParty;
 	// private CandidateFxModel candidateFxModel;
 	private ObservableList<Candidate> candidatesModel;
 	private ObservableList<Program> programsModel;
@@ -181,7 +183,7 @@ public class PartyEditController {
 			showTermEdit(controller, "Editovanie volebného obdobia");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Žiadne volebné obdobie nie je vybrané na vymazanie");
+			alert.setContentText("Žiadne volebné obdobie nie je vybrané na editovanie");
 			dialog = alert.getDialogPane();
 			dialog.getStylesheets().add(css);
 			dialog.getStyleClass().add("dialog");
@@ -282,17 +284,35 @@ public class PartyEditController {
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
+		Party lokParty = null;
+		if (savedParty!=null) {
+			lokParty = savedParty;
+		} else {
+			lokParty = party;	
+		}
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
-		CandidateEditController controller = new CandidateEditController(party, term);
+		System.out.println("SA SPRAVIL CANDIDAT EDIT CONTROLLER PRE ADD");
+		System.out.println(savedParty);
+		System.out.println(lokParty.toString()); //JA TU POSIELAM NULL PARTY
+		CandidateEditController controller = new CandidateEditController(lokParty, term);
 		showCandidateEdit(controller, "Pridávanie nového kandidáta");
 		// TU alert netreba party bude furt vybrana
 	}
 
 	@FXML
 	void editCandidateButtonClick(ActionEvent event) {
+		Party lokParty = null;
+		if (savedParty!=null) {
+			lokParty = savedParty;
+		} else {
+			lokParty = party;	
+		}
 		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
 		if (candidate != null) {
-			CandidateEditController controller = new CandidateEditController(candidate, party, termWatched);
+			System.out.println("SA SPRAVIL CANDIDAT EDIT CONTROLLER PRE EDIT");
+			System.out.println(lokParty.toString());
+			System.out.println(candidate.getParty().toString());
+			CandidateEditController controller = new CandidateEditController(candidate, lokParty, termWatched);
 			showCandidateEdit(controller, "Editovanie kandidáta");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -387,9 +407,15 @@ public class PartyEditController {
 			stage.showAndWait();
 
 			if (controller.getSavedCandidate() != null) {
+				Party lokParty = null;
+				if (savedParty!=null) {
+					lokParty = savedParty;
+				} else {
+					lokParty = party;	
+				}
 				
 				candidatesModel.clear();
-				List<Candidate> candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party, termWatched);
+				List<Candidate> candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(lokParty, termWatched);
 				candidatesModel.addAll(candidates);
 				candidatesListView.setItems(candidatesModel);
 				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
@@ -594,10 +620,59 @@ public class PartyEditController {
 	}
 
 	////////////////////////////////////////////////
+	
 
 	@FXML
 	void savePartyButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+		
+		Party party = partyFxModel.getParty();
+		if(party.getName()==null || party.getName().equals("")) {
+			alert.setContentText("Názov strany musí byť vyplnený, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		if(party.getInfo()==null || party.getInfo().equals("")) {
+			alert.setContentText("Info strany musí byť vyplnené, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		
+		Long foreignId = null;
+		List<Party> allParties = DaoFactory.INSTANCE.getPartyDao().getAll();
+		for (Party p : allParties) {
+			if (p.getName().equals(party.getName()) ) {
+				foreignId = p.getId();
+				alert.setContentText("Strana s takým názvom už v databáze existuje s id: " + foreignId);
+				alert.show();
+				return;
+			}
+		}
+		
+		try {
+			if(party!=null) {
+				System.out.println("Idem spravit save party");
+				System.out.println(party.toString());
+				savedParty = DaoFactory.INSTANCE.getPartyDao().save(party);
+				System.out.println("SA ULOZILA STRANA:");
+				System.out.println(savedParty.toString());
+			}
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		//partyInfoTextArea.getScene().getWindow().hide();
 
+	}
+
+	public Party getSavedParty() {
+		return savedParty;
 	}
 
 }

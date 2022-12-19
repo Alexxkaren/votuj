@@ -80,7 +80,11 @@ public class PartyViewController {
 		// TUUUUUUUUUUUUUU pri smere v druho terme sa zobrazuje dajaky drist idk preco
 		List<Program> list = DaoFactory.INSTANCE.getProgramDao()
 				.getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
-		programNameLabel.setText(list.get(0).getName());// tu get name
+		if (list.size() != 0) {
+			programNameLabel.setText(list.get(0).getName());// tu get name
+		} else {
+			programNameLabel.setText("žiaden program");
+		}
 
 		if (party != null) {
 			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party,
@@ -171,12 +175,12 @@ public class PartyViewController {
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
-			
+
 			String css = this.getClass().getResource("votuj.css").toExternalForm();
-			scene.getStylesheets().add(css); 
+			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);
-			
+
 			stage.setTitle(name);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
