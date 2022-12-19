@@ -149,7 +149,7 @@ public class PartyOriginController {
 			} catch (ObjectUndeletableException e) {
 				alert.setContentText("Snažíte sa vymazať politickú stranu, ktorá je už používaná");
 				alert.show();
-				e.printStackTrace();
+				//e.printStackTrace(); //OTAZKA MA TU TOTO BYT?
 				return;
 
 			}

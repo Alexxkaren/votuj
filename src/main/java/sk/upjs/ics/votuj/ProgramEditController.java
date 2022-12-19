@@ -34,7 +34,7 @@ public class ProgramEditController {
 	private Term termWatched;
 	private Program savedProgram;
 	private ProgramFxModel programFxModel;
-	private List<Program> allPrograms = new ArrayList<>();
+	private List<Program> allPrograms;
 	private ObservableList<Item> itemsModel;
 	private ObservableList<Term> termsModel;
 	private BooleanProperty isActiveModel;
@@ -72,22 +72,46 @@ public class ProgramEditController {
 
 	@FXML
 	void initialize() {
+		allPrograms = new ArrayList<>();
 		programNameTextField.textProperty().bindBidirectional(programFxModel.getNameProperty());
 		isActiveModel = programFxModel.getIsActiveProperty();
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
 		programTermComboBox.setItems(termsModel);
-		if (termPovod != null) {
-			programTermComboBox.getSelectionModel().select(termPovod);
-		}
-
+		
 		List<Item> list_i = new ArrayList<>();
 		if (program != null) {
 			list_i = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
 		}
+		
 		itemsModel = FXCollections.observableArrayList(list_i);
 		programItemTableView.setItems(itemsModel);
+		
+		programTermComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Term>() {
+			@Override
+			public void changed(ObservableValue<? extends Term> observable, Term oldValue, Term newValue) {
+				if (newValue != null) {
+					termWatched = programTermComboBox.getSelectionModel().getSelectedItem();
+					updateItemsTableView(termWatched);
+					updateActive(termWatched);
+				}
+			}
+		});
+		
+		if (termPovod != null) {
+			programTermComboBox.getSelectionModel().select(termPovod);
+		}
+
+		
+		
+		System.out.println("XXXXXXXXXXXXXXXXX 1. XXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println(itemsModel.toString());
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		if (isActiveModel.get()) {
 			activeCheckBox.setSelected(true);
@@ -100,24 +124,13 @@ public class ProgramEditController {
 			for (Program p : allPrograms) {
 				if (program == null && p.isActive()) {
 					activeCheckBox.setDisable(true);
-
 				} else if (program != null && !p.equals(program) && p.isActive()) {
 					activeCheckBox.setDisable(true);
 				}
 			}
 		}
 
-		programTermComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Term>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Term> observable, Term oldValue, Term newValue) {
-				if (newValue != null) {
-					termWatched = programTermComboBox.getSelectionModel().getSelectedItem();
-					updateItemsTableView(termWatched);
-				}
-			}
-
-		});
+		
 
 		// PROBLEM S VYBERANIM TEMRU IDEM SPAT POROVNAJ S CANDIDATE
 		if (program != null) {
@@ -128,14 +141,23 @@ public class ProgramEditController {
 			TableColumn<Item, String> itemColumn = new TableColumn<>("Bod");
 			itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
 			programItemTableView.getColumns().add(itemColumn);
-
-			Term termCh = programTermComboBox.getSelectionModel().getSelectedItem();
+			
+			Term termCh = termWatched;
+			//Term termCh = programTermComboBox.getSelectionModel().getSelectedItem();
 			List<Item> list_ii = new ArrayList<>();
 			if (party != null) {
 				list_ii = DaoFactory.INSTANCE.getItemDao().getByTermParty(termCh, party);
 			}
 			itemsModel = FXCollections.observableArrayList(list_ii);
 			programItemTableView.setItems(itemsModel);
+			
+			System.out.println("XXXXXXXXXXXXXXXXX 2. XXXXXXXXXXXXXX");
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			System.out.println(itemsModel.toString());
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		}
 
 	}
@@ -146,8 +168,25 @@ public class ProgramEditController {
 			list_i = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
 		}
 		// list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, party);
+		System.out.println("XXXXXXXXXXXXXXXXTU JE UZ NULL XXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		itemsModel.setAll(list_i);
+		programItemTableView.setItems(itemsModel);
+		System.out.println(itemsModel.toString());
 
+	}
+	private void updateActive(Term termWatched) {
+		if (party != null) {
+			allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+			for (Program p : allPrograms) {
+				if (program == null && p.isActive()) {
+					activeCheckBox.setDisable(true);
+				} else if (program != null && !p.equals(program) && p.isActive()) {
+					activeCheckBox.setDisable(true);
+				}
+			}
+		}
+		
 	}
 
 	public Program getSavedProgram() {
@@ -156,7 +195,11 @@ public class ProgramEditController {
 
 	@FXML
 	void changeOfActive(ActionEvent event) {
-		program.setIsActive(activeCheckBox.isSelected());
+		if (program != null) {
+			program.setIsActive(activeCheckBox.isSelected());
+		} else {
+			savedProgram.setIsActive(activeCheckBox.isSelected());
+		}
 	}
 
 	@FXML
@@ -169,6 +212,10 @@ public class ProgramEditController {
 
 		Program program = programFxModel.getProgram();
 		program.setTerm(termWatched);
+		
+		System.out.println("UKLADANY PROGRAM: " + program.toString());
+		program.setParty(party);
+		System.out.println("PO PRIDANI PARTY: " + program.toString());
 		if (activeCheckBox.isSelected())
 			program.setIsActive(true);
 		if (!activeCheckBox.isSelected())
@@ -197,7 +244,7 @@ public class ProgramEditController {
 		System.out.println("TENTO:");
 		System.out.println(program);
 		for (Program p : totalyAllPrograms) {
-			if (program != null && program.getTerm().equals(p.getTerm())) {
+			if (program != null && program.getTerm().equals(p.getTerm()) && !program.equals(p)) {
 				alreadyHas = true;
 				alert.setContentText("V danom volebnom obodbí už existuje volebný program, vyberte iné obdobie");
 				alert.show();

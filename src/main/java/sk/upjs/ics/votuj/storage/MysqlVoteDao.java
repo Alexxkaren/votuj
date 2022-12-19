@@ -32,7 +32,7 @@ public class MysqlVoteDao implements VoteDao {
 		if (vote.getDate() == null) {
 			throw new NullPointerException("Date can not be null");
 		}
-		if (vote.getRegion() <= 0) {
+		if (vote.getRegion() == null) {
 			throw new NullPointerException("Region can not be less or equal to 0");
 		}
 		if (vote.getParty() == null) {
@@ -45,17 +45,18 @@ public class MysqlVoteDao implements VoteDao {
 			saveInsert.usingColumns("age", "male", "date", "id_region", "id_party");
 			saveInsert.usingGeneratedKeyColumns("id");
 			Map<String, Object> values = new HashMap<>();
-			values.put("age", vote.getAge());
-			values.put("male", vote.isMale());
+			//ZMENA
+			values.put("age", Integer.parseInt(vote.getAge()));
+			values.put("male", vote.getMale());
 			values.put("date", vote.getDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			values.put("id_region", vote.getRegion());
+			values.put("id_region", vote.getRegion().getId());
 			values.put("id_party", vote.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Vote(id, vote.getAge(), vote.isMale(), vote.getDate(), vote.getRegion(), vote.getParty());
+			return new Vote(id, vote.getAge(), vote.getMale(), vote.getDate(), vote.getRegion(), vote.getParty());
 			// update
 		} else {
 			String sql = "UPDATE vote SET age= ?, male= ?, date= ?, id_region= ?, id_party= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.isMale(),vote.getDate(),vote.getRegion(),
+			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.getMale(),vote.getDate(),vote.getRegion(),
 					vote.getParty().getId(),vote.getId());
 			if (updated == 1) {
 				return vote;
@@ -104,12 +105,12 @@ public class MysqlVoteDao implements VoteDao {
 		public Vote mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Vote vote = new Vote();
 			vote.setId(rs.getLong("id"));
-			vote.setAge(rs.getInt("age"));
+			vote.setAge(rs.getString("age"));
 			vote.setMale(rs.getBoolean("male"));
 			// TODO toto v teste treba skontrolovat ci dava dobre casy
 			vote.setDate(rs.getTimestamp("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			Region region = DaoFactory.INSTANCE.getRegionDao().getById(rs.getLong("id_region"));
-			vote.setRegion(region.getId());
+			vote.setRegion(region);
 			Party party = DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party"));
 			vote.setParty(party);
 
