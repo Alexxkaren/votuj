@@ -25,8 +25,8 @@ class MysqlTermDaoTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Term term = new Term();
-		term.getSince().intValue();
-		term.getTo().intValue();
+		term.setSince(null);
+		term.setTo(null);
 		savedTerm = termDao.save(term);
 	}
 
