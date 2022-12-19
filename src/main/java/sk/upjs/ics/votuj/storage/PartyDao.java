@@ -12,4 +12,5 @@ public interface PartyDao {
 	List<Party> getAll() throws NoSuchElementException; // naimplementovane
 
 	Party getById(Long id); // NAIMPLEMENTOVANE
+
 }

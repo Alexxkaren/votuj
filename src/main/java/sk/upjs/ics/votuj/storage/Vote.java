@@ -8,19 +8,19 @@ public class Vote {
 	private Integer age;
 	private boolean male;
 	private LocalDateTime date;
-	private Region region;
+	private Long id_region;
 	private Party party;
 
 	public Vote() {
 	}
 
-	public Vote(Long id, Integer age, boolean male, LocalDateTime date, Region region, Party party) {
+	public Vote(Long id, Integer age, boolean male, LocalDateTime date, Long region, Party party) {
 		super();
 		this.id = id;
 		this.age = age;
 		this.male = male;
 		this.date = date;
-		this.region = region;
+		this.id_region = region;
 		this.party = party;
 	}
 
@@ -56,12 +56,12 @@ public class Vote {
 		this.date = date;
 	}
 
-	public Region getRegion() {
-		return region;
+	public Long getRegion() {
+		return id_region;
 	}
 
-	public void setRegion(Region region) {
-		this.region = region;
+	public void setRegion(Long region) {
+		this.id_region = region;
 	}
 
 	public Party getParty() {

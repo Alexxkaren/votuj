@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -31,8 +32,8 @@ public class MysqlVoteDao implements VoteDao {
 		if (vote.getDate() == null) {
 			throw new NullPointerException("Date can not be null");
 		}
-		if (vote.getRegion() == null) {
-			throw new NullPointerException("Region can not be null");
+		if (vote.getRegion() <= 0) {
+			throw new NullPointerException("Region can not be less or equal to 0");
 		}
 		if (vote.getParty() == null) {
 			throw new NullPointerException("Vote party can not be null");
@@ -46,15 +47,15 @@ public class MysqlVoteDao implements VoteDao {
 			Map<String, Object> values = new HashMap<>();
 			values.put("age", vote.getAge());
 			values.put("male", vote.isMale());
-			values.put("date", vote.getDate());
-			values.put("id_region", vote.getRegion().getId());
+			values.put("date", vote.getDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			values.put("id_region", vote.getRegion());
 			values.put("id_party", vote.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Vote(id, vote.getAge(), vote.isMale(), vote.getDate(), vote.getRegion(), vote.getParty());
 			// update
 		} else {
-			String sql = "UPDATE program SET age= ?, male= ?, date= ?, id_region= ?, id_party= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.isMale(),vote.getDate(),vote.getRegion().getId(),
+			String sql = "UPDATE vote SET age= ?, male= ?, date= ?, id_region= ?, id_party= ? " + "WHERE id = ? ";
+			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.isMale(),vote.getDate(),vote.getRegion(),
 					vote.getParty().getId(),vote.getId());
 			if (updated == 1) {
 				return vote;
@@ -63,7 +64,18 @@ public class MysqlVoteDao implements VoteDao {
 			}
 		}
 	}
-
+	
+	@Override
+	public boolean delete(Long id) throws ObjectUndeletableException{
+		int delete;
+		try {
+			delete = jdbcTemplate.update("DELETE FROM vote WHERE  id= " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new ObjectUndeletableException("Vote can not be deleted");
+		}
+		return delete == 1;
+	}
+	
 	@Override
 	public List<Vote> getByParty(Party party) {
 		String sql = "SELECT id, age, male, date, id_region, id_party FROM vote WHERE id_party = " + party.getId();
@@ -95,9 +107,9 @@ public class MysqlVoteDao implements VoteDao {
 			vote.setAge(rs.getInt("age"));
 			vote.setMale(rs.getBoolean("male"));
 			// TODO toto v teste treba skontrolovat ci dava dobre casy
-			vote.setDate(rs.getDate("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			vote.setDate(rs.getTimestamp("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			Region region = DaoFactory.INSTANCE.getRegionDao().getById(rs.getLong("id_region"));
-			vote.setRegion(region);
+			vote.setRegion(region.getId());
 			Party party = DaoFactory.INSTANCE.getPartyDao().getById(rs.getLong("id_party"));
 			vote.setParty(party);
 

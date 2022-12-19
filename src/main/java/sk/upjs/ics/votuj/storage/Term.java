@@ -63,8 +63,4 @@ public class Term {
 		Term other = (Term) obj;
 		return Objects.equals(id, other.id) && Objects.equals(since, other.since) && Objects.equals(to, other.to);
 	}
-	
-	
-
-	
 }

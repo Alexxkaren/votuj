@@ -33,7 +33,7 @@ public class MysqlPartyDao implements PartyDao {
 			throw new NullPointerException("Party name cannot be null");
 		}
 		if (party.getInfo() == null) {
-			throw new NullPointerException("Program info cannot be null");
+			throw new NullPointerException("Party info cannot be null");
 		}
 		// insert
 		if (party.getId() == null) {
@@ -46,8 +46,7 @@ public class MysqlPartyDao implements PartyDao {
 			values.put("info", party.getInfo());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Party(id, party.getName(), party.getInfo());
-			// update
-		} else {
+		} else {			// update
 			String sql = "UPDATE party SET name= ?, info=? " + "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, party.getName(), party.getInfo(), party.getId());
 			if (updated == 1) {
@@ -84,9 +83,6 @@ public class MysqlPartyDao implements PartyDao {
 			Party party = jdbcTemplate.queryForObject(sql, new PartyRowMapper());
 			return party;
 		} catch (EmptyResultDataAccessException e) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setContentText("Politicka strana s danym id" + id + " sa nenachadza v databaze");
-			alert.show();
 			throw new NoSuchElementException("party with id: " + id + "not in DB");
 		}
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

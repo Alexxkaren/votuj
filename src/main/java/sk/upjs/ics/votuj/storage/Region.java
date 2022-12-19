@@ -9,7 +9,6 @@ public class Region {
 	}
 
 	public Region(Long id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
 	}
