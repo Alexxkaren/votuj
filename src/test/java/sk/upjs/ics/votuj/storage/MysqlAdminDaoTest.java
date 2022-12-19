@@ -12,15 +12,15 @@ class MysqlAdminDaoTest {
 
 	private AdminDao adminDao;
 	private Admin savedAdmin;
-	
-	public MysqlAdminDaoTest() {	
+
+	public MysqlAdminDaoTest() {
 		DaoFactory.INSTANCE.setTesting();
 		adminDao = DaoFactory.INSTANCE.getAdminDao();
 	}
 
 	@BeforeEach
 	void setUp() throws Exception {
-		Admin admin = new Admin();		
+		Admin admin = new Admin();
 		admin.setName("Test admin");
 		admin.setPassword("Test admin passwd");
 		savedAdmin = adminDao.save(admin);
@@ -33,7 +33,8 @@ class MysqlAdminDaoTest {
 
 	@Test
 	void getByNameTest() {
-		
-		
+		Admin fromDB=adminDao.getByName(savedAdmin.getName());
+		assertNotNull(fromDB);
+		assertEquals(fromDB.getPassword(), savedAdmin.getPassword());
 	}
 }

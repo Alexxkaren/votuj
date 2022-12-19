@@ -45,7 +45,7 @@ class MysqlCategoryDaoTest {
 		assertEquals(category.getName(), saved.getName());
 		categoryDao.delete(saved.getId());
 		assertThrows(NullPointerException.class, () -> categoryDao.save(null), "Category cannot be null");
-		assertThrows(NullPointerException.class, () -> categoryDao.save(new Category((long) 0, null)),
+		assertThrows(NullPointerException.class, () -> categoryDao.save(new Category(null, null)),
 				"Category name cannot be null");
 
 	}

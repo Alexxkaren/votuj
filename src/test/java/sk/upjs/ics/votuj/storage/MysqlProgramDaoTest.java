@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,23 +17,27 @@ class MysqlProgramDaoTest {
 
 	private ProgramDao programDao;
 	private Program savedProgram;
+	private PartyDao partyDao;
+	private Party savedParty;
 	private TermDao termDao;
 	private Term savedTerm;
-	
+
 	public MysqlProgramDaoTest() {
 		DaoFactory.INSTANCE.setTesting();
 		programDao = DaoFactory.INSTANCE.getProgramDao();
 		termDao = DaoFactory.INSTANCE.getTermDao();
+		partyDao = DaoFactory.INSTANCE.getPartyDao();
 	}
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		Program program = new Program();
 		program.setName("Name");
-		program.setParty(new Party());
+		savedParty = partyDao.save(new Party(null, "1", "2"));
+		program.setParty(savedParty);
 		program.setIsActive(true);
 		program.setTerm(new Term());
-		savedTerm = termDao.save(new Term(null, 1,2));
+		savedTerm = termDao.save(new Term(null, 2022, 2023));
 		program.setTerm(savedTerm);
 		savedProgram = programDao.save(program);
 	}
@@ -47,7 +52,7 @@ class MysqlProgramDaoTest {
 	void insertTest() {
 		Program program = new Program();
 		program.setName("New category");
-		program.setParty(new Party());
+		program.setParty(savedParty);
 		program.setIsActive(false);
 		program.setTerm(savedTerm);
 		int size = programDao.getAll().size();
@@ -60,18 +65,22 @@ class MysqlProgramDaoTest {
 		assertEquals(program.getTerm().getId(), saved.getTerm().getId());
 		programDao.delete(saved.getId());
 		assertThrows(NullPointerException.class, () -> programDao.save(null), "Program cannot be null");
-		assertThrows(NullPointerException.class, () -> programDao.save(new Program((long) 0, "", null, false, null)),
+		assertThrows(NullPointerException.class, () -> programDao.save(new Program(null, null, null, false, null)),
 				"Program name cannot be null");
-		assertThrows(NullPointerException.class, () -> programDao.save(new Program((long) 0, "name", null, false, null)),
+		assertThrows(NullPointerException.class,
+				() -> programDao.save(new Program(null, "name", null, false, null)),
 				"Program party cannot be null");
-		assertThrows(NullPointerException.class, () -> programDao.save(new Program((long) 0, "name", new Party(), false, null)),
+		assertThrows(NullPointerException.class,
+				() -> programDao
+						.save(new Program(null, "name", new Party(), true, null)),
 				"Program term cannot be null");
-	}
 	
+	}
+
 	@Test
 	void updateTest() {
 		Program updated = new Program(savedProgram.getId(), savedProgram.getName(), savedProgram.getParty(),
-				savedProgram.isActive(),savedProgram.getTerm());
+				savedProgram.isActive(), savedProgram.getTerm());
 		int size = programDao.getAll().size();
 		programDao.save(updated);
 		assertEquals(size, programDao.getAll().size());
@@ -86,21 +95,16 @@ class MysqlProgramDaoTest {
 				"Program name cannot be null");
 		assertThrows(NullPointerException.class, () -> programDao.save(new Program((long) 1, "", null, false, null)),
 				"Program party cannot be null");
-		assertThrows(NullPointerException.class, () -> programDao.save(new Program((long) 1, "", new Party(), false, null)),
+		assertThrows(NullPointerException.class,
+				() -> programDao.save(new Program((long) 1, "", new Party(), false, null)),
 				"Program term cannot be null");
 	}
-	
+
 	/*
-	@Test
-	void getByPartyTest() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	void getByTermPartyTest() {
-		fail("Not yet implemented");
-	}
-	*/
+	 * @Test void getByPartyTest() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void getByTermPartyTest() { fail("Not yet implemented"); }
+	 */
 	@Test
 	void getByIdTest() {
 		Program fromDB = programDao.getById(savedProgram.getId());
@@ -109,7 +113,7 @@ class MysqlProgramDaoTest {
 		assertEquals(savedProgram.getParty().getId(), fromDB.getParty().getId());
 		assertEquals(savedProgram.isActive(), fromDB.isActive());
 		assertEquals(savedProgram.getTerm().getId(), fromDB.getTerm().getId());
-		assertThrows(NullPointerException.class, () -> programDao.getById(null));
+		assertThrows(EmptyResultDataAccessException.class, () -> programDao.getById(null));
 	}
 
 	@Test
