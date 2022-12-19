@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+
+
 public class MysqlCandidateDao implements CandidateDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -146,6 +148,12 @@ public class MysqlCandidateDao implements CandidateDao {
 
 	}
 	
+	@Override
+	public List<Candidate> getAll(){
+		String sql ="SELECT id, name, surname, candidate_number, info, id_party FROM candidate";
+		List<Candidate> list = jdbcTemplate.query(sql, new CandidateRowMapper());
+		return list;
+	}
 	
 
 	private class CandidateRowMapper implements RowMapper<Candidate> {

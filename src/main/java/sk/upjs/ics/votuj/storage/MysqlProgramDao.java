@@ -104,6 +104,13 @@ public class MysqlProgramDao implements ProgramDao {
 		return jdbcTemplate.queryForObject(sql, new ProgramRowMapper());
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
+	
+	@Override
+	public List<Program> getAll() {
+		String sql = "SELECT id, name, id_party, is_active, id_term FROM program";
+		List<Program> list = jdbcTemplate.query(sql, new ProgramRowMapper());
+		return list;
+	}
 
 	private class ProgramRowMapper implements RowMapper<Program> {
 
