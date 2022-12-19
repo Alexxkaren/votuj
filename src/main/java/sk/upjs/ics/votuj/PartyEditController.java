@@ -30,7 +30,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.upjs.ics.votuj.storage.Candidate;
-import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
 import sk.upjs.ics.votuj.storage.ObjectUndeletableException;
@@ -472,13 +471,76 @@ public class PartyEditController {
 
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
+		//List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+		//for (Program p : allPrograms) {
+			if (!programsModel.isEmpty()) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("V tomto volebnom období už existuje program, vyberte iné volebné obdobie alebo editujte existujúci program");
+				dialog = alert.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+				alert.show();
+				return;
+			}
+		//}
 		ProgramEditController controller = new ProgramEditController(party);
 		showProgramEdit(controller, "Pridávanie nového volebného programu");
 	}
 
 	@FXML
 	void deleteProgramButtonClick(ActionEvent event) {
-		// TODO
+		Alert alert = new Alert(AlertType.ERROR);
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+
+		boolean successful = false;
+		Program program = programsListView.getSelectionModel().getSelectedItem();
+		List<Program> programs = new ArrayList<>();
+		if (program != null) {
+			try {
+				Alert alertW = new Alert(AlertType.WARNING);
+				alertW.setTitle("Upozornenie!");
+				alertW.setHeaderText("Potvrdenie vymazania");
+				alertW.setContentText("Program " + program.getName() + " strany "+ program.getParty() + " za obdobie "+ program.getTerm() + " bude vamazaný. Naozaj chcete vymazať?");
+				ButtonType btDelete = new ButtonType("Vymazať");
+				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+
+				alertW.getButtonTypes().setAll(btDelete, btCancel);
+
+				dialog = alertW.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+
+				Optional<ButtonType> result = alertW.showAndWait();
+				if (result.get() == btDelete) {
+					successful = DaoFactory.INSTANCE.getProgramDao().delete(program.getId());
+					programsModel.clear();
+					programs = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+					programsModel.addAll(programs);
+					programsListView.setItems(programsModel);
+				}
+
+			} catch (ObjectUndeletableException e) {
+				alert.setContentText("Snažíte sa vymazať program, ktoré je má body a obdobie");
+				alert.show();
+				e.printStackTrace();
+				return;
+
+			}
+		} else {
+			alert.setContentText("Žiaden program nie je vybraný na vymazanie");
+			alert.show();
+			return;
+		}
+
+		if (successful) {
+			programsModel.clear();
+			programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
+			programsModel.addAll(programs);
+			programsListView.setItems(programsModel);
+		}
+
 	}
 
 	@FXML
@@ -503,7 +565,9 @@ public class PartyEditController {
 	void showProgramEdit(ProgramEditController controller, String sceneName) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("programEdit.fxml"));
+			List<Program> programs = new ArrayList<>();
 			fxmlLoader.setController(controller);
+			
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
@@ -516,6 +580,14 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
+			
+			if (controller.getSavedProgram() != null) {
+				programsModel.clear();
+				programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(), party);
+				programsModel.addAll(programs);
+				programsListView.setItems(programsModel);
+				
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

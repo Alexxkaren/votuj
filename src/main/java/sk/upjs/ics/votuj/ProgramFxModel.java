@@ -23,9 +23,15 @@ public class ProgramFxModel {
 	private ObservableList<Item> items;
 	
 	
+	public ProgramFxModel(Party party, Term term) {
+		this.party = party;
+		this.term = term;
+
+	}
+	
 	public ProgramFxModel(Party party) {
 		this.party = party;
-
+		
 	}
 
 	public ProgramFxModel(Program program, Party party) {
@@ -34,8 +40,11 @@ public class ProgramFxModel {
 		setName(program.getName());
 		setIsActive(program.isActive());
 		setParty(party);
-		setTerm(term);
-		setItems(items);
+		setTerm(program.getTerm());
+		/*if (items!=null) {
+			setItems(items);
+		}*/
+		
 	}
 	
 	public Long getId() {
@@ -102,8 +111,10 @@ public class ProgramFxModel {
 	}
 	
 	public Program getProgram() {
+		//return new Program(id, getName(), getParty(), getIsActive(),getTerm(), getItems());
 		return new Program(id, getName(), getParty(), getIsActive(),getTerm());
-	//POROZMYSLAJ CI TAM NETREBA KU TOMU KONSTRUKTORU PROGRAMU PRIDAT AJ 
+		
+		//POROZMYSLAJ CI TAM NETREBA KU TOMU KONSTRUKTORU PROGRAMU PRIDAT AJ 
 		//LIST ITEMOV
 	}
 

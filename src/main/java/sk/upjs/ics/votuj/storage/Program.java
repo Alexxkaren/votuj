@@ -24,6 +24,17 @@ public class Program {
 		this.isActive = is_active;
 		this.term = term;
 	}
+	
+	public Program(Long id, String name, Party party, boolean is_active, Term term, List<Item> items) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.party = party;
+		this.isActive = is_active;
+		this.term = term;
+		this.items = items;
+	}
+
 
 	public Long getId() {
 		return id;

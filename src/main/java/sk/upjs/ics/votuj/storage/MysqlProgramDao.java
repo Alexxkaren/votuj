@@ -43,12 +43,13 @@ public class MysqlProgramDao implements ProgramDao {
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", program.getName());
 			values.put("id_party", program.getParty().getId());
-			values.put("id_active", program.isActive()); 
+			values.put("is_active", program.isActive()); 
 			values.put("id_term", program.getTerm().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Program(id, program.getName(), program.getParty(),program.isActive(), program.getTerm());
 			// update
 		} else {
+			System.out.println("update programu na:" + program.getName() +","+ program.getId() +","+program.getParty()+","+program.isActive()+","+program.getTerm());
 			String sql = "UPDATE program SET name= ?, id_party= ?, is_active= ?, id_term= ? " + "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, program.getName(),program.getParty().getId(),program.isActive(),
 					program.getTerm().getId(),program.getId());

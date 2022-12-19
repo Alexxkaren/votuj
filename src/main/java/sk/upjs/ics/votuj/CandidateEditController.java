@@ -82,7 +82,6 @@ public class CandidateEditController {
 		candidateTermComboBox.setItems(termsModel);
 		if (candidate!=null) {
 			listOfSelectedTerms = DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
-			
 		} else {
 			listOfSelectedTerms.add(this.term);
 		}

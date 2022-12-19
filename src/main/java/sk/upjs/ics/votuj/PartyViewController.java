@@ -136,7 +136,7 @@ public class PartyViewController {
 		if (list_p.size() != 0) {
 			programFxModel = new ProgramFxModel(list_p.get(0), party);
 		} else {
-			programFxModel = new ProgramFxModel(party);
+			programFxModel = new ProgramFxModel(party, termWatched);
 		}
 		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
 	}
