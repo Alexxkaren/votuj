@@ -148,6 +148,13 @@ public class CandidateEditController {
 		dialog.getStyleClass().add("dialog");
 
 		Candidate candidate = candidateFxModel.getCandidate();
+		//candidate.setParty(this.party);
+		System.out.println("UKLADAM KANDIDATA TOHTO:");
+		System.out.println(candidate.toString());
+		System.out.println("DO STRANY TEJTO");
+		System.out.println(candidateFxModel.getParty().toString());
+		System.out.println(this.party.toString());
+		
 		List<Term> termss = listOfSelectedTerms;
 
 		if (candidate.getName() == null) {
@@ -180,10 +187,6 @@ public class CandidateEditController {
 			if (candidate != null) {
 				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
 				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
-
-				// mam term a mam kadidata - potrebujem ho ulozit do term_has_candidate
-				System.out.println("sa uložil!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				System.out.println("jeho meno: " + savedCandidate.getName());
 
 			}
 		} catch (NoSuchElementException e) {

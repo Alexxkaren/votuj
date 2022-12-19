@@ -22,7 +22,7 @@ public class MysqlItemDao implements ItemDao {
 	}
 
 	@Override
-	public Item save(Item item)throws NoSuchElementException,NullPointerException {
+	public Item save(Item item, List<Category> categoriess)throws NoSuchElementException,NullPointerException {
 		if (item == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -46,12 +46,32 @@ public class MysqlItemDao implements ItemDao {
 			values.put("info", item.getInfo());
 			values.put("id_program", item.getProgram().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Item(id, item.getName(), item.getInfo(), item.getProgram());
+			Item item2 = new Item(id, item.getName(), item.getInfo(), item.getProgram(), categoriess);
+			saveCategories(item2);
+			return item2;
 			// update
 		} else {
-			String sql = "UPDATE item SET name= ?, info= ?, id_program = ?" + "WHERE id = ? ";
+			System.out.println(item.toString());
+			System.out.println("UPDATED Item HAS THIS categories:");
+			System.out.println(item.getCategories().toString());
+			System.out.println("I ADD CURRENT");
+			for (Category c : categoriess) {
+				if (!item.getCategories().contains(c)) {
+					item.getCategories().add(c);
+				}
+			}
+			System.out.println("RESULT:");
+			System.out.println(item.getCategories().toString());
+			
+			String sql = "UPDATE item SET name= ?, info= ?, id_program = ? " + " WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, item.getName(), item.getInfo(), item.getProgram().getId(), item.getId());
 			if (updated == 1) {
+				String sqlDelete = "DELETE from item_has_category " 
+						+ "WHERE id_item= " + item.getId();
+				jdbcTemplate.update(sqlDelete);
+				saveCategories(item);
+				System.out.println("UPDATOVANE KATEGORE");
+				System.out.println(item.getCategories().toString());
 				return item;
 			} else {
 				throw new NoSuchElementException("item with id: " + item.getId() + " not in DB.");
@@ -59,10 +79,29 @@ public class MysqlItemDao implements ItemDao {
 		}
 	}
 
+	private void saveCategories(Item item) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT INTO item_has_category (id_item, id_category) VALUES ");
+		for (Category category : item.getCategories()) {
+			if (category==null || category.getId()==null) {
+				throw new NullPointerException("Item has category that has null id or is null");
+			}
+			sb.append("(").append(item.getId());
+			sb.append(",").append(category.getId());
+			sb.append("),");
+		}
+		System.out.println(sb.toString());
+		String sql = sb.substring(0,sb.length()-1);
+		System.out.println(sql);
+		jdbcTemplate.update(sql);
+		
+	}
+
 	@Override
 	public boolean delete(Long id)throws ObjectUndeletableException {
 		int delete;
 		try {
+			jdbcTemplate.update("DELETE FROM item_has_category WHERE  id_item= " + id);
 			delete = jdbcTemplate.update("DELETE FROM item WHERE  id= " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Item can not be deleted");
