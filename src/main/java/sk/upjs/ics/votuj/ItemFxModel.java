@@ -12,6 +12,7 @@ import sk.upjs.ics.votuj.storage.Category;
 import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
 import sk.upjs.ics.votuj.storage.Program;
+import sk.upjs.ics.votuj.storage.Term;
 
 public class ItemFxModel {
 
@@ -33,8 +34,12 @@ public class ItemFxModel {
 		setName(item.getName());
 		setInfo(item.getInfo());
 		setProgram(program);
+		
+		
+		
 		List<Category> list_c = DaoFactory.INSTANCE.getCategoryDao().getByItem(item);
-		categories = FXCollections.observableArrayList(list_c);
+		this.categories = FXCollections.observableArrayList(list_c);
+		setCategories(categories);
 	}
 	
 	
@@ -77,10 +82,10 @@ public class ItemFxModel {
 		this.info.set(info);
 	}
 
-	private Program getProgram() {
+	public Program getProgram() {
 		return program;
 	}
-	private void setProgram(Program program) {
+	public void setProgram(Program program) {
 		this.program = program;
 		
 	}

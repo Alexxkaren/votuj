@@ -89,7 +89,7 @@ public class PartyEditController {
 		termsModel = FXCollections.observableArrayList(terms);
 		termsComboBox.setItems(termsModel);
 		termsComboBox.getSelectionModel().selectFirst();
-		/////////////////////////pridane
+		///////////////////////// pridane
 		termWatched = termsComboBox.getSelectionModel().getSelectedItem();
 
 		List<Program> list_p = new ArrayList<>();
@@ -285,15 +285,17 @@ public class PartyEditController {
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
 		Party lokParty = null;
-		if (savedParty!=null) {
+		if (savedParty != null) {
 			lokParty = savedParty;
 		} else {
-			lokParty = party;	
+			lokParty = party;
 		}
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
-		System.out.println("SA SPRAVIL CANDIDAT EDIT CONTROLLER PRE ADD");
-		System.out.println(savedParty);
-		System.out.println(lokParty.toString()); //JA TU POSIELAM NULL PARTY
+		/*
+		 * System.out.println("SA SPRAVIL CANDIDAT EDIT CONTROLLER PRE ADD");
+		 * System.out.println(savedParty); System.out.println(lokParty.toString()); //JA
+		 * TU POSIELAM NULL PARTY
+		 */
 		CandidateEditController controller = new CandidateEditController(lokParty, term);
 		showCandidateEdit(controller, "Pridávanie nového kandidáta");
 		// TU alert netreba party bude furt vybrana
@@ -302,10 +304,10 @@ public class PartyEditController {
 	@FXML
 	void editCandidateButtonClick(ActionEvent event) {
 		Party lokParty = null;
-		if (savedParty!=null) {
+		if (savedParty != null) {
 			lokParty = savedParty;
 		} else {
-			lokParty = party;	
+			lokParty = party;
 		}
 		Candidate candidate = candidatesListView.getSelectionModel().getSelectedItem();
 		if (candidate != null) {
@@ -343,9 +345,9 @@ public class PartyEditController {
 				Alert alertW = new Alert(AlertType.WARNING);
 				alertW.setTitle("Upozornenie!");
 				alertW.setHeaderText("Potvrdenie vymazania");
-				alertW.setContentText(
-						"Kandidát " + candidate.getName() + " " + candidate.getSurname() + " s volebným číslom "
-								+ candidate.getCandidateNumber() +" a s id: " + candidate.getId() + " bude vymazaný. Naozaj ho chcete vymazať?");
+				alertW.setContentText("Kandidát " + candidate.getName() + " " + candidate.getSurname()
+						+ " s volebným číslom " + candidate.getCandidateNumber() + " a s id: " + candidate.getId()
+						+ " bude vymazaný. Naozaj ho chcete vymazať?");
 				ButtonType btDelete = new ButtonType("Vymazať");
 				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
 
@@ -408,14 +410,15 @@ public class PartyEditController {
 
 			if (controller.getSavedCandidate() != null) {
 				Party lokParty = null;
-				if (savedParty!=null) {
+				if (savedParty != null) {
 					lokParty = savedParty;
 				} else {
-					lokParty = party;	
+					lokParty = party;
 				}
-				
+
 				candidatesModel.clear();
-				List<Candidate> candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(lokParty, termWatched);
+				List<Candidate> candidates = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(lokParty,
+						termWatched);
 				candidatesModel.addAll(candidates);
 				candidatesListView.setItems(candidatesModel);
 				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
@@ -449,7 +452,66 @@ public class PartyEditController {
 
 	@FXML
 	void deleteItemButtonClick(ActionEvent event) {
-		// TODO
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+
+		boolean successful = false;
+		Item item = itemsTableView.getSelectionModel().getSelectedItem();
+		List<Item> items = new ArrayList<>();
+
+		if (item != null) {
+			try {
+				Alert alertW = new Alert(AlertType.WARNING);
+				alertW.setTitle("Upozornenie!");
+				alertW.setHeaderText("Potvrdenie vymazania");
+				alertW.setContentText("Bod programu s názvom: " + item.getName() + " a s id " + item.getId()
+						+ "bude vymazaný. Chcete skutočne vymazať?");
+				ButtonType btDelete = new ButtonType("Vymazať");
+				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
+
+				alertW.getButtonTypes().setAll(btDelete, btCancel);
+
+				dialog = alertW.getDialogPane();
+				dialog.getStylesheets().add(css);
+				dialog.getStyleClass().add("dialog");
+
+				Optional<ButtonType> result = alertW.showAndWait();
+				if (result.get() == btDelete) {
+					successful = DaoFactory.INSTANCE.getItemDao().delete(item.getId());
+					itemsModel.clear();
+					// idk ze ktore z tych dvoch
+					items = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, party);
+					// items =
+					// DaoFactory.INSTANCE.getItemDao().getByProgram(programsListView.getSelectionModel().getSelectedItem());
+					itemsModel.addAll(items);
+					itemsTableView.setItems(itemsModel);
+				}
+
+			} catch (ObjectUndeletableException e) {
+				alert.setContentText("Snažíte sa vymazať bod, ktorý už je používaný");
+				alert.show();
+				e.printStackTrace();
+				return;
+
+			}
+		} else {
+			alert.setContentText("Žiaden bod nie je vybraný na vymazanie");
+			alert.show();
+			return;
+		}
+
+		if (successful) {
+			itemsModel.clear();
+			// idk ze ktore z tych dvoch
+			items = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, party);
+			// items =
+			// DaoFactory.INSTANCE.getItemDao().getByProgram(programsListView.getSelectionModel().getSelectedItem());
+			itemsModel.addAll(items);
+			itemsTableView.setItems(itemsModel);
+		}
 	}
 
 	@FXML
@@ -458,6 +520,8 @@ public class PartyEditController {
 		if (item != null) {
 			ItemEditController controller = new ItemEditController(item,
 					programsListView.getSelectionModel().getSelectedItem());
+			// ItemEditController controller = new ItemEditController(item,
+			// programsModel.get(0));
 			showItemEdit(controller, "Editovanie bodu volebného programu");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -488,6 +552,23 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
+
+			if (controller.getSavedItem() != null) {
+				Party lokParty = null;
+				if (savedParty != null) {
+					lokParty = savedParty;
+				} else {
+					lokParty = party;
+				}
+
+				itemsModel.clear();
+				List<Item> items = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, lokParty);
+				itemsModel.addAll(items);
+				itemsTableView.setItems(itemsModel);
+				System.out.println("SAAAAAAAAAAAAAaa TOOOOOOOOOOOO UPDATLO TU");
+				System.out.println(items.toString());
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -497,18 +578,20 @@ public class PartyEditController {
 
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
-		//List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		//for (Program p : allPrograms) {
-			if (!programsModel.isEmpty()) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("V tomto volebnom období už existuje program, vyberte iné volebné obdobie alebo editujte existujúci program");
-				dialog = alert.getDialogPane();
-				dialog.getStylesheets().add(css);
-				dialog.getStyleClass().add("dialog");
-				alert.show();
-				return;
-			}
-		//}
+		// List<Program> allPrograms =
+		// DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+		// for (Program p : allPrograms) {
+		if (!programsModel.isEmpty()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText(
+					"V tomto volebnom období už existuje program, vyberte iné volebné obdobie alebo editujte existujúci program");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+		}
+		// }
 		ProgramEditController controller = new ProgramEditController(party);
 		showProgramEdit(controller, "Pridávanie nového volebného programu");
 	}
@@ -528,7 +611,8 @@ public class PartyEditController {
 				Alert alertW = new Alert(AlertType.WARNING);
 				alertW.setTitle("Upozornenie!");
 				alertW.setHeaderText("Potvrdenie vymazania");
-				alertW.setContentText("Program " + program.getName() + " strany "+ program.getParty() + " za obdobie "+ program.getTerm() + " bude vamazaný. Naozaj chcete vymazať?");
+				alertW.setContentText("Program " + program.getName() + " strany " + program.getParty() + " za obdobie "
+						+ program.getTerm() + " bude vamazaný. Naozaj chcete vymazať?");
 				ButtonType btDelete = new ButtonType("Vymazať");
 				ButtonType btCancel = new ButtonType("Zrušiť", ButtonData.CANCEL_CLOSE);
 
@@ -593,7 +677,7 @@ public class PartyEditController {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("programEdit.fxml"));
 			List<Program> programs = new ArrayList<>();
 			fxmlLoader.setController(controller);
-			
+
 			Parent parent = fxmlLoader.load();
 			Scene scene = new Scene(parent);
 			stage = new Stage();
@@ -606,13 +690,14 @@ public class PartyEditController {
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
-			
+
 			if (controller.getSavedProgram() != null) {
 				programsModel.clear();
-				programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(), party);
+				programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
+						party);
 				programsModel.addAll(programs);
 				programsListView.setItems(programsModel);
-				
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -620,7 +705,6 @@ public class PartyEditController {
 	}
 
 	////////////////////////////////////////////////
-	
 
 	@FXML
 	void savePartyButtonClick(ActionEvent event) {
@@ -629,32 +713,32 @@ public class PartyEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		
+
 		Party party = partyFxModel.getParty();
-		if(party.getName()==null || party.getName().equals("")) {
+		if (party.getName() == null || party.getName().equals("")) {
 			alert.setContentText("Názov strany musí byť vyplnený, prosím doplňte.");
 			alert.show();
 			return;
 		}
-		if(party.getInfo()==null || party.getInfo().equals("")) {
+		if (party.getInfo() == null || party.getInfo().equals("")) {
 			alert.setContentText("Info strany musí byť vyplnené, prosím doplňte.");
 			alert.show();
 			return;
 		}
-		
+
 		Long foreignId = null;
 		List<Party> allParties = DaoFactory.INSTANCE.getPartyDao().getAll();
 		for (Party p : allParties) {
-			if (p.getName().equals(party.getName()) ) {
+			if (p.getName().equals(party.getName())) {
 				foreignId = p.getId();
 				alert.setContentText("Strana s takým názvom už v databáze existuje s id: " + foreignId);
 				alert.show();
 				return;
 			}
 		}
-		
+
 		try {
-			if(party!=null) {
+			if (party != null) {
 				System.out.println("Idem spravit save party");
 				System.out.println(party.toString());
 				savedParty = DaoFactory.INSTANCE.getPartyDao().save(party);
@@ -666,8 +750,8 @@ public class PartyEditController {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		
-		//partyInfoTextArea.getScene().getWindow().hide();
+
+		// partyInfoTextArea.getScene().getWindow().hide();
 
 	}
 

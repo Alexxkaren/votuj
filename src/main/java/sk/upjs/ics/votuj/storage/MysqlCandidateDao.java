@@ -105,7 +105,7 @@ public class MysqlCandidateDao implements CandidateDao {
 		sb.append("INSERT INTO candidate_has_term (id_candidate, id_term) VALUES ");
 		for (Term term : candidate.getTerms()) {
 			if (term==null || term.getId()==null) {
-				throw new NullPointerException("Candidate has term that is null id of term or is null");
+				throw new NullPointerException("Candidate has term that has null id of term or is null");
 			}
 			sb.append("(").append(candidate.getId());
 			sb.append(",").append(term.getId());

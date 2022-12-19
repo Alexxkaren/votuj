@@ -188,10 +188,6 @@ public class CandidateEditController {
 				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
 				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
 
-				// mam term a mam kadidata - potrebujem ho ulozit do term_has_candidate
-				System.out.println("sa uložil!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				System.out.println("jeho meno: " + savedCandidate.getName());
-
 			}
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();

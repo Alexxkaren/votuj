@@ -3,6 +3,7 @@ package sk.upjs.ics.votuj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -35,6 +36,7 @@ public class ItemEditController {
 	// TO DO DO BUDUCNA -- AK budeme mat cas tak poupratvat duplicitny a triplicitny
 	// kod do samostatnych metod!!
 	private Program program;
+	private Item savedItem;
 	private Item item;
 	private ItemFxModel itemFxModel;
 	private ObservableList<Category> categoriesModel;
@@ -78,8 +80,17 @@ public class ItemEditController {
 		List<Category> categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
 		categoriesModel = FXCollections.observableArrayList(categories);
 		itemCategoryComboBox.setItems(categoriesModel);
+		
+		if (item!=null) {
+			System.out.println("tento item.get cat je problem:");
+			System.out.println(item.toString());
+			System.out.println(item.getCategories().toString());
+			listOfSelectedCategories = item.getCategories();
+		} else {
+			//listOfSelectedCategories ;
+		}
 
-		listOfSelectedCategories = item.getCategories();
+		//listOfSelectedCategories = item.getCategories();
 		selectedCategoriesModel.setAll(listOfSelectedCategories);
 		selectedCategoriesListView.setItems(selectedCategoriesModel);
 
@@ -256,7 +267,67 @@ public class ItemEditController {
 
 	@FXML
 	void saveItemButtonClick(ActionEvent event) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Upozornenie!");
+		dialog = alert.getDialogPane();
+		dialog.getStylesheets().add(css);
+		dialog.getStyleClass().add("dialog");
+		//System.out.println("PRVEEE:        " + item.toString());
+		Item item = itemFxModel.getItem();
+		//System.out.println("DRUHE:        " + item.toString());
+		item.setCategories(listOfSelectedCategories);
+		//System.out.println("TRETIE:        " + item.toString());
+		
+		System.out.println("UKLADAM ITEM TENTO:");
+		System.out.println(item.toString());
+		System.out.println("DO Programu TOHTO");
+		//System.out.println(itemFxModel.getProgram().toString());
+		//System.out.println(this.program.toString());
+		System.out.println(item.getProgram());
+		
+		List<Category> categoriess = listOfSelectedCategories;
+		
+		if (item.getName() == null || item.getName().equals("")) {
+			alert.setContentText("Názov musí byť vyplnené, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		if (item.getInfo() == null || item.getInfo().equals("")) {
+			alert.setContentText("Info musí byť vyplnené, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		if (item.getProgram() == null) {
+			alert.setContentText("Program musí byť vyplnený, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		if (categoriess.isEmpty()) {
+			alert.setContentText("Nejaká kategória musí byť medzi vybranými, prosím doplňte.");
+			alert.show();
+			return;
+		}
+		
+		try {
+			if (item!=null) {
+				System.out.println("posielam takyto item:");
+				System.out.println(item.toString());
+				System.out.println("s takymi to kategoriami:");
+				System.out.println(categoriess.toString());
+				savedItem = DaoFactory.INSTANCE.getItemDao().save(item, categoriess);
+				System.out.println("sa uložil ITEMMM!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				System.out.println("jeho meno: " + savedItem.getName());
+			}
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		itemNameTextField.getScene().getWindow().hide();
+	}
 
+	public Item getSavedItem() {
+		return this.savedItem;
 	}
 
 }
