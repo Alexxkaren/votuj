@@ -187,6 +187,7 @@ public class CandidateEditController {
 		try {
 			if (candidate != null) {
 				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
+				candidate.setTerms(termss);
 				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
 
 			}

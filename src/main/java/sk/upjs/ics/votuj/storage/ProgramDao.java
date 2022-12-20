@@ -15,4 +15,6 @@ public interface ProgramDao {
 	
 	Program getById(Long id); // NAIMPLEMENTOVANE
 
+	List<Program> getAll();
+
 }

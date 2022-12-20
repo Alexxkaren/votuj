@@ -56,7 +56,7 @@ public class MysqlVoteDao implements VoteDao {
 			// update
 		} else {
 			String sql = "UPDATE vote SET age= ?, male= ?, date= ?, id_region= ?, id_party= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.getMale(),vote.getDate(),vote.getRegion(),
+			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.getMale(),vote.getDate(),vote.getRegion().getId(),
 					vote.getParty().getId(),vote.getId());
 			if (updated == 1) {
 				return vote;

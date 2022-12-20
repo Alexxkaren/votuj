@@ -13,7 +13,8 @@ public interface CandidateDao {
 	List<Candidate> getByTermParty(Party party, Term term); //NAIMPLEMENTOVANE
 	
 	Candidate getById(Long id); //NAIMPLEMENTOVANE
-
+	
+	List<Candidate> getAll(); //NAIMPLEMENTOVANE
 
 	Candidate save(Candidate candidate, List<Term> terms) throws NoSuchElementException, NullPointerException;
 

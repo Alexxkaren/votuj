@@ -72,13 +72,15 @@ class MysqlVoteDaoTest {
 		assertEquals(vote.getParty().getId(), saved.getParty().getId());
 		partyDao.delete(saved.getId());
 		assertThrows(NullPointerException.class, () -> voteDao.save(null), "Vote cannot be null");
-		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 0, null, false, null, null, null)),
+		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote(null, null, false, null, null, null)),
 				"Age cannot be null");
 		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 0, "1", false, null, null, null)),
+	
 				"Date cannot be null");
 		assertThrows(NullPointerException.class,
 				() -> voteDao.save(new Vote((long) 0, "1", false, LocalDateTime.now(), null, null)),
 				"Region cannot be null");
+	
 		assertThrows(NullPointerException.class,
 				() -> voteDao.save(new Vote((long) 0, "1", false, LocalDateTime.now(), savedRegion, null)),
 				"Party cannot be null");
@@ -97,7 +99,7 @@ class MysqlVoteDaoTest {
 		assertEquals(updated.getAge(), fromDB.getAge());
 		assertEquals(updated.getMale(), fromDB.getMale());
 		// assertEquals(updated.getDate(), fromDB.getDate()); //not yet working
-		assertEquals(updated.getRegion(), fromDB.getRegion());
+		assertEquals(updated.getRegion().getId(), fromDB.getRegion().getId());
 		assertEquals(updated.getParty().getId(), fromDB.getParty().getId());
 		assertThrows(NullPointerException.class, () -> voteDao.save(null), "Vote cannot be null");
 		assertThrows(NullPointerException.class, () -> voteDao.save(new Vote((long) 1, null, false, null, null, null)),
@@ -128,7 +130,7 @@ class MysqlVoteDaoTest {
 		assertEquals(savedVote.getAge(), fromDB.getAge());
 		assertEquals(savedVote.getMale(), fromDB.getMale());
 	//	assertEquals(savedVote.getDate(), fromDB.getDate()); //not yet working
-		assertEquals(savedVote.getRegion(), fromDB.getRegion());
+		assertEquals(savedVote.getRegion().getId(), fromDB.getRegion().getId());
 		assertEquals(savedVote.getParty(), fromDB.getParty());
 		assertThrows(EmptyResultDataAccessException.class, () -> voteDao.getById(null));
 	}

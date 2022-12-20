@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 
+
 public class MysqlItemDao implements ItemDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -172,6 +173,14 @@ public class MysqlItemDao implements ItemDao {
 		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
+	
+	@Override
+	public List<Item> getAll() {
+		String sql = "SELECT id, name, info, id_program FROM item ";
+		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
+		return list;
+	}
+
 
 	private class ItemRowMapper implements RowMapper<Item> {
 

@@ -12,33 +12,29 @@ class MysqlAdminDaoTest {
 
 	private AdminDao adminDao;
 	private Admin savedAdmin;
-	
-	public MysqlAdminDaoTest() {	
+
+	public MysqlAdminDaoTest() {
 		DaoFactory.INSTANCE.setTesting();
 		adminDao = DaoFactory.INSTANCE.getAdminDao();
 	}
 
 	@BeforeEach
 	void setUp() throws Exception {
-		Admin admin = new Admin();		
+		Admin admin = new Admin();
 		admin.setName("Test admin");
 		admin.setPassword("Test admin passwd");
-		
+		savedAdmin = adminDao.save(admin);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		adminDao.delete(savedAdmin.getId());
 	}
 
 	@Test
 	void getByNameTest() {
-		
-		
+		Admin fromDB=adminDao.getByName(savedAdmin.getName());
+		assertNotNull(fromDB);
+		assertEquals(fromDB.getPassword(), savedAdmin.getPassword());
 	}
-
-	/*Subject fromDb = subjectDao.getById(savedSubject.getId());
-	assertEquals(savedSubject.getId(), fromDb.getId());
-	assertEquals(savedSubject.getName(), fromDb.getName());
-	
-	assertThrows(NoSuchElementException.class,()->subjectDao.getById(-1));*/
 }

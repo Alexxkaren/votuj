@@ -81,6 +81,10 @@ CREATE TABLE IF NOT EXISTS `votuj_test`.`candidate` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+use votuj_test;
+ALTER TABLE candidate DROP FOREIGN KEY `fk_candidate_party1`;
+Alter table candidate  add constraint `fk_candidate_party1` foreign key (`id_party`) references `votuj_test`.`party` (`id`)
+ON DELETE cascade;
 
 -- -----------------------------------------------------
 -- Table `votuj_test`.`term`

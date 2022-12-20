@@ -20,4 +20,6 @@ public interface ItemDao {
 	List<Item> getByTermParty(Term term, Party party); // NAIMPLEMENTOVANE
 
 	List<Item> getByTermPartyCategory(Term term, Party party, Category category); // NAIMPLEMENTOVANE
+
+	List<Item> getAll(); // NAIMPLEMENTOVANE
 }
