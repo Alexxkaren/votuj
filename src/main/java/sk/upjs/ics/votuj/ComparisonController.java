@@ -36,8 +36,8 @@ import sk.upjs.ics.votuj.storage.Vote;
 public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 
 	private Vote vote;
-	private Map<Category, BooleanProperty> inheritedCategories;
-	private Map<Party, BooleanProperty> inheritedParties;
+	//private Map<Category, BooleanProperty> inheritedCategories;
+	//private Map<Party, BooleanProperty> inheritedParties;
 	private List<Category> selectedCategories;
 	private List<Party> selectedParties;
 	private ObservableList<Party> partiesModel;
@@ -54,15 +54,22 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 
 	@FXML
 	private ComboBox<Party> choosePartyComboBox;
-
+	/*
 	public ComparisonController(Vote vote, Map<Category, BooleanProperty> cats, Map<Party, BooleanProperty> parts) {
 		this.vote = vote;
 		this.inheritedCategories = cats;
 		this.inheritedParties = parts;
+	}*/
+	
+	public ComparisonController(Vote vote, List<Category> cats, List<Party> parts) {
+		this.vote = vote;
+		this.selectedCategories = cats;
+		this.selectedParties = parts;
 	}
 
 	@FXML
 	void initialize() {
+		/*
 		selectedCategories = new ArrayList<>();
 		selectedParties = new ArrayList<>();
 
@@ -76,14 +83,22 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			if (inheritedParties.get(key).get()) {
 				selectedParties.add(key);
 			}
-		}
+		}*/
 
 		List<Party> parties = selectedParties;
 		partiesModel = FXCollections.observableArrayList(parties);
 		choosePartyComboBox.setItems(partiesModel);
 		choosePartyComboBox.getSelectionModel().selectFirst();
 		partyWatched = choosePartyComboBox.getSelectionModel().getSelectedItem();
-
+		
+		activeProgram = null;
+		List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(partyWatched);
+		for (Program p : allPrograms) {
+			if (p.isActive()) {
+				activeProgram = p;
+			}
+		}
+		
 		choosePartyComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Party>() {
 			@Override
 			public void changed(ObservableValue<? extends Party> observable, Party oldValue, Party newValue) {
@@ -94,6 +109,31 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			}
 		});
 
+
+		if (partyWatched!=null) {
+			TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
+			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+			itemTableView.getColumns().add(categoryColumn);
+
+			TableColumn<Item, String> itemColumn = new TableColumn<>("Bod");
+			itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
+			itemTableView.getColumns().add(itemColumn);
+
+			Party party = choosePartyComboBox.getSelectionModel().getSelectedItem();
+			List<Item> list_i = new ArrayList<>();
+			if (party != null) {
+				for (Category c : selectedCategories) {
+					list_i.addAll(DaoFactory.INSTANCE.getItemDao().getByProgramCategory(activeProgram, c));
+				}
+			}
+			
+			itemsModel = FXCollections.observableArrayList(list_i);
+			itemTableView.setItems(itemsModel);
+		}
+	}
+
+	void updateItemTableView(Party party) {
+		
 		activeProgram = null;
 		List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(partyWatched);
 		for (Program p : allPrograms) {
@@ -102,31 +142,12 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			}
 		}
 
-		TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
-		categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
-		itemTableView.getColumns().add(categoryColumn);
-
-		TableColumn<Item, String> itemColumn = new TableColumn<>("Bod");
-		itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
-		itemTableView.getColumns().add(itemColumn);
-
-		Party party = choosePartyComboBox.getSelectionModel().getSelectedItem();
-		List<Item> list_i = new ArrayList<>();
-		if (party != null) {
-			for (Category c : selectedCategories) {
-				list_i.addAll(DaoFactory.INSTANCE.getItemDao().getByProgramCategory(activeProgram, c));
-			}
-		}
-		itemsModel = FXCollections.observableArrayList(list_i);
-		itemTableView.setItems(itemsModel);
-	}
-
-	void updateItemTableView(Party party) {
-
 		List<Item> list_i = new ArrayList<>();
 		if (partyWatched != null && activeProgram != null) {
 			for (Category c : selectedCategories) {
 				list_i.addAll(DaoFactory.INSTANCE.getItemDao().getByProgramCategory(activeProgram, c));
+				System.out.println("List kategorii a bodov vybranej strany:");
+				System.out.println(list_i.toString());
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -137,6 +158,7 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			alert.setContentText("Nie je vybraná strana alebo strana nemá aktívny politický program");
 			alert.show();
 		}
+		itemsModel.clear();
 		itemsModel.setAll(list_i);
 		itemTableView.setItems(itemsModel);
 

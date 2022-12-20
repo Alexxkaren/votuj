@@ -7,7 +7,7 @@ public class Vote {
 	private Long id;
 	//private Integer age;
 	private String age;////////////////////////
-	private boolean male;
+	private Boolean male;
 	private LocalDateTime date;
 	private Region region;
 	private Party party;
@@ -24,7 +24,7 @@ public class Vote {
 		this.party = party;
 	}
 
-	public Vote(Long id, String age, boolean male, LocalDateTime date, Region region, Party party) {
+	public Vote(Long id, String age, Boolean male, LocalDateTime date, Region region, Party party) {
 		this.id = id;
 		this.age = age;
 		this.male = male;
@@ -32,7 +32,7 @@ public class Vote {
 		this.region = region;
 		this.party = party;
 	}
-	public Vote(Long id, String age, boolean male, LocalDateTime date, Region region) {
+	public Vote(Long id, String age, Boolean male, LocalDateTime date, Region region) {
 		this.id = id;
 		this.age = age;
 		this.male = male;
@@ -56,11 +56,11 @@ public class Vote {
 		this.age = age;
 	}
 
-	public boolean getMale() {
+	public Boolean getMale() {
 		return male;
 	}
 
-	public void setMale(boolean male) {
+	public void setMale(Boolean male) {
 		this.male = male;
 	}
 

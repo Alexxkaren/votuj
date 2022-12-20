@@ -75,11 +75,11 @@ public class VoteFxModel {
 		return male;
 	}
 
-	public boolean getMale() {
+	public Boolean getMale() {
 		return male.get();
 	}
 	
-	public void setMale(boolean male) {
+	public void setMale(Boolean male) {
 		this.male.set(male);
 		
 	}

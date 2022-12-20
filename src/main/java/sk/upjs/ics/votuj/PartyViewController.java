@@ -70,21 +70,34 @@ public class PartyViewController {
 	@FXML
 	void initialize() {
 		namePartyLabel.setText(party.getName());
+		
 		partyInfoTextArea.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
 		partyTermComboBox.setItems(termsModel);
 		partyTermComboBox.getSelectionModel().selectFirst();
+		termWatched = partyTermComboBox.getSelectionModel().getSelectedItem();
 
-		// TUUUUUUUUUUUUUU pri smere v druho terme sa zobrazuje dajaky drist idk preco
+		
+		List<Program> list_p = new ArrayList<>();
+		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
+		System.out.println(list_p.toString());
+		if (list_p.size() != 0 && list_p.get(0).isActive()) {
+			programFxModel = new ProgramFxModel(list_p.get(0), party);
+		} else {
+			programFxModel = new ProgramFxModel(party, termWatched);
+		}
+		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
+		
+		/*
 		List<Program> list = DaoFactory.INSTANCE.getProgramDao()
 				.getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
 		if (list.size() != 0) {
 			programNameLabel.setText(list.get(0).getName());// tu get name
 		} else {
 			programNameLabel.setText("žiaden program");
-		}
+		}*/
 
 		if (party != null) {
 			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party,
@@ -126,6 +139,8 @@ public class PartyViewController {
 		itemsTableView.setItems(itemsModel);
 
 	}
+	
+	
 
 	private void updateItemsTableView(Term termWatched) {
 		List<Item> list_i = new ArrayList<>();
@@ -137,7 +152,8 @@ public class PartyViewController {
 	private void updateProgramNameLabel(Term termWatched) {
 		List<Program> list_p = new ArrayList<>();
 		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
-		if (list_p.size() != 0) {
+		System.out.println(list_p.toString());
+		if (list_p.size() != 0 && list_p.get(0).isActive()) {
 			programFxModel = new ProgramFxModel(list_p.get(0), party);
 		} else {
 			programFxModel = new ProgramFxModel(party, termWatched);

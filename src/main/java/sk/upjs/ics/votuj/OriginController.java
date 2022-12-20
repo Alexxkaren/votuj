@@ -43,7 +43,7 @@ public class OriginController {
 	private Region chosenRegion;
 	private ObservableList<Region> regionsModel;
 	Locale l = new Locale("UK");
-	private boolean maleB;
+	private Boolean maleB;
 
 	private Stage stage;
 	private DialogPane dialog;
@@ -72,6 +72,7 @@ public class OriginController {
 	void initialize() {
 		logger.debug("initialize running");
 		ageTextField.textProperty().bindBidirectional(voteFxModel.getAgeProperty());
+		maleB = null;
 
 		List<Region> regions = DaoFactory.INSTANCE.getRegionDao().getAll();
 		regionsModel = FXCollections.observableArrayList(regions);
@@ -115,6 +116,7 @@ public class OriginController {
 
 		Vote voteLocal = voteFxModel.getVote();
 		voteLocal.setRegion(chosenRegion);	
+		voteLocal.setMale(maleB);
 
 		if (voteLocal.getRegion() == null) {
 			alert.setContentText("Región musí byť vybraný");
@@ -131,11 +133,15 @@ public class OriginController {
 			alert.show();
 			return;
 		}
+		if(voteLocal.getMale()==null) {
+			alert.setContentText("Pohlavie musí byť vyplnené");
+			alert.show();
+			return;
+		}
 
 		LocalDateTime now = LocalDateTime.now();
 		voteLocal.setDate(now);
 
-		voteLocal.setMale(maleB);
 
 		ChoiceController controller = new ChoiceController(voteLocal);
 		showNextWindow(controller, "Výber kategórí a strán", "choice.fxml");
@@ -151,6 +157,7 @@ public class OriginController {
 
 		Vote voteLocal = voteFxModel.getVote();
 		voteLocal.setRegion(chosenRegion);	
+		voteLocal.setMale(maleB);
 
 		if (voteLocal.getRegion() == null) {
 			alert.setContentText("Región musí byť vybraný");
@@ -164,6 +171,11 @@ public class OriginController {
 		}
 		if (Integer.parseInt(voteLocal.getAge()) < 18) {
 			alert.setContentText("Na vypĺňanie prieskumu musíte mať viac ako 18 rokov");
+			alert.show();
+			return;
+		}
+		if(voteLocal.getMale()==null) {
+			alert.setContentText("Pohlavie musí byť vyplnené");
 			alert.show();
 			return;
 		}
