@@ -159,7 +159,7 @@ public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 	@FXML
 	void allInfoButtonClick(ActionEvent event) {
 		if (partyWatched != null) {
-			PartyViewController controller = new PartyViewController(partyWatched);
+			PartyViewController controller = new PartyViewController(partyWatched, true);
 			showNextWindow(controller, "Náhľad politickej strany", "partyView.fxml");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);

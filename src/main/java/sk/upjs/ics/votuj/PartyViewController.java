@@ -43,6 +43,7 @@ public class PartyViewController {
 	private ObservableList<Candidate> candidatesModel;
 	private Term termWatched;
 	private Stage stage;
+	private boolean user;
 
 	@FXML
 	private ListView<Candidate> candidatesListView;
@@ -62,7 +63,10 @@ public class PartyViewController {
 	@FXML
 	private Label programNameLabel;
 
-	public PartyViewController(Party party) {
+	public PartyViewController(Party party, boolean user) {
+		System.out.println("UUUUUUUUUUUUUSEEEEEEEEEEEEEEERRRRRRRRRRRr");
+		System.out.println(user);
+		this.user = user;
 		this.party = party;
 		partyFxModel = new PartyFxModel(party);
 	}
@@ -79,23 +83,39 @@ public class PartyViewController {
 		partyTermComboBox.getSelectionModel().selectFirst();
 		termWatched = partyTermComboBox.getSelectionModel().getSelectedItem();
 
-		List<Program> list_p = new ArrayList<>();
-		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
-		System.out.println(list_p.toString());
-		if (list_p.size() != 0 && list_p.get(0).isActive()) {
-			programFxModel = new ProgramFxModel(list_p.get(0), party);
+		if (user) {
+			Program chosen = null;
+			List<Program> list_p = new ArrayList<>();
+			list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
+			System.out.println(list_p.toString());
+			for (Program p : list_p) {
+				if (p.isActive()) {
+					chosen = p;
+				}
+			}
+			if (list_p.size() != 0 && chosen != null) {
+				programFxModel = new ProgramFxModel(chosen, party);
+			} else {
+				programFxModel = new ProgramFxModel(party, termWatched);
+			}
+			programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
 		} else {
-			programFxModel = new ProgramFxModel(party, termWatched);
-		}
-		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
 
-		/*
-		 * List<Program> list = DaoFactory.INSTANCE.getProgramDao()
-		 * .getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(),
-		 * party); if (list.size() != 0) {
-		 * programNameLabel.setText(list.get(0).getName());// tu get name } else {
-		 * programNameLabel.setText("žiaden program"); }
-		 */
+			List<Program> list = DaoFactory.INSTANCE.getProgramDao()
+					.getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
+			if (list.size() != 0) {
+				String ac = "";
+				if(list.get(0).isActive()) {
+					ac = "Aktívny";
+				} else {
+					ac = "Neaktívny";
+				}
+				programNameLabel.setText(list.get(0).getName() +" "+ ac);
+			} else {
+				programNameLabel.setText("žiaden program");
+			}
+
+		}
 
 		if (party != null) {
 			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party,
@@ -146,6 +166,24 @@ public class PartyViewController {
 	}
 
 	private void updateProgramNameLabel(Term termWatched) {
+		if (!user) {
+						
+			List<Program> list = DaoFactory.INSTANCE.getProgramDao()
+					.getByTermParty(termWatched, party);
+			
+			if (list.size() != 0) {
+				String ac = "";
+				if(list.get(0).isActive()) {
+					ac = "Aktívny";
+				} else {
+					ac = "Neaktívny";
+				}
+				programNameLabel.setText(list.get(0).getName() + " " + ac);
+			} else {
+				programNameLabel.setText("žiaden program");
+			}
+		}
+		/*
 		List<Program> list_p = new ArrayList<>();
 		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
 		System.out.println(list_p.toString());
@@ -155,6 +193,7 @@ public class PartyViewController {
 			programFxModel = new ProgramFxModel(party, termWatched);
 		}
 		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
+	*/
 	}
 
 	private void updateCandidatesListView(Term termWatched) {

@@ -55,7 +55,7 @@ public class PartyOriginController {
 			if (partiesComboBox.getSelectionModel().getSelectedItem() != null) {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyView.fxml"));
 				Party party = partiesComboBox.getSelectionModel().getSelectedItem();
-				PartyViewController controller = new PartyViewController(party);
+				PartyViewController controller = new PartyViewController(party, false);
 				fxmlLoader.setController(controller);
 				Parent parent = fxmlLoader.load();
 				Scene scene = new Scene(parent);
