@@ -165,7 +165,7 @@ public class PartyEditController {
 			list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(term, party);
 		}
 		itemsModel.setAll(list_i);
-
+		itemsTableView.setItems(itemsModel);
 	}
 
 ///////////////////////////////////////////////////////////////////////
@@ -375,7 +375,7 @@ public class PartyEditController {
 				//////////////////// CO SEM?
 				alert.setContentText("Snažíte sa vymazať kandidáta ktorý už je používaný");
 				alert.show();
-				e.printStackTrace();
+				//e.printStackTrace();
 				return;
 
 			}
