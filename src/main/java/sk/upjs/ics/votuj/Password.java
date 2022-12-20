@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.codec.Hex;
 
 public class Password {
+	//zdroj: ocs.spring.io/spring-security/site/docs/current/api/org/springframework/security/crypto/bcrypt/BCrypt.html
+	//pouzite: .gensalt(), .hashpw(), .matches()
 	
 	public String createPassword(String passwordTemp) {
 		BCrypt bc = new BCrypt();
