@@ -32,8 +32,8 @@ public class CandidateEditController {
 	private CandidateFxModel candidateFxModel;
 	private ObservableList<Term> termsModel;
 	private ObservableList<Candidate> candidatesModel;
-	private List<Term> listOfSelectedTerms = new ArrayList<>();
-	private ObservableList<Term> selectedTermsModel = FXCollections.observableArrayList(new ArrayList<Term>());
+	private List<Term> listOfSelectedTerms;
+	private ObservableList<Term> selectedTermsModel;
 
 	private DialogPane dialog;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
@@ -71,11 +71,15 @@ public class CandidateEditController {
 
 	@FXML
 	void initialize() {
+		selectedTermsModel = FXCollections.observableArrayList(new ArrayList<Term>());
+		
 		candidateNameTextField.textProperty().bindBidirectional(candidateFxModel.getNameProperty());
 		candidateNumberTextField.textProperty().bindBidirectional(candidateFxModel.getCandidateNumberProperty());
 		candidateSurnameTextField.textProperty().bindBidirectional(candidateFxModel.getSurnameProperty());
 		candidateInfoTextArea.textProperty().bindBidirectional(candidateFxModel.getInfoProperty());
 		selectedTermsListView.setItems(selectedTermsModel);
+		
+		listOfSelectedTerms = new ArrayList<>();
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
@@ -175,18 +179,20 @@ public class CandidateEditController {
 			alert.show();
 			return;
 		}
+		
+		
 		if (termss.isEmpty()) {
 			alert.setContentText("Kandidát musí mať aspoň 1 volebné obdobie");
 			alert.show();
 			return;
 		}
 
-		try {
-			if (candidate != null) {
+		try { //&& !listOfSelectedTerms.isEmpty()
+			if (candidate != null ) {
 				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
 				candidate.setTerms(termss);
 				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
-
+	
 			}
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();

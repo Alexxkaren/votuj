@@ -22,7 +22,7 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	@Override
-	public Candidate save(Candidate candidate, List<Term> termss) throws NoSuchElementException, NullPointerException {
+	public Candidate save(Candidate candidate, List<Term> termss) throws NoSuchElementException, NullPointerException, RuntimeException {
 		if (candidate == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -100,13 +100,20 @@ public class MysqlCandidateDao implements CandidateDao {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO candidate_has_term (id_candidate, id_term) VALUES ");
+		
+		if (candidate.getTerms().isEmpty()) {
+			throw new NullPointerException("Candidate doesnt have any term");
+		}
+		
 		for (Term term : candidate.getTerms()) {
 			if (term == null || term.getId() == null) {
 				throw new NullPointerException("Candidate has term that has null id of term or is null");
-			}
+			} 
+			
 			sb.append("(").append(candidate.getId());
 			sb.append(",").append(term.getId());
 			sb.append("),");
+			
 		}
 		System.out.println(sb.toString());
 		String sql = sb.substring(0, sb.length() - 1);
@@ -119,12 +126,8 @@ public class MysqlCandidateDao implements CandidateDao {
 		int delete;
 		int termsdeleted;
 		try {
-			System.out.println("sa ide zmazat prepajacka  ______________________________________-");
-			termsdeleted = jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id
-								+ " ");
-			System.out.println("sa zmazala prepajacka "+ termsdeleted+" ______________________________________-");
-			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id + " ");
-			System.out.println("sa zmazal kandidat "+delete+"___________________________________-");
+			termsdeleted = jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id);
+			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id );
 			
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Some party has this candidate.Candidate can not be deleted");
