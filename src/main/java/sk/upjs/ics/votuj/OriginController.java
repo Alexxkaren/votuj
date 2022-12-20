@@ -129,6 +129,11 @@ public class OriginController {
 			alert.show();
 			return;
 		}
+		if (Integer.parseInt(voteLocal.getAge() )> 165) {
+			alert.setContentText("Vek je príliš vysoký.");
+			alert.show();
+			return;
+		}
 		if (Integer.parseInt(voteLocal.getAge()) < 18) {
 			alert.setContentText("Na vypĺňanie prieskumu musíte mať viac ako 18 rokov");
 			alert.show();

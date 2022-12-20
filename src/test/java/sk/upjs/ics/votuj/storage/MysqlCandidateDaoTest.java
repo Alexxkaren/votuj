@@ -140,31 +140,34 @@ class MysqlCandidateDaoTest {
 
 	}
 
-	/*
-	 * @Test void getByTermPartyTest() { Party smer = new Party(null,"Smer-SD",
-	 * "Info"); Party olano = new Party(null,"OLANO","Info");
-	 * smer=partyDao.save(smer); olano=partyDao.save(olano);
-	 * 
-	 * Candidate Fico = new Candidate(null, "Robert", "Fico", "1",
-	 * "Nasobny premier", smer); Candidate Blaha = new Candidate(null, "Lubos",
-	 * "Blaha", "2", "Konspirator", smer); Candidate Matovic = new Candidate(null,
-	 * "Igor", "Matovic", "3", "Sulik nenakupil testy", olano);
-	 * 
-	 * List<Term> terms = new ArrayList<>(); terms.add(savedTerm);
-	 * candidateDao.save(Fico, terms); candidateDao.save(Blaha, terms);
-	 * candidateDao.save(Matovic, terms);
-	 * 
-	 * List<Candidate> smerResult = candidateDao.getByTermParty(smer, savedTerm);
-	 * assertEquals(2, smerResult.size()); List<Candidate> olanoResult =
-	 * candidateDao.getByTermParty(olano, savedTerm); assertEquals(1,
-	 * olanoResult.size());
-	 * 
-	 * 
-	 * candidateDao.delete(Fico.getId()); candidateDao.delete(Blaha.getId());
-	 * candidateDao.delete(Matovic.getId()); partyDao.delete(smer.getId());
-	 * partyDao.delete(olano.getId()); }
-	 * 
-	 */
+//	@Test
+//	void getByTermPartyTest() {
+//		Party smer = new Party(null, "Smer-SD", "Info");
+//		Party olano = new Party(null, "OLANO", "Info");
+//		smer = partyDao.save(smer);
+//		olano = partyDao.save(olano);
+//
+//		Candidate Fico = new Candidate(null, "Robert", "Fico", "1", "Nasobny premier", smer);
+//		Candidate Blaha = new Candidate(null, "Lubos", "Blaha", "2", "Konspirator", smer);
+//		Candidate Matovic = new Candidate(null, "Igor", "Matovic", "3", "Sulik nenakupil testy", olano);
+//
+//		List<Term> terms = new ArrayList<>();
+//		terms.add(savedTerm);
+//		candidateDao.save(Fico, terms);
+//		candidateDao.save(Blaha, terms);
+//		candidateDao.save(Matovic, terms);
+//
+//		List<Candidate> smerResult = candidateDao.getByTermParty(smer, savedTerm);
+//		assertEquals(2, smerResult.size());
+//		List<Candidate> olanoResult = candidateDao.getByTermParty(olano, savedTerm);
+//		assertEquals(1, olanoResult.size());
+//
+//		candidateDao.delete(Fico.getId());
+//		candidateDao.delete(Blaha.getId());
+//		candidateDao.delete(Matovic.getId());
+//		partyDao.delete(smer.getId());
+//		partyDao.delete(olano.getId());
+//	}
 
 	@Test
 	void getByIdTest() {

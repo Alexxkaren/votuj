@@ -65,9 +65,7 @@ public class MysqlCandidateDao implements CandidateDao {
 			return candidate2;
 			// update
 		} else {
-			System.out.println("UPDATED CANDIDATE HAS THIS TERMS:");
-			System.out.println(candidate.getTerms().toString());
-			System.out.println("I ADD CURRENT");
+
 			// System.out.println(candidate.getTerms().addAll(termss));
 			/*
 			 * povodne for (Term t : termss) { if (!candidate.getTerms().contains(t)) {
@@ -119,9 +117,15 @@ public class MysqlCandidateDao implements CandidateDao {
 	@Override
 	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
+		int termsdeleted;
 		try {
-			jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id);
-			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id);
+			System.out.println("sa ide zmazat prepajacka  ______________________________________-");
+			termsdeleted = jdbcTemplate.update("DELETE FROM candidate_has_term WHERE  id_candidate= " + id
+								+ " ");
+			System.out.println("sa zmazala prepajacka "+ termsdeleted+" ______________________________________-");
+			delete = jdbcTemplate.update("DELETE FROM candidate WHERE  id= " + id + " ");
+			System.out.println("sa zmazal kandidat "+delete+"___________________________________-");
+			
 		} catch (DataIntegrityViolationException e) {
 			throw new ObjectUndeletableException("Some party has this candidate.Candidate can not be deleted");
 		}

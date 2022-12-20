@@ -175,6 +175,11 @@ public class CandidateEditController {
 			alert.show();
 			return;
 		}
+		if (termss.isEmpty()) {
+			alert.setContentText("Kandidát musí mať aspoň 1 volebné obdobie");
+			alert.show();
+			return;
+		}
 
 		try {
 			if (candidate != null) {

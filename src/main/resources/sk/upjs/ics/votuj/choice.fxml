@@ -11,8 +11,8 @@
       <FlowPane fx:id="partyPane" layoutX="40.0" layoutY="265.0" orientation="VERTICAL" prefHeight="162.0" prefWidth="378.0" />
       <Label layoutX="40.0" layoutY="36.0" prefHeight="18.0" prefWidth="234.0" text="Zaujímajú ma kategórie" />
       <Label layoutX="40.0" layoutY="241.0" prefHeight="18.0" prefWidth="322.0" text="Zaujímajú ma strany" />
-      <Button layoutX="431.0" layoutY="442.0" mnemonicParsing="false" onAction="#filtrationButtonClick" text="Filtruj" />
-      <Button layoutX="431.0" layoutY="132.0" mnemonicParsing="false" onAction="#allCategoriesButtonClick" text="Vybrať všetky" />
-      <Button layoutX="433.0" layoutY="310.0" mnemonicParsing="false" onAction="#allPartiesButtonClick" text="Vybrať všetky" />
+      <Button layoutX="418.0" layoutY="427.0" mnemonicParsing="false" onAction="#filtrationButtonClick" prefHeight="40.0" prefWidth="100.0" text="Filtruj" />
+      <Button layoutX="418.0" layoutY="118.0" mnemonicParsing="false" onAction="#allCategoriesButtonClick" prefHeight="40.0" prefWidth="100.0" text="Vybrať všetky" />
+      <Button layoutX="418.0" layoutY="312.0" mnemonicParsing="false" onAction="#allPartiesButtonClick" prefHeight="40.0" prefWidth="100.0" text="Vybrať všetky" />
    </children>
 </AnchorPane>

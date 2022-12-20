@@ -38,6 +38,7 @@ public class ProgramEditController {
 	private ObservableList<Item> itemsModel;
 	private ObservableList<Term> termsModel;
 	private BooleanProperty isActiveModel;
+	private Boolean toBeSaved;
 	private DialogPane dialog;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
@@ -72,6 +73,7 @@ public class ProgramEditController {
 
 	@FXML
 	void initialize() {
+		toBeSaved = null;
 		allPrograms = new ArrayList<>();
 		programNameTextField.textProperty().bindBidirectional(programFxModel.getNameProperty());
 		isActiveModel = programFxModel.getIsActiveProperty();
@@ -174,8 +176,11 @@ public class ProgramEditController {
 	void changeOfActive(ActionEvent event) {
 		if (program != null) {
 			program.setIsActive(activeCheckBox.isSelected());
-		} else {
+		} 
+		if (savedProgram!=null){
 			savedProgram.setIsActive(activeCheckBox.isSelected());
+		} else {
+			toBeSaved = activeCheckBox.isSelected();
 		}
 	}
 
@@ -225,7 +230,11 @@ public class ProgramEditController {
 
 			}
 		}
-
+		
+		if (toBeSaved!=null) {
+			program.setIsActive(toBeSaved);
+		}
+		
 		try {
 			if (program != null) {
 				savedProgram = DaoFactory.INSTANCE.getProgramDao().save(program);

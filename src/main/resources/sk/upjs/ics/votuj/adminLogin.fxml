@@ -13,7 +13,7 @@
       <Label layoutX="88.0" layoutY="143.0" prefHeight="18.0" prefWidth="136.0" text="meno" />
       <Label layoutX="88.0" layoutY="291.0" prefHeight="18.0" prefWidth="136.0" text="heslo" />
       <TextField fx:id="loginNameTextField" layoutX="121.0" layoutY="196.0" prefHeight="26.0" prefWidth="243.0" />
-      <Button layoutX="497.0" layoutY="497.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="43.0" prefWidth="90.0" text="Vstúpiť" />
+      <Button layoutX="497.0" layoutY="506.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="40.0" prefWidth="90.0" text="Vstúpiť" />
       <PasswordField fx:id="passwordTextField" layoutX="121.0" layoutY="338.0" prefHeight="26.0" prefWidth="243.0" />
       <ImageView fitHeight="85.0" fitWidth="266.0" layoutX="88.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
          <image>

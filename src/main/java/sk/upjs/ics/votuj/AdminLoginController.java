@@ -1,6 +1,7 @@
 package sk.upjs.ics.votuj;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,7 +39,20 @@ public class AdminLoginController {
 		passwordTextField.clear();
 
 		AdminDao adminDao = DaoFactory.INSTANCE.getAdminDao();
-		Admin admin = adminDao.getByName(loginName);
+		Admin admin;
+		try {
+			admin = adminDao.getByName(loginName);
+		} catch (NoSuchElementException e1) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Zadané meno je nesprávne. Skontrolujte svoje prihlasovacie meno a heslo");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
+			alert.show();
+			return;
+			
+		
+		}
 		Password p = new Password();
 		if (p.isCorrect(admin.getPassword(),loginPassword)) {
 			PartyOriginController controller = new PartyOriginController();
@@ -64,7 +78,7 @@ public class AdminLoginController {
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Zadane heslo je nespravne. Skontrolujte svoje prihlasovacie meno a heslo");
+			alert.setContentText("Zadané heslo je nesprávne. Skontrolujte svoje prihlasovacie meno a heslo");
 			dialog = alert.getDialogPane();
 			dialog.getStylesheets().add(css);
 			dialog.getStyleClass().add("dialog");

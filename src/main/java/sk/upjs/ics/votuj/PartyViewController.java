@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -44,6 +45,9 @@ public class PartyViewController {
 	private Term termWatched;
 	private Stage stage;
 	private boolean user;
+
+	private DialogPane dialog;
+	String css = this.getClass().getResource("votuj.css").toExternalForm();
 
 	@FXML
 	private ListView<Candidate> candidatesListView;
@@ -213,8 +217,12 @@ public class PartyViewController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Žiaden kandidát nie je vybraný, vyberte prosím kandidáta");
+			dialog = alert.getDialogPane();
+			dialog.getStylesheets().add(css);
+			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
+
 		}
 
 	}
@@ -227,7 +235,6 @@ public class PartyViewController {
 			Scene scene = new Scene(parent);
 			stage = new Stage();
 
-			String css = this.getClass().getResource("votuj.css").toExternalForm();
 			scene.getStylesheets().add(css);
 			Image icon = new Image("single_logo.png");
 			stage.getIcons().add(icon);

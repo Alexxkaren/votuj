@@ -45,9 +45,6 @@ public class MysqlAdminDao implements AdminDao {
 
 			});
 		} catch (EmptyResultDataAccessException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Zadane meno je nespravne. Skontrolujte svoje prihlasovacie meno a heslo");
-			alert.show();
 			throw new NoSuchElementException("Admin with login name: " + name + "not in DB");
 		}
 	}

@@ -61,7 +61,7 @@ public class TermEditController {
 			alert.show();
 			return;
 		}
-
+ 
 		Long foreignId = null;
 		List<Term> allTerms = DaoFactory.INSTANCE.getTermDao().getAll();
 		for (Term t : allTerms) {
@@ -79,13 +79,13 @@ public class TermEditController {
 				return;
 			}
 
-			if (x > y) {
+			if ((x > y )) {
 				alert.setContentText("Pokúšate sa pridať také obdobie, ktoré sa končí skôr ako sa začína ");
 				alert.show();
 				return;
 			}
 
-			if (((x < a) && (y > a)) || ((x < b) && (y > b)) || ((x >= a) && (y <= b))) {
+			if ((((x < a) && (y > a)) || ((x < b) && (y > b)) || ((x >= a) && (y <= b))) && !t.equals(this.term)){
 				foreignId = t.getId();
 				alert.setContentText("Pokúšate sa pridať také obdobie, ktoré sa prekrýva s obdobím v databáze: "
 						+ t.getSince() + " - " + t.getTo());

@@ -8,23 +8,23 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="53.0" layoutY="31.0" prefHeight="18.0" prefWidth="67.0" text="Meno" />
-      <Label layoutX="42.0" layoutY="99.0" prefHeight="18.0" prefWidth="99.0" text="Priezvisko" />
-      <Label layoutX="50.0" layoutY="179.0" prefHeight="18.0" prefWidth="83.0" text="Obdobie" />
-      <Label layoutX="50.0" layoutY="140.0" prefHeight="18.0" prefWidth="60.0" text="Číslo" />
+      <Label layoutX="45.0" layoutY="30.0" prefHeight="18.0" prefWidth="67.0" text="Meno" />
+      <Label layoutX="45.0" layoutY="89.0" prefHeight="18.0" prefWidth="99.0" text="Priezvisko" />
+      <Label layoutX="46.0" layoutY="214.0" prefHeight="18.0" prefWidth="99.0" text="Obdobie" />
+      <Label layoutX="45.0" layoutY="158.0" prefHeight="18.0" prefWidth="60.0" text="Číslo" />
       <Label layoutX="54.0" layoutY="313.0" />
-      <Label layoutX="58.0" layoutY="338.0" prefHeight="18.0" prefWidth="43.0" text="Info" />
-      <TextField fx:id="candidateNameTextField" layoutX="174.0" layoutY="36.0" prefHeight="26.0" prefWidth="273.0" />
-      <TextField fx:id="candidateSurnameTextField" layoutX="174.0" layoutY="95.0" prefHeight="26.0" prefWidth="274.0" />
-      <TextField fx:id="candidateNumberTextField" layoutX="174.0" layoutY="145.0" prefHeight="26.0" prefWidth="306.0" />
-      <Button layoutX="465.0" layoutY="443.0" mnemonicParsing="false" onAction="#saveCandidateButtonClick" text="Uložiť" />
-      <TextArea fx:id="candidateInfoTextArea" layoutX="105.0" layoutY="363.0" prefHeight="79.0" prefWidth="382.0" />
-      <ComboBox fx:id="candidateTermComboBox" layoutX="174.0" layoutY="197.0" prefHeight="26.0" prefWidth="306.0" />
-      <Label layoutX="46.0" layoutY="250.0" text="Vybrané obdobie" />
-      <ListView fx:id="selectedTermsListView" layoutX="105.0" layoutY="271.0" prefHeight="67.0" prefWidth="250.0" />
-      <Button layoutX="369.0" layoutY="268.0" mnemonicParsing="false" onAction="#addTermButtonClick" prefHeight="26.0" prefWidth="167.0" text="Pridať medzi vybrané" />
-      <Button layoutX="369.0" layoutY="309.0" mnemonicParsing="false" onAction="#deleteAddedTermButtonClick" prefHeight="26.0" prefWidth="167.0" text="Odstrániť z vybraných" />
+      <Label layoutX="65.0" layoutY="395.0" prefHeight="18.0" prefWidth="60.0" text="Info" />
+      <TextField fx:id="candidateNameTextField" layoutX="174.0" layoutY="49.0" prefHeight="26.0" prefWidth="306.0" />
+      <TextField fx:id="candidateSurnameTextField" layoutX="176.0" layoutY="115.0" prefHeight="26.0" prefWidth="306.0" />
+      <TextField fx:id="candidateNumberTextField" layoutX="178.0" layoutY="177.0" prefHeight="26.0" prefWidth="306.0" />
+      <Button layoutX="517.0" layoutY="527.0" mnemonicParsing="false" onAction="#saveCandidateButtonClick" prefHeight="40.0" prefWidth="90.0" text="Uložiť" />
+      <TextArea fx:id="candidateInfoTextArea" layoutX="110.0" layoutY="429.0" prefHeight="79.0" prefWidth="382.0" />
+      <ComboBox fx:id="candidateTermComboBox" layoutX="110.0" layoutY="243.0" prefHeight="26.0" prefWidth="306.0" />
+      <Label layoutX="57.0" layoutY="291.0" prefHeight="18.0" prefWidth="188.0" text="Vybrané obdobie" />
+      <ListView fx:id="selectedTermsListView" layoutX="110.0" layoutY="320.0" prefHeight="67.0" prefWidth="250.0" />
+      <Button layoutX="397.0" layoutY="317.0" mnemonicParsing="false" onAction="#addTermButtonClick" prefHeight="26.0" prefWidth="209.0" text="Pridať medzi vybrané" />
+      <Button layoutX="396.0" layoutY="360.0" mnemonicParsing="false" onAction="#deleteAddedTermButtonClick" prefHeight="26.0" prefWidth="210.0" text="Odstrániť z vybraných" />
    </children>
 </AnchorPane>

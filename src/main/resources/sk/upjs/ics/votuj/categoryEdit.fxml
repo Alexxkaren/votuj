@@ -7,8 +7,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="36.0" layoutY="76.0" text="Názov" />
-      <Button layoutX="232.0" layoutY="233.0" mnemonicParsing="false" onAction="#saveCategoryButtonClick" prefHeight="26.0" prefWidth="80.0" text="Uložiť" />
+      <Label layoutX="36.0" layoutY="76.0" prefHeight="18.0" prefWidth="108.0" text="Názov" />
+      <Button layoutX="210.0" layoutY="212.0" mnemonicParsing="false" onAction="#saveCategoryButtonClick" prefHeight="40.0" prefWidth="90.0" text="Uložiť" />
       <TextField fx:id="categoryNameTextField" layoutX="70.0" layoutY="110.0" prefHeight="26.0" prefWidth="242.0" />
    </children>
 </AnchorPane>
