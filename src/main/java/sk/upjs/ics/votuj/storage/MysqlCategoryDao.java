@@ -21,7 +21,7 @@ public class MysqlCategoryDao implements CategoryDao {
 	}
 
 	@Override
-	public Category save(Category category) throws NoSuchElementException,NullPointerException{
+	public Category save(Category category) throws NoSuchElementException, NullPointerException {
 		if (category == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -68,14 +68,12 @@ public class MysqlCategoryDao implements CategoryDao {
 				+ "WHERE ihc.id_item = " + item.getId();
 		List<Category> list = jdbcTemplate.query(sql, new CategoryRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	@Override
 	public Category getById(Long id) {
 		String sql = "SELECT id, name FROM category WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new CategoryRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
 
@@ -84,7 +82,7 @@ public class MysqlCategoryDao implements CategoryDao {
 		String sql = "SELECT id, name FROM category";
 		List<Category> list = jdbcTemplate.query(sql, new CategoryRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	private class CategoryRowMapper implements RowMapper<Category> {

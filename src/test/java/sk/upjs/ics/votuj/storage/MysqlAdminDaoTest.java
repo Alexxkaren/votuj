@@ -33,7 +33,7 @@ class MysqlAdminDaoTest {
 
 	@Test
 	void getByNameTest() {
-		Admin fromDB=adminDao.getByName(savedAdmin.getName());
+		Admin fromDB = adminDao.getByName(savedAdmin.getName());
 		assertNotNull(fromDB);
 		assertEquals(fromDB.getPassword(), savedAdmin.getPassword());
 	}

@@ -52,7 +52,7 @@ public class ChoiceController {
 	void initialize() {
 		selectedCategoriesList = new ArrayList<>();
 		selectedPartiesList = new ArrayList<>();
-		
+
 		for (Entry<Category, BooleanProperty> pair : categoryFxModel.getCategories().entrySet()) {
 			CheckBox checkBox = new CheckBox(pair.getKey().toString()); // to tring da rovno id meno aj priezvisko
 			checkBox.selectedProperty().bindBidirectional(pair.getValue());
@@ -87,35 +87,37 @@ public class ChoiceController {
 	void filtrationButtonClick(ActionEvent event) {
 		selectedCategories = categoryFxModel.getCategories();
 		selectedParties = partyFxModel.getParties();
-		
+
 		for (Category key : selectedCategories.keySet()) {
 			if (selectedCategories.get(key).get()) {
 				selectedCategoriesList.add(key);
 			}
 		}
-		
+
 		for (Party key : selectedParties.keySet()) {
 			if (selectedParties.get(key).get()) {
 				selectedPartiesList.add(key);
 			}
 		}
-		
+
 		System.out.println(selectedCategoriesList);
 		System.out.println(selectedPartiesList);
-		
-		if(selectedCategoriesList.size()==0 || selectedPartiesList.size()==0) {
+
+		if (selectedCategoriesList.size() == 0 || selectedPartiesList.size() == 0) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Žiadna volebná strana nebola vybraná alebo žiadna kategória nebola vybraná. Urobte výber.");
+			alert.setContentText(
+					"Žiadna volebná strana nebola vybraná alebo žiadna kategória nebola vybraná. Urobte výber.");
 			dialog = alert.getDialogPane();
 			dialog.getStylesheets().add(css);
 			dialog.getStyleClass().add("dialog");
 			alert.show();
 			return;
 		}
-		
-		//ComparisonController controller = new ComparisonController(vote, selectedCategories, selectedParties);
+
+		// ComparisonController controller = new ComparisonController(vote,
+		// selectedCategories, selectedParties);
 		ComparisonController controller = new ComparisonController(vote, selectedCategoriesList, selectedPartiesList);
-		
+
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("comparison.fxml"));
 			fxmlLoader.setController(controller);

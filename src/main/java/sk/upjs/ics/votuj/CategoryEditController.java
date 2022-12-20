@@ -43,25 +43,24 @@ public class CategoryEditController {
 		dialog = alert.getDialogPane();
 		dialog.getStylesheets().add(css);
 		dialog.getStyleClass().add("dialog");
-		
+
 		Category category = categoryFxModel.getCategory();
-		if (category.getName()==null || category.getName().equals("") ) {
+		if (category.getName() == null || category.getName().equals("")) {
 			alert.setContentText("Názov musí byť vyplnený, prosím doplňte ho.");
 			alert.show();
 			return;
 		}
-	
+
 		try {
 			if (category != null) {
 				savedCategory = DaoFactory.INSTANCE.getCategoryDao().save(category);
-			} 
-		} catch (NoSuchElementException e) { //ak category je null
+			}
+		} catch (NoSuchElementException e) { // ak category je null
 			e.printStackTrace();
 		} catch (NullPointerException e) {// ak category name je null
 			e.printStackTrace();
 		}
-		
-		
+
 		categoryNameTextField.getScene().getWindow().hide();
 
 	}

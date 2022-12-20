@@ -22,7 +22,7 @@ public class MysqlAdminDao implements AdminDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlAdminDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate; 
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class MysqlAdminDao implements AdminDao {
 
 	// only for test
 	@Override
-	public Admin save(Admin admin) throws NoSuchElementException,NullPointerException {
+	public Admin save(Admin admin) throws NoSuchElementException, NullPointerException {
 		if (admin == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -86,9 +86,9 @@ public class MysqlAdminDao implements AdminDao {
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean delete(Long id)throws ObjectUndeletableException {
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM admin WHERE  id= " + id);
@@ -97,6 +97,4 @@ public class MysqlAdminDao implements AdminDao {
 		}
 		return delete == 1;
 	}
-
-	// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }

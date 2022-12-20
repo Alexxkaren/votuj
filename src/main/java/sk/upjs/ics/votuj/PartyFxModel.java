@@ -18,7 +18,6 @@ import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.PartyDao;
 import sk.upjs.ics.votuj.storage.Program;
 
-
 public class PartyFxModel {
 
 	private Long id;
@@ -28,7 +27,7 @@ public class PartyFxModel {
 	private ObservableList<Candidate> candidates;
 	private PartyDao partyDao;
 	List<Party> allParties;
-	private Map<Party, BooleanProperty> partyMap  = new HashMap<>();;
+	private Map<Party, BooleanProperty> partyMap = new HashMap<>();;
 
 	public PartyFxModel() {
 		programs = FXCollections.observableArrayList();
@@ -36,7 +35,7 @@ public class PartyFxModel {
 		partyDao = DaoFactory.INSTANCE.getPartyDao();
 		partyDao = DaoFactory.INSTANCE.getPartyDao();
 		allParties = partyDao.getAll();
-		
+
 		for (Party p : allParties) {
 			partyMap.put(p, new SimpleBooleanProperty());
 		}
@@ -47,16 +46,17 @@ public class PartyFxModel {
 		setName(party.getName());
 		setInfo(party.getInfo());
 		List<Program> list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		programs = FXCollections.observableArrayList(list_p); 
+		programs = FXCollections.observableArrayList(list_p);
 		partyDao = DaoFactory.INSTANCE.getPartyDao();
 		allParties = partyDao.getAll();
-		
+
 		for (Party p : allParties) {
 			partyMap.put(p, new SimpleBooleanProperty());
 		}
 	}
-	
-	// tento konštruktor sa asi bude moc vymazat este uvidime zatial s anikde nepouziva
+
+	// tento konštruktor sa asi bude moc vymazat este uvidime zatial s anikde
+	// nepouziva
 	public PartyFxModel(Party party, Program program) {
 		this.id = party.getId();
 		setName(party.getName());
@@ -67,11 +67,11 @@ public class PartyFxModel {
 		candidates = FXCollections.observableArrayList(list_c);
 		partyDao = DaoFactory.INSTANCE.getPartyDao();
 		allParties = partyDao.getAll();
-		
+
 		for (Party p : allParties) {
 			partyMap.put(p, new SimpleBooleanProperty());
 		}
-		
+
 	}
 
 	public Long getId() {
@@ -122,7 +122,7 @@ public class PartyFxModel {
 	public ObservableList<Candidate> getCandidatesModel() {
 		return candidates;
 	}
-	
+
 	public List<Candidate> getCandidates() {
 		return new ArrayList<>(candidates);
 	}
@@ -134,7 +134,7 @@ public class PartyFxModel {
 	public Map<Party, BooleanProperty> getParties() {
 		return partyMap;
 	}
-	
+
 	public Party getParty() {
 		return new Party(id, getName(), getInfo());
 	}

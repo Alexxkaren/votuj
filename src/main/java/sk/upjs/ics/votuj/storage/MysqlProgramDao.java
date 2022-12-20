@@ -21,7 +21,7 @@ public class MysqlProgramDao implements ProgramDao {
 	}
 
 	@Override
-	public Program save(Program program) throws NoSuchElementException,NullPointerException {
+	public Program save(Program program) throws NoSuchElementException, NullPointerException {
 		if (program == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -38,21 +38,22 @@ public class MysqlProgramDao implements ProgramDao {
 		if (program.getId() == null) {
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("program");
-			saveInsert.usingColumns("name", "id_party", "is_active","id_term");
+			saveInsert.usingColumns("name", "id_party", "is_active", "id_term");
 			saveInsert.usingGeneratedKeyColumns("id");
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", program.getName());
 			values.put("id_party", program.getParty().getId());
-			values.put("is_active", program.isActive()); 
+			values.put("is_active", program.isActive());
 			values.put("id_term", program.getTerm().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Program(id, program.getName(), program.getParty(),program.isActive(), program.getTerm());
+			return new Program(id, program.getName(), program.getParty(), program.isActive(), program.getTerm());
 			// update
 		} else {
-			System.out.println("update programu na:" + program.getName() +","+ program.getId() +","+program.getParty()+","+program.isActive()+","+program.getTerm());
+			System.out.println("update programu na:" + program.getName() + "," + program.getId() + ","
+					+ program.getParty() + "," + program.isActive() + "," + program.getTerm());
 			String sql = "UPDATE program SET name= ?, id_party= ?, is_active= ?, id_term= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, program.getName(),program.getParty().getId(),program.isActive(),
-					program.getTerm().getId(),program.getId());
+			int updated = jdbcTemplate.update(sql, program.getName(), program.getParty().getId(), program.isActive(),
+					program.getTerm().getId(), program.getId());
 			if (updated == 1) {
 				return program;
 			} else {
@@ -62,7 +63,7 @@ public class MysqlProgramDao implements ProgramDao {
 	}
 
 	@Override
-	public boolean delete(Long id)throws ObjectUndeletableException {
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM program WHERE  id= " + id);
@@ -77,7 +78,7 @@ public class MysqlProgramDao implements ProgramDao {
 	public List<Program> getByParty(Party party) {
 		String sql = "SELECT id, name, id_party, is_active, id_term FROM program WHERE id_party = " + party.getId();
 		return jdbcTemplate.query(sql, new ProgramRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 	/*
 	 * //stare --> ked tak treba zmenit aj v programDao
@@ -95,16 +96,16 @@ public class MysqlProgramDao implements ProgramDao {
 				+ " AND id_term = " + term.getId();
 
 		return jdbcTemplate.query(sql, new ProgramRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	@Override
 	public Program getById(Long id) {
 		String sql = "SELECT id, name, id_party, is_active, id_term FROM program WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new ProgramRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
-	
+
 	@Override
 	public List<Program> getAll() {
 		String sql = "SELECT id, name, id_party, is_active, id_term FROM program";

@@ -89,7 +89,6 @@ public class PartyEditController {
 		termsModel = FXCollections.observableArrayList(terms);
 		termsComboBox.setItems(termsModel);
 		termsComboBox.getSelectionModel().selectFirst();
-		///////////////////////// pridane
 		termWatched = termsComboBox.getSelectionModel().getSelectedItem();
 
 		List<Program> list_p = new ArrayList<>();
@@ -168,7 +167,6 @@ public class PartyEditController {
 		itemsTableView.setItems(itemsModel);
 	}
 
-///////////////////////////////////////////////////////////////////////
 	@FXML
 	void addTermButtonClick(ActionEvent event) {
 		TermEditController controller = new TermEditController();
@@ -280,7 +278,6 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-	////////////////////////////////////////////////////////////
 
 	@FXML
 	void addCandidateButtonClick(ActionEvent event) {
@@ -291,14 +288,9 @@ public class PartyEditController {
 			lokParty = party;
 		}
 		Term term = termsComboBox.getSelectionModel().getSelectedItem();
-		/*
-		 * System.out.println("SA SPRAVIL CANDIDAT EDIT CONTROLLER PRE ADD");
-		 * System.out.println(savedParty); System.out.println(lokParty.toString()); //JA
-		 * TU POSIELAM NULL PARTY
-		 */
 		CandidateEditController controller = new CandidateEditController(lokParty, term);
 		showCandidateEdit(controller, "Pridávanie nového kandidáta");
-		// TU alert netreba party bude furt vybrana
+
 	}
 
 	@FXML
@@ -371,11 +363,8 @@ public class PartyEditController {
 				}
 
 			} catch (ObjectUndeletableException e) {
-				///////////////////////////////// úúúúúúú/////ú///////////////////////
-				//////////////////// CO SEM?
 				alert.setContentText("Snažíte sa vymazať kandidáta ktorý už je používaný");
 				alert.show();
-				//e.printStackTrace();
 				return;
 
 			}
@@ -436,8 +425,6 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-
-	////////////////////////////////////////////////////////////////
 
 	@FXML
 	void addItemButtonclick(ActionEvent event) {
@@ -580,8 +567,6 @@ public class PartyEditController {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////
-
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
 		// List<Program> allPrograms =
@@ -598,14 +583,14 @@ public class PartyEditController {
 			return;
 		}
 		// }
-		if (party!=null) {
+		if (party != null) {
 			ProgramEditController controller = new ProgramEditController(party);
 			showProgramEdit(controller, "Pridávanie nového volebného programu");
 		} else {
 			ProgramEditController controller = new ProgramEditController(savedParty);
 			showProgramEdit(controller, "Pridávanie nového volebného programu");
 		}
-		
+
 	}
 
 	@FXML
@@ -646,7 +631,7 @@ public class PartyEditController {
 			} catch (ObjectUndeletableException e) {
 				alert.setContentText("Snažíte sa vymazať program, ktorý má body");
 				alert.show();
-				//e.printStackTrace();
+				// e.printStackTrace();
 				return;
 
 			}
@@ -705,14 +690,14 @@ public class PartyEditController {
 
 			if (controller.getSavedProgram() != null) {
 				programsModel.clear();
-				if (party!=null) {
-					programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
-							party);
+				if (party != null) {
+					programs = DaoFactory.INSTANCE.getProgramDao()
+							.getByTermParty(controller.getSavedProgram().getTerm(), party);
 				} else {
-					programs = DaoFactory.INSTANCE.getProgramDao().getByTermParty(controller.getSavedProgram().getTerm(),
-							savedParty);
+					programs = DaoFactory.INSTANCE.getProgramDao()
+							.getByTermParty(controller.getSavedProgram().getTerm(), savedParty);
 				}
-				
+
 				programsModel.addAll(programs);
 				programsListView.setItems(programsModel);
 
@@ -721,8 +706,6 @@ public class PartyEditController {
 			e.printStackTrace();
 		}
 	}
-
-	////////////////////////////////////////////////
 
 	@FXML
 	void savePartyButtonClick(ActionEvent event) {

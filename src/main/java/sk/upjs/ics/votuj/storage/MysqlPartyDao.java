@@ -25,7 +25,7 @@ public class MysqlPartyDao implements PartyDao {
 	}
 
 	@Override
-	public Party save(Party party) throws NoSuchElementException,NullPointerException {
+	public Party save(Party party) throws NoSuchElementException, NullPointerException {
 		if (party == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -46,7 +46,7 @@ public class MysqlPartyDao implements PartyDao {
 			values.put("info", party.getInfo());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			return new Party(id, party.getName(), party.getInfo());
-		} else {			// update
+		} else { // update
 			String sql = "UPDATE party SET name= ?, info=? " + "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, party.getName(), party.getInfo(), party.getId());
 			if (updated == 1) {
@@ -58,7 +58,7 @@ public class MysqlPartyDao implements PartyDao {
 	}
 
 	@Override
-	public boolean delete(Long id)throws ObjectUndeletableException {
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM party WHERE  id= " + id);
@@ -73,7 +73,6 @@ public class MysqlPartyDao implements PartyDao {
 		String sql = "SELECT id, name, info FROM party";
 		List<Party> list = jdbcTemplate.query(sql, new PartyRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	@Override
@@ -85,7 +84,6 @@ public class MysqlPartyDao implements PartyDao {
 		} catch (EmptyResultDataAccessException e) {
 			throw new NoSuchElementException("party with id: " + id + "not in DB");
 		}
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	private class PartyRowMapper implements RowMapper<Party> {

@@ -45,8 +45,7 @@ public class Party {
 	public String toString() {
 		return name + " (id: " + id + " )";
 	}
-	
-	
+
 	public String toStringInfo() {
 		return info;
 	}
@@ -67,9 +66,5 @@ public class Party {
 		Party other = (Party) obj;
 		return Objects.equals(id, other.id) && Objects.equals(info, other.info) && Objects.equals(name, other.name);
 	}
-	
-	
-	
-	
 
 }

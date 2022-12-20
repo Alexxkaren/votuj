@@ -19,11 +19,10 @@ public class TermFxModel {
 		setSince(term.getSince());
 		setTo(term.getTo());
 	}
-	
-	public Term getTerm(){
+
+	public Term getTerm() {
 		return new Term(id, getSince(), getTo());
 	}
-	
 
 	public Long getId() {
 		return id;
@@ -32,31 +31,31 @@ public class TermFxModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public Integer getSince() {
 		return this.since.get();
 	}
-	
+
 	public IntegerProperty getSinceProperty() {
 		return since;
 	}
 
 	public void setSince(Integer since) {
 		this.since.set(since);
-		
+
 	}
-	
+
 	public Integer getTo() {
 		return this.to.get();
 	}
-	
+
 	public IntegerProperty getToProperty() {
 		return to;
 	}
 
 	public void setTo(Integer to) {
 		this.to.set(to);
-		
+
 	}
 
 }

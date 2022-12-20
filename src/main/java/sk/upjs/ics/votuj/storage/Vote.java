@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Vote {
 
 	private Long id;
-	//private Integer age;
+	// private Integer age;
 	private String age;////////////////////////
 	private Boolean male;
 	private LocalDateTime date;
@@ -14,7 +14,7 @@ public class Vote {
 
 	public Vote() {
 	}
-	
+
 	public Vote(Vote vote, Party party) {
 		this.id = vote.getId();
 		this.age = vote.getAge();
@@ -32,6 +32,7 @@ public class Vote {
 		this.region = region;
 		this.party = party;
 	}
+
 	public Vote(Long id, String age, Boolean male, LocalDateTime date, Region region) {
 		this.id = id;
 		this.age = age;
@@ -90,10 +91,8 @@ public class Vote {
 
 	@Override
 	public String toString() {
-		return "[id=" + id + ", age=" + age + ", male=" + male + ", date=" + date + ", region=" + region
-				+ ", party=" + party + "]";
+		return "[id=" + id + ", age=" + age + ", male=" + male + ", date=" + date + ", region=" + region + ", party="
+				+ party + "]";
 	}
-	
-	
 
 }

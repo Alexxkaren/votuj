@@ -12,8 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-
-public class MysqlRegionDao implements RegionDao{
+public class MysqlRegionDao implements RegionDao {
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -21,12 +20,11 @@ public class MysqlRegionDao implements RegionDao{
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	
 	@Override
 	public Region getById(Long id) {
 		String sql = "SELECT id, name FROM region WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new RegionRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	@Override
@@ -34,9 +32,9 @@ public class MysqlRegionDao implements RegionDao{
 		String sql = "SELECT id, name FROM region";
 		List<Region> list = jdbcTemplate.query(sql, new RegionRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
-	
+
 	private class RegionRowMapper implements RowMapper<Region> {
 
 		@Override
@@ -50,7 +48,7 @@ public class MysqlRegionDao implements RegionDao{
 	}
 
 	@Override
-	// just for test 
+	// just for test
 	public Region save(Region region) throws NoSuchElementException, NullPointerException {
 		if (region == null) {
 			throw new NullPointerException("Cannot save null");
@@ -58,7 +56,7 @@ public class MysqlRegionDao implements RegionDao{
 		if (region.getName() == null) {
 			throw new NullPointerException("Name can not be null");
 		}
-		
+
 		// insert
 		if (region.getId() == null) {
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -68,11 +66,11 @@ public class MysqlRegionDao implements RegionDao{
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", region.getName());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Region (id, region.getName());
+			return new Region(id, region.getName());
 			// update
 		} else {
 			String sql = "UPDATE region SET name= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, region.getName(),region.getId());
+			int updated = jdbcTemplate.update(sql, region.getName(), region.getId());
 			if (updated == 1) {
 				return region;
 			} else {
@@ -81,9 +79,8 @@ public class MysqlRegionDao implements RegionDao{
 		}
 	}
 
-
 	@Override
-	// just for test 
+	// just for test
 	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {

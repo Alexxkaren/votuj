@@ -22,7 +22,7 @@ public class MysqlVoteDao implements VoteDao {
 	}
 
 	@Override
-	public Vote save(Vote vote) throws NoSuchElementException, NullPointerException{
+	public Vote save(Vote vote) throws NoSuchElementException, NullPointerException {
 		if (vote == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -45,7 +45,7 @@ public class MysqlVoteDao implements VoteDao {
 			saveInsert.usingColumns("age", "male", "date", "id_region", "id_party");
 			saveInsert.usingGeneratedKeyColumns("id");
 			Map<String, Object> values = new HashMap<>();
-			//ZMENA
+			// ZMENA
 			values.put("age", Integer.parseInt(vote.getAge()));
 			values.put("male", vote.getMale());
 			values.put("date", vote.getDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
@@ -56,8 +56,8 @@ public class MysqlVoteDao implements VoteDao {
 			// update
 		} else {
 			String sql = "UPDATE vote SET age= ?, male= ?, date= ?, id_region= ?, id_party= ? " + "WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, vote.getAge(),vote.getMale(),vote.getDate(),vote.getRegion().getId(),
-					vote.getParty().getId(),vote.getId());
+			int updated = jdbcTemplate.update(sql, vote.getAge(), vote.getMale(), vote.getDate(),
+					vote.getRegion().getId(), vote.getParty().getId(), vote.getId());
 			if (updated == 1) {
 				return vote;
 			} else {
@@ -65,9 +65,9 @@ public class MysqlVoteDao implements VoteDao {
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean delete(Long id) throws ObjectUndeletableException{
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			delete = jdbcTemplate.update("DELETE FROM vote WHERE  id= " + id);
@@ -76,7 +76,7 @@ public class MysqlVoteDao implements VoteDao {
 		}
 		return delete == 1;
 	}
-	
+
 	@Override
 	public List<Vote> getByParty(Party party) {
 		String sql = "SELECT id, age, male, date, id_region, id_party FROM vote WHERE id_party = " + party.getId();
@@ -88,14 +88,13 @@ public class MysqlVoteDao implements VoteDao {
 		String sql = "SELECT id, age, male, date, id_region, id_party FROM vote ";
 		List<Vote> list = jdbcTemplate.query(sql, new VoteRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	@Override
 	public Vote getById(Long id) {
 		String sql = "SELECT id, age, male, date, id_region, id_party FROM vote WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new VoteRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
 
@@ -107,7 +106,6 @@ public class MysqlVoteDao implements VoteDao {
 			vote.setId(rs.getLong("id"));
 			vote.setAge(rs.getString("age"));
 			vote.setMale(rs.getBoolean("male"));
-			// TODO toto v teste treba skontrolovat ci dava dobre casy
 			vote.setDate(rs.getTimestamp("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			Region region = DaoFactory.INSTANCE.getRegionDao().getById(rs.getLong("id_region"));
 			vote.setRegion(region);

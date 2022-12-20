@@ -16,14 +16,14 @@ import sk.upjs.ics.votuj.storage.DaoFactory;
 import sk.upjs.ics.votuj.storage.Item;
 
 public class CategoryFxModel {
-	
+
 	private Category category;
 	private Long id;
 	private StringProperty name = new SimpleStringProperty();
 	private Map<Category, BooleanProperty> categoryMap = new HashMap<>();
 	List<Category> allCategories;
 	private CategoryDao categoryDao;
-	//idk ci toto treba:
+	// idk ci toto treba:
 	private ObservableList<Item> items;
 
 	public CategoryFxModel() {
@@ -33,7 +33,7 @@ public class CategoryFxModel {
 			categoryMap.put(c, new SimpleBooleanProperty());
 		}
 	}
-	
+
 	public CategoryFxModel(Category category) {
 		categoryDao = DaoFactory.INSTANCE.getCategoryDao();
 		allCategories = categoryDao.getAll();
@@ -44,7 +44,7 @@ public class CategoryFxModel {
 			categoryMap.put(c, new SimpleBooleanProperty());
 		}
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -56,40 +56,33 @@ public class CategoryFxModel {
 	public void setItems(ObservableList<Item> items) {
 		this.items = items;
 	}
-	
+
 	public List<Item> getItems() {
 		return new ArrayList<>(items);
 	}
-	
+
 	public ObservableList<Item> getItemsModel() {
 		return items;
 	}
-	
+
 	public String getName() {
 		return name.get();
 	}
-	
+
 	public StringProperty getNameProperty() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name.set(name);
-		
+
 	}
-	
+
 	public Map<Category, BooleanProperty> getCategories() {
 		return categoryMap;
 	}
-	
+
 	public Category getCategory() {
 		return new Category(id, getName());
 	}
-
-	
-	
-	
-	
-	
-
 }

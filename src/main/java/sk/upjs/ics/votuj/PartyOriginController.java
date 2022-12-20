@@ -52,7 +52,7 @@ public class PartyOriginController {
 	@FXML
 	void partyDetailButtonClick(ActionEvent event) {
 		try {
-			if (partiesComboBox.getSelectionModel().getSelectedItem()!=null) {
+			if (partiesComboBox.getSelectionModel().getSelectedItem() != null) {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partyView.fxml"));
 				Party party = partiesComboBox.getSelectionModel().getSelectedItem();
 				PartyViewController controller = new PartyViewController(party);
@@ -80,7 +80,6 @@ public class PartyOriginController {
 				return;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -149,7 +148,6 @@ public class PartyOriginController {
 			} catch (ObjectUndeletableException e) {
 				alert.setContentText("Snažíte sa vymazať politickú stranu, ktorá je už používaná");
 				alert.show();
-				//e.printStackTrace(); //OTAZKA MA TU TOTO BYT?
 				return;
 
 			}

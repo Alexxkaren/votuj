@@ -55,11 +55,10 @@ public class CandidateFxModel {
 	}
 
 	public List<Term> getTerms() {
-		/*if (terms != null) {
-			return new ArrayList<>(terms);
-		} else {
-			return new ArrayList<>();
-		}*/
+		/*
+		 * if (terms != null) { return new ArrayList<>(terms); } else { return new
+		 * ArrayList<>(); }
+		 */
 		return new ArrayList<>(terms);
 	}
 
@@ -133,8 +132,9 @@ public class CandidateFxModel {
 
 	public Candidate getCandidate() {
 		return new Candidate(id, getName(), getSurname(), getCandidateNumber(), getInfo(), getParty(), getTerms());
-		//return new Candidate(id, getName(), getSurname(), getCandidateNumber(), getInfo(), getParty());
-		
+		// return new Candidate(id, getName(), getSurname(), getCandidateNumber(),
+		// getInfo(), getParty());
+
 	}
 
 }

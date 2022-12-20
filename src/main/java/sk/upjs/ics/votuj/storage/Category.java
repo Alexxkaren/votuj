@@ -9,8 +9,6 @@ public class Category {
 	private String name;
 	private List<Item> items;
 
-
-
 	public Category() {
 	}
 
@@ -34,7 +32,7 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public List<Item> getItems() {
 		return items;
 	}
@@ -45,7 +43,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return  name + "(id: " + id + ")";
+		return name + "(id: " + id + ")";
 	}
 
 	@Override
@@ -64,9 +62,5 @@ public class Category {
 		Category other = (Category) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
-	
-	
-	
-	
 
 }

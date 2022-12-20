@@ -17,15 +17,15 @@ public class Launcher extends Application {
 		fxmlLoader.setController(controller);
 		Parent parent = fxmlLoader.load();
 		Scene scene = new Scene(parent);
-		
+
 		String css = this.getClass().getResource("votuj.css").toExternalForm();
-		scene.getStylesheets().add(css); 
+		scene.getStylesheets().add(css);
 		Image icon = new Image("single_logo.png");
 		stage.getIcons().add(icon);
-		
+
 		stage.setScene(scene);
 		stage.setTitle("Votuj!");
-		stage.show(); 
+		stage.show();
 	}
 
 	public static void main(String[] args) {

@@ -80,6 +80,7 @@ public class OriginController {
 		chosenRegion = regionComboBox.getSelectionModel().getSelectedItem();
 
 		regionComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Region>() {
+
 			@Override
 			public void changed(ObservableValue<? extends Region> observable, Region oldValue, Region newValue) {
 				chosenRegion = regionComboBox.getSelectionModel().getSelectedItem();
@@ -115,7 +116,7 @@ public class OriginController {
 		dialog.getStyleClass().add("dialog");
 
 		Vote voteLocal = voteFxModel.getVote();
-		voteLocal.setRegion(chosenRegion);	
+		voteLocal.setRegion(chosenRegion);
 		voteLocal.setMale(maleB);
 
 		if (voteLocal.getRegion() == null) {
@@ -133,7 +134,7 @@ public class OriginController {
 			alert.show();
 			return;
 		}
-		if(voteLocal.getMale()==null) {
+		if (voteLocal.getMale() == null) {
 			alert.setContentText("Pohlavie musí byť vyplnené");
 			alert.show();
 			return;
@@ -141,7 +142,6 @@ public class OriginController {
 
 		LocalDateTime now = LocalDateTime.now();
 		voteLocal.setDate(now);
-
 
 		ChoiceController controller = new ChoiceController(voteLocal);
 		showNextWindow(controller, "Výber kategórí a strán", "choice.fxml");
@@ -156,7 +156,7 @@ public class OriginController {
 		dialog.getStyleClass().add("dialog");
 
 		Vote voteLocal = voteFxModel.getVote();
-		voteLocal.setRegion(chosenRegion);	
+		voteLocal.setRegion(chosenRegion);
 		voteLocal.setMale(maleB);
 
 		if (voteLocal.getRegion() == null) {
@@ -174,7 +174,7 @@ public class OriginController {
 			alert.show();
 			return;
 		}
-		if(voteLocal.getMale()==null) {
+		if (voteLocal.getMale() == null) {
 			alert.setContentText("Pohlavie musí byť vyplnené");
 			alert.show();
 			return;
@@ -184,7 +184,7 @@ public class OriginController {
 		voteLocal.setDate(now);
 
 		voteLocal.setMale(maleB);
-		
+
 		VotingController controller = new VotingController(voteLocal);
 		showNextWindow(controller, "Hlasovanie", "voting.fxml");
 	}
@@ -204,9 +204,8 @@ public class OriginController {
 			stage.setTitle(sceneName);
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
-			
-			
-			if (controller.getClass()== AdminLoginController.class ) {
+
+			if (controller.getClass() == AdminLoginController.class) {
 				stage.show();
 				ageTextField.getScene().getWindow().hide();
 			} else {
@@ -216,7 +215,7 @@ public class OriginController {
 				maleRadioButton.setSelected(false);
 				femaleRadioButton.setSelected(false);
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -79,15 +79,15 @@ public class ProgramEditController {
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
 		programTermComboBox.setItems(termsModel);
-		
+
 		List<Item> list_i = new ArrayList<>();
 		if (program != null) {
 			list_i = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
 		}
-		
+
 		itemsModel = FXCollections.observableArrayList(list_i);
 		programItemTableView.setItems(itemsModel);
-		
+
 		programTermComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Term>() {
 			@Override
 			public void changed(ObservableValue<? extends Term> observable, Term oldValue, Term newValue) {
@@ -98,20 +98,10 @@ public class ProgramEditController {
 				}
 			}
 		});
-		
+
 		if (termPovod != null) {
 			programTermComboBox.getSelectionModel().select(termPovod);
 		}
-
-		
-		
-		System.out.println("XXXXXXXXXXXXXXXXX 1. XXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println(itemsModel.toString());
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		if (isActiveModel.get()) {
 			activeCheckBox.setSelected(true);
@@ -130,8 +120,6 @@ public class ProgramEditController {
 			}
 		}
 
-		
-
 		// PROBLEM S VYBERANIM TEMRU IDEM SPAT POROVNAJ S CANDIDATE
 		if (program != null) {
 			TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
@@ -141,23 +129,15 @@ public class ProgramEditController {
 			TableColumn<Item, String> itemColumn = new TableColumn<>("Bod");
 			itemColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("info"));
 			programItemTableView.getColumns().add(itemColumn);
-			
+
 			Term termCh = termWatched;
-			//Term termCh = programTermComboBox.getSelectionModel().getSelectedItem();
+			// Term termCh = programTermComboBox.getSelectionModel().getSelectedItem();
 			List<Item> list_ii = new ArrayList<>();
 			if (party != null) {
 				list_ii = DaoFactory.INSTANCE.getItemDao().getByTermParty(termCh, party);
 			}
 			itemsModel = FXCollections.observableArrayList(list_ii);
 			programItemTableView.setItems(itemsModel);
-			
-			System.out.println("XXXXXXXXXXXXXXXXX 2. XXXXXXXXXXXXXX");
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-			System.out.println(itemsModel.toString());
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		}
 
 	}
@@ -168,13 +148,10 @@ public class ProgramEditController {
 			list_i = DaoFactory.INSTANCE.getItemDao().getByProgram(program);
 		}
 		// list_i = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, party);
-		System.out.println("XXXXXXXXXXXXXXXXTU JE UZ NULL XXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		itemsModel.setAll(list_i);
 		programItemTableView.setItems(itemsModel);
-		System.out.println(itemsModel.toString());
-
 	}
+
 	private void updateActive(Term termWatched) {
 		if (party != null) {
 			allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
@@ -186,7 +163,7 @@ public class ProgramEditController {
 				}
 			}
 		}
-		
+
 	}
 
 	public Program getSavedProgram() {
@@ -212,7 +189,7 @@ public class ProgramEditController {
 
 		Program program = programFxModel.getProgram();
 		program.setTerm(termWatched);
-		
+
 		System.out.println("UKLADANY PROGRAM: " + program.toString());
 		program.setParty(party);
 		System.out.println("PO PRIDANI PARTY: " + program.toString());
@@ -239,10 +216,6 @@ public class ProgramEditController {
 		boolean alreadyHas = false;
 		List<Program> totalyAllPrograms = new ArrayList<>();
 		totalyAllPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		System.out.println("TOTALLLY ALL PROGRAMS:");
-		System.out.println(totalyAllPrograms.toString());
-		System.out.println("TENTO:");
-		System.out.println(program);
 		for (Program p : totalyAllPrograms) {
 			if (program != null && program.getTerm().equals(p.getTerm()) && !program.equals(p)) {
 				alreadyHas = true;

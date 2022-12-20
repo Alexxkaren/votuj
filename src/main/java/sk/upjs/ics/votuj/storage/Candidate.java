@@ -16,21 +16,21 @@ public class Candidate {
 	public Candidate() {
 	}
 
-	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party, List<Term> terms) {
+	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party,
+			List<Term> terms) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.candidateNumber = candidateNumber;
 		this.info = info;
 		this.party = party;
-		/*if (terms !=null) {
-			this.terms = terms;
-		} else {
-			this.terms = new ArrayList<>();
-		}*/
+		/*
+		 * if (terms !=null) { this.terms = terms; } else { this.terms = new
+		 * ArrayList<>(); }
+		 */
 		this.terms = terms;
 	}
-	
+
 	public Candidate(Long id, String name, String surname, String candidateNumber, String info, Party party) {
 		this.id = id;
 		this.name = name;
@@ -39,7 +39,7 @@ public class Candidate {
 		this.info = info;
 		this.party = party;
 	}
-	
+
 	public List<Term> getTerms() {
 		return terms;
 	}
@@ -102,7 +102,7 @@ public class Candidate {
 
 	@Override
 	public String toString() {
-		return "(id=" + id + ") " + name + " "+ surname ;
+		return "(id=" + id + ") " + name + " " + surname;
 	}
 
 }
