@@ -8,12 +8,12 @@ public class Item {
 	private String name;
 	private String info;
 	private Program program;
-	//pridavam feature:
+	// pridavam feature:
 	private List<Category> categories;
 
 	public Item() {
 	}
-	//pridane
+
 	public Item(Long id, String name, String info, Program program, List<Category> cats) {
 		super();
 		this.id = id;
@@ -23,9 +23,7 @@ public class Item {
 		this.categories = cats;
 	}
 
-	
 	public Item(Long id, String name, String info, Program program) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.info = info;
@@ -59,23 +57,23 @@ public class Item {
 	public Program getProgram() {
 		return program;
 	}
-	
+
 	public void setProgram(Program program) {
 		this.program = program;
 	}
-	
-	//pridane
+
+	// pridane
 	public List<Category> getCategories() {
 		return categories;
 	}
+
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", program=" + program + ", categories=" + categories + "]";
 	}
-	
-	
 
 }

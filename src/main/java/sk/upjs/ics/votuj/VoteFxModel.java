@@ -15,18 +15,18 @@ import sk.upjs.ics.votuj.storage.Region;
 import sk.upjs.ics.votuj.storage.Vote;
 
 public class VoteFxModel {
-	
+
 	private Long id;
 	private StringProperty age = new SimpleStringProperty();
 	private BooleanProperty male = new SimpleBooleanProperty();
 	private ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
 	private Party party;
 	private Region region;
-	
+
 	public VoteFxModel() {
-		
+
 	}
-	
+
 	public VoteFxModel(Vote vote) {
 		this.id = vote.getId();
 		this.party = vote.getParty();
@@ -34,9 +34,9 @@ public class VoteFxModel {
 		setAge(vote.getAge());
 		setMale(vote.getMale());
 		setDate(vote.getDate());
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -44,7 +44,7 @@ public class VoteFxModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public StringProperty getAgeProperty() {
 		return age;
 	}
@@ -56,21 +56,15 @@ public class VoteFxModel {
 	public void setAge(String age) {
 		this.age.set(age);
 	}
-	
-	/*
-	public Integer getAge() {
-		return this.age.get();
-	}
-	
-	public IntegerProperty getAgeProperty() {
-		return age;
-	}
 
-	public void setAge(Integer age) {
-		this.age.set(age);	
-	}
-	*/
-		
+	/*
+	 * public Integer getAge() { return this.age.get(); }
+	 * 
+	 * public IntegerProperty getAgeProperty() { return age; }
+	 * 
+	 * public void setAge(Integer age) { this.age.set(age); }
+	 */
+
 	public BooleanProperty getMaleProperty() {
 		return male;
 	}
@@ -78,16 +72,16 @@ public class VoteFxModel {
 	public Boolean getMale() {
 		return male.get();
 	}
-	
+
 	public void setMale(Boolean male) {
 		this.male.set(male);
-		
+
 	}
-	
+
 	public ObjectProperty<LocalDateTime> dateProperty() {
 		return date;
 	}
-	
+
 	public LocalDateTime getDate() {
 		return date.get();
 	}
@@ -95,28 +89,28 @@ public class VoteFxModel {
 	public void setDate(LocalDateTime date) {
 		this.date.set(date);
 	}
-	
+
 	public Party getParty() {
 		return party;
 	}
-	
+
 	public void setParty(Party party) {
 		this.party = party;
 	}
-	
+
 	public Region getRegion() {
 		return region;
 	}
-	
+
 	public void setRegion(Region region) {
 		this.region = region;
 	}
-	
+
 	public Vote getVoteWithoutParty() {
-		return new Vote (id, getAge(), getMale(), getDate(), getRegion(), getParty());
+		return new Vote(id, getAge(), getMale(), getDate(), getRegion(), getParty());
 	}
-	
+
 	public Vote getVote() {
-		return new Vote (id, getAge(), getMale(), getDate(), getRegion());
+		return new Vote(id, getAge(), getMale(), getDate(), getRegion());
 	}
 }

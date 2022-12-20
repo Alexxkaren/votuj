@@ -25,13 +25,12 @@ import sk.upjs.ics.votuj.storage.Region;
 import sk.upjs.ics.votuj.storage.Vote;
 
 public class GraphsController {
-	
+
 	private Stage stage;
 	private DialogPane dialog;
 	private Region chosenRegion;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
 	private ObservableList<Region> regionsModel;
-
 
 	@FXML
 	private BarChart<Party, Vote> krajeStranyHlasy;
@@ -41,7 +40,7 @@ public class GraphsController {
 
 	@FXML
 	private ComboBox<Region> regionComboBox;
-	
+
 	@FXML
 	void initialize() {
 		List<Region> regions = DaoFactory.INSTANCE.getRegionDao().getAll();
@@ -76,7 +75,7 @@ public class GraphsController {
 		if (result.get() == btExit) {
 			Platform.exit();
 		}
-		
+
 	}
 
 }

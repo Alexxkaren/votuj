@@ -11,22 +11,19 @@ public class Program {
 	private boolean isActive;
 	private Term term;
 	private List<Item> items;
-	
 
 	public Program() {
 	}
 
 	public Program(Long id, String name, Party party, boolean is_active, Term term) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.party = party;
 		this.isActive = is_active;
 		this.term = term;
 	}
-	
+
 	public Program(Long id, String name, Party party, boolean is_active, Term term, List<Item> items) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.party = party;
@@ -34,7 +31,6 @@ public class Program {
 		this.term = term;
 		this.items = items;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -75,7 +71,7 @@ public class Program {
 	public void setTerm(Term term) {
 		this.term = term;
 	}
-	
+
 	public List<Item> getItems() {
 		return items;
 	}
@@ -86,7 +82,7 @@ public class Program {
 
 	@Override
 	public String toString() {
-		return  name + "( party=" + party + " term ="+ term +")";
+		return name + "( party=" + party + " term =" + term + ")";
 	}
 
 	@Override
@@ -106,15 +102,5 @@ public class Program {
 		return Objects.equals(id, other.id) && Objects.equals(items, other.items) && Objects.equals(name, other.name)
 				&& Objects.equals(party, other.party) && Objects.equals(term, other.term);
 	}
-	
-	
 
-
-	
-	
-	
-	
-	
 }
-
-	

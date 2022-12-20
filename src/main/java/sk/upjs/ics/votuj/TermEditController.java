@@ -38,7 +38,6 @@ public class TermEditController {
 	}
 
 	Locale l = new Locale("UK");
-	// mpzeme ptmniekedy urobit svoj formatter na cisla<^<^<^<^<^<^<^^<^<^<^<^<
 
 	@FXML
 	void initialize() {

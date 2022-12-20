@@ -67,14 +67,12 @@ class MysqlProgramDaoTest {
 		assertThrows(NullPointerException.class, () -> programDao.save(null), "Program cannot be null");
 		assertThrows(NullPointerException.class, () -> programDao.save(new Program(null, null, null, false, null)),
 				"Program name cannot be null");
-		assertThrows(NullPointerException.class,
-				() -> programDao.save(new Program(null, "name", null, false, null)),
+		assertThrows(NullPointerException.class, () -> programDao.save(new Program(null, "name", null, false, null)),
 				"Program party cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> programDao
-						.save(new Program(null, "name", new Party(), true, null)),
+				() -> programDao.save(new Program(null, "name", new Party(), true, null)),
 				"Program term cannot be null");
-	
+
 	}
 
 	@Test

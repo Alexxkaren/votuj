@@ -13,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-
-
 public class MysqlTermDao implements TermDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -25,17 +23,17 @@ public class MysqlTermDao implements TermDao {
 
 	@Override
 	public Term save(Term term) throws NullPointerException, NoSuchElementException {
-		if (term==null) {
+		if (term == null) {
 			throw new NullPointerException("Cannot save null");
 		}
-		if (term.getSince()==null) {
+		if (term.getSince() == null) {
 			throw new NullPointerException("Term since cannot be null");
 		}
-		if (term.getTo()==null) {
+		if (term.getTo() == null) {
 			throw new NullPointerException("Term to cannot be null");
 		}
 		// insert
-		if (term.getId() == null) { 
+		if (term.getId() == null) {
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("term");
 			saveInsert.usingColumns("since", "`to`");
@@ -44,18 +42,17 @@ public class MysqlTermDao implements TermDao {
 			values.put("since", term.getSince());
 			values.put("`to`", term.getTo());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			return new Term(id,term.getSince(), term.getTo());
-		// update
+			return new Term(id, term.getSince(), term.getTo());
+			// update
 		} else {
-			String sql = "UPDATE term SET since= ?, `to`=? " 
-					+ "WHERE id = ? ";
+			String sql = "UPDATE term SET since= ?, `to`=? " + "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, term.getSince(), term.getTo(), term.getId());
 			if (updated == 1) {
-				return term; 
+				return term;
 			} else {
 				throw new NoSuchElementException("term with id: " + term.getId() + " not in DB.");
 			}
-		}		
+		}
 	}
 
 	@Override
@@ -64,9 +61,10 @@ public class MysqlTermDao implements TermDao {
 		try {
 			wasDeleted = jdbcTemplate.update("DELETE FROM term WHERE id = " + id);
 		} catch (DataIntegrityViolationException e) {
-			throw new ObjectUndeletableException("Term with id: " + id + "cannot be deleted, some candidate/program already has this term");
+			throw new ObjectUndeletableException(
+					"Term with id: " + id + "cannot be deleted, some candidate/program already has this term");
 		}
-				
+
 		return wasDeleted == 1;
 	}
 
@@ -75,27 +73,25 @@ public class MysqlTermDao implements TermDao {
 		String sql = "SELECT id, since, `to` FROM term";
 		List<Term> terms = jdbcTemplate.query(sql, new TermRowMapper());
 		return terms;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	@Override
 	public Term getById(Long id) {
-		String sql = "SELECT id, since, `to` FROM term WHERE id = " + id; 
+		String sql = "SELECT id, since, `to` FROM term WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new TermRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
-	
+
 	@Override
 	public List<Term> getByCandidate(Candidate candidate) {
-		String sql = "SELECT id, since, `to` FROM  term "
-					+ "JOIN candidate_has_term cht ON cht.id_term = term.id "
-					+ "WHERE cht.id_candidate = " + candidate.getId();
+		String sql = "SELECT id, since, `to` FROM  term " + "JOIN candidate_has_term cht ON cht.id_term = term.id "
+				+ "WHERE cht.id_candidate = " + candidate.getId();
 		List<Term> listT = jdbcTemplate.query(sql, new TermRowMapper());
 		return listT;
-		
-		
+
 	}
-	
+
 	private class TermRowMapper implements RowMapper<Term> {
 
 		@Override
@@ -105,7 +101,7 @@ public class MysqlTermDao implements TermDao {
 			Integer to = rs.getInt("to");
 			return new Term(id, since, to);
 		}
-		
+
 	}
 
 }

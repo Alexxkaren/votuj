@@ -16,9 +16,9 @@ public class RegionFxModel {
 	public RegionFxModel(Region region) {
 		this.id = region.getId();
 		setName(region.getName());
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -26,7 +26,7 @@ public class RegionFxModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public StringProperty getNameProperty() {
 		return name;
 	}
@@ -38,7 +38,7 @@ public class RegionFxModel {
 	public void setName(String name) {
 		this.name.set(name);
 	}
-	
+
 	public Region getRegion() {
 		return new Region(id, getName());
 	}

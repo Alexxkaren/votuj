@@ -51,8 +51,7 @@ class MysqlTermDaoTest {
 		assertThrows(NullPointerException.class, () -> termDao.save(null), "Term cannot be null");
 		assertThrows(NullPointerException.class, () -> termDao.save(new Term(null, null, 1)),
 				"Term since cannot be null");
-		assertThrows(NullPointerException.class, () -> termDao.save(new Term(null, 1, null)),
-				"Term to cannot be null");
+		assertThrows(NullPointerException.class, () -> termDao.save(new Term(null, 1, null)), "Term to cannot be null");
 	}
 
 	@Test

@@ -34,21 +34,15 @@ public class ItemFxModel {
 		setName(item.getName());
 		setInfo(item.getInfo());
 		setProgram(program);
-		
-		
-		
+
 		List<Category> list_c = DaoFactory.INSTANCE.getCategoryDao().getByItem(item);
 		this.categories = FXCollections.observableArrayList(list_c);
 		setCategories(categories);
 	}
-	
-	
 
 	public Item getItem() {
 		return new Item(id, getName(), getInfo(), getProgram());
 	}
-	
-	
 
 	public Long getId() {
 		return id;
@@ -57,7 +51,7 @@ public class ItemFxModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public StringProperty getNameProperty() {
 		return name;
 	}
@@ -69,7 +63,7 @@ public class ItemFxModel {
 	public void setName(String name) {
 		this.name.set(name);
 	}
-	
+
 	public StringProperty getInfoProperty() {
 		return info;
 	}
@@ -85,15 +79,16 @@ public class ItemFxModel {
 	public Program getProgram() {
 		return program;
 	}
+
 	public void setProgram(Program program) {
 		this.program = program;
-		
+
 	}
 
 	public ObservableList<Category> getCategoriesModel() {
 		return categories;
 	}
-	
+
 	public List<Category> getCategories() {
 		return new ArrayList<>(categories);
 	}
@@ -101,11 +96,5 @@ public class ItemFxModel {
 	public void setCategories(ObservableList<Category> categories) {
 		this.categories = categories;
 	}
-	
-
-
-	
-
-	
 
 }

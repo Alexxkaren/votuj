@@ -9,28 +9,27 @@ import sk.upjs.ics.votuj.storage.Party;
 import sk.upjs.ics.votuj.storage.Term;
 
 public class CandidateViewController {
-	
+
 	CandidateFxModel candidateFxModel;
-    @FXML
-    private TextArea candidateInfoTextArea;
+	@FXML
+	private TextArea candidateInfoTextArea;
 
-    @FXML
-    private Label candidateNameLabel;
+	@FXML
+	private Label candidateNameLabel;
 
-    @FXML
-    private Label candidateNumberLabel;
+	@FXML
+	private Label candidateNumberLabel;
 
-    @FXML
-    private Label candidateSurnameLabel;
-    
-    @FXML
-    private ListView<Term> candidateTermsListView;
+	@FXML
+	private Label candidateSurnameLabel;
 
-	
-	public CandidateViewController( Candidate candidate, Party party) {
+	@FXML
+	private ListView<Term> candidateTermsListView;
+
+	public CandidateViewController(Candidate candidate, Party party) {
 		candidateFxModel = new CandidateFxModel(candidate, party);
 	}
-	
+
 	@FXML
 	void initialize() {
 		candidateNameLabel.setText(candidateFxModel.getName());
@@ -38,6 +37,6 @@ public class CandidateViewController {
 		candidateSurnameLabel.setText(candidateFxModel.getSurname());
 		candidateNumberLabel.setText(candidateFxModel.getCandidateNumber());
 		candidateTermsListView.setItems((candidateFxModel.getTermsModel()));
-		
+
 	}
 }

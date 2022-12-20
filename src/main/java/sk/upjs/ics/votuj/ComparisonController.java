@@ -33,11 +33,11 @@ import sk.upjs.ics.votuj.storage.Program;
 import sk.upjs.ics.votuj.storage.Term;
 import sk.upjs.ics.votuj.storage.Vote;
 
-public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
+public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 
 	private Vote vote;
-	//private Map<Category, BooleanProperty> inheritedCategories;
-	//private Map<Party, BooleanProperty> inheritedParties;
+	// private Map<Category, BooleanProperty> inheritedCategories;
+	// private Map<Party, BooleanProperty> inheritedParties;
 	private List<Category> selectedCategories;
 	private List<Party> selectedParties;
 	private ObservableList<Party> partiesModel;
@@ -55,12 +55,11 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 	@FXML
 	private ComboBox<Party> choosePartyComboBox;
 	/*
-	public ComparisonController(Vote vote, Map<Category, BooleanProperty> cats, Map<Party, BooleanProperty> parts) {
-		this.vote = vote;
-		this.inheritedCategories = cats;
-		this.inheritedParties = parts;
-	}*/
-	
+	 * public ComparisonController(Vote vote, Map<Category, BooleanProperty> cats,
+	 * Map<Party, BooleanProperty> parts) { this.vote = vote;
+	 * this.inheritedCategories = cats; this.inheritedParties = parts; }
+	 */
+
 	public ComparisonController(Vote vote, List<Category> cats, List<Party> parts) {
 		this.vote = vote;
 		this.selectedCategories = cats;
@@ -70,27 +69,21 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 	@FXML
 	void initialize() {
 		/*
-		selectedCategories = new ArrayList<>();
-		selectedParties = new ArrayList<>();
-
-		for (Category key : inheritedCategories.keySet()) {
-			if (inheritedCategories.get(key).get()) {
-				selectedCategories.add(key);
-			}
-		}
-
-		for (Party key : inheritedParties.keySet()) {
-			if (inheritedParties.get(key).get()) {
-				selectedParties.add(key);
-			}
-		}*/
+		 * selectedCategories = new ArrayList<>(); selectedParties = new ArrayList<>();
+		 * 
+		 * for (Category key : inheritedCategories.keySet()) { if
+		 * (inheritedCategories.get(key).get()) { selectedCategories.add(key); } }
+		 * 
+		 * for (Party key : inheritedParties.keySet()) { if
+		 * (inheritedParties.get(key).get()) { selectedParties.add(key); } }
+		 */
 
 		List<Party> parties = selectedParties;
 		partiesModel = FXCollections.observableArrayList(parties);
 		choosePartyComboBox.setItems(partiesModel);
 		choosePartyComboBox.getSelectionModel().selectFirst();
 		partyWatched = choosePartyComboBox.getSelectionModel().getSelectedItem();
-		
+
 		activeProgram = null;
 		List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(partyWatched);
 		for (Program p : allPrograms) {
@@ -98,7 +91,7 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 				activeProgram = p;
 			}
 		}
-		
+
 		choosePartyComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Party>() {
 			@Override
 			public void changed(ObservableValue<? extends Party> observable, Party oldValue, Party newValue) {
@@ -109,8 +102,7 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			}
 		});
 
-
-		if (partyWatched!=null) {
+		if (partyWatched != null) {
 			TableColumn<Item, String> categoryColumn = new TableColumn<>("Kategória");
 			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
 			itemTableView.getColumns().add(categoryColumn);
@@ -126,14 +118,14 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 					list_i.addAll(DaoFactory.INSTANCE.getItemDao().getByProgramCategory(activeProgram, c));
 				}
 			}
-			
+
 			itemsModel = FXCollections.observableArrayList(list_i);
 			itemTableView.setItems(itemsModel);
 		}
 	}
 
 	void updateItemTableView(Party party) {
-		
+
 		activeProgram = null;
 		List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(partyWatched);
 		for (Program p : allPrograms) {
@@ -212,15 +204,12 @@ public class ComparisonController { ///////////TABULKA JE ZLEEEE!!!!
 			stage.setScene(scene);
 			stage.initModality(Modality.APPLICATION_MODAL);
 
-			if (controller.getClass()==VotingController.class) {
+			if (controller.getClass() == VotingController.class) {
 				stage.show();
 				itemTableView.getScene().getWindow().hide();
 			} else {
 				stage.showAndWait();
 			}
-			
-			
-			
 
 		} catch (IOException e) {
 			e.printStackTrace();

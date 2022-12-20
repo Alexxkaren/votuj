@@ -113,13 +113,13 @@ class MysqlItemDaoTest {
 		itemDao.delete(saved.getId());
 		assertThrows(NullPointerException.class, () -> itemDao.save(null, null), "Item cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> itemDao.save(new Item((long)1, null, null, null), new ArrayList<Category>()),
+				() -> itemDao.save(new Item((long) 1, null, null, null), new ArrayList<Category>()),
 				"Item name cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> itemDao.save(new Item((long)1, "name", null, null), new ArrayList<Category>()),
+				() -> itemDao.save(new Item((long) 1, "name", null, null), new ArrayList<Category>()),
 				"Item info cannot be null");
 		assertThrows(NullPointerException.class,
-				() -> itemDao.save(new Item((long)1, "name", "info", null), new ArrayList<Category>()),
+				() -> itemDao.save(new Item((long) 1, "name", "info", null), new ArrayList<Category>()),
 				"Item program cannot be null");
 	}
 

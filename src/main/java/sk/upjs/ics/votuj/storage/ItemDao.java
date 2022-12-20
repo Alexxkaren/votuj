@@ -5,14 +5,14 @@ import java.util.NoSuchElementException;
 
 public interface ItemDao {
 
-	Item save(Item item, List<Category> categories) throws NoSuchElementException,NullPointerException; // NAIMPLEMENTOVANE
-	
+	Item save(Item item, List<Category> categories) throws NoSuchElementException, NullPointerException; // NAIMPLEMENTOVANE
+
 	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE
- 
+
 	List<Item> getByProgram(Program program); // NAIMPLEMENTOVANE
 
 	List<Item> getByProgramCategory(Program program, Category category); // NAIMPLEMENTOVANE
-	
+
 	Item getById(Long id); // NAIMPLEMENTOVANE
 
 	List<Item> getByTerm(Term term); // NAIMPLEMENTOVANE

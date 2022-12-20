@@ -5,14 +5,14 @@ import java.util.NoSuchElementException;
 
 public interface VoteDao {
 
-	Vote save(Vote vote) throws NoSuchElementException, NullPointerException; //NAIMPLEMENTOVANE
-	
+	Vote save(Vote vote) throws NoSuchElementException, NullPointerException; // NAIMPLEMENTOVANE
+
 	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE
 
-	List<Vote> getByParty(Party party);  //NAIMPLEMENTOVANE
-	
-	List<Vote> getAll(); //NAIMPLEMENTOVANE
+	List<Vote> getByParty(Party party); // NAIMPLEMENTOVANE
 
-	Vote getById(Long id);//NAIMPLEMENTOVANE
+	List<Vote> getAll(); // NAIMPLEMENTOVANE
+
+	Vote getById(Long id);// NAIMPLEMENTOVANE
 
 }

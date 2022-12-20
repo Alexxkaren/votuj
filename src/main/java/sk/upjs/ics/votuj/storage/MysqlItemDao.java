@@ -12,8 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-
-
 public class MysqlItemDao implements ItemDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -23,7 +21,7 @@ public class MysqlItemDao implements ItemDao {
 	}
 
 	@Override
-	public Item save(Item item, List<Category> categoriess)throws NoSuchElementException,NullPointerException {
+	public Item save(Item item, List<Category> categoriess) throws NoSuchElementException, NullPointerException {
 		if (item == null) {
 			throw new NullPointerException("Cannot save null");
 		}
@@ -40,7 +38,7 @@ public class MysqlItemDao implements ItemDao {
 		if (item.getId() == null) {
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("item");
-			saveInsert.usingColumns("name", "info","id_program");
+			saveInsert.usingColumns("name", "info", "id_program");
 			saveInsert.usingGeneratedKeyColumns("id");
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", item.getName());
@@ -52,27 +50,19 @@ public class MysqlItemDao implements ItemDao {
 			return item2;
 			// update
 		} else {
-			System.out.println(item.toString());
-			System.out.println("UPDATED Item HAS THIS categories:");
-			System.out.println(item.getCategories().toString());
-			System.out.println("I ADD CURRENT");
 			for (Category c : categoriess) {
 				if (!item.getCategories().contains(c)) {
 					item.getCategories().add(c);
 				}
 			}
-			System.out.println("RESULT:");
-			System.out.println(item.getCategories().toString());
-			
+
 			String sql = "UPDATE item SET name= ?, info= ?, id_program = ? " + " WHERE id = ? ";
-			int updated = jdbcTemplate.update(sql, item.getName(), item.getInfo(), item.getProgram().getId(), item.getId());
+			int updated = jdbcTemplate.update(sql, item.getName(), item.getInfo(), item.getProgram().getId(),
+					item.getId());
 			if (updated == 1) {
-				String sqlDelete = "DELETE from item_has_category " 
-						+ "WHERE id_item= " + item.getId();
+				String sqlDelete = "DELETE from item_has_category " + "WHERE id_item= " + item.getId();
 				jdbcTemplate.update(sqlDelete);
 				saveCategories(item);
-				System.out.println("UPDATOVANE KATEGORE");
-				System.out.println(item.getCategories().toString());
 				return item;
 			} else {
 				throw new NoSuchElementException("item with id: " + item.getId() + " not in DB.");
@@ -84,22 +74,20 @@ public class MysqlItemDao implements ItemDao {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO item_has_category (id_item, id_category) VALUES ");
 		for (Category category : item.getCategories()) {
-			if (category==null || category.getId()==null) {
+			if (category == null || category.getId() == null) {
 				throw new NullPointerException("Item has category that has null id or is null");
 			}
 			sb.append("(").append(item.getId());
 			sb.append(",").append(category.getId());
 			sb.append("),");
 		}
-		System.out.println(sb.toString());
-		String sql = sb.substring(0,sb.length()-1);
-		System.out.println(sql);
+		String sql = sb.substring(0, sb.length() - 1);
 		jdbcTemplate.update(sql);
-		
+
 	}
 
 	@Override
-	public boolean delete(Long id)throws ObjectUndeletableException {
+	public boolean delete(Long id) throws ObjectUndeletableException {
 		int delete;
 		try {
 			jdbcTemplate.update("DELETE FROM item_has_category WHERE  id_item= " + id);
@@ -115,7 +103,6 @@ public class MysqlItemDao implements ItemDao {
 		String sql = "SELECT id, name, info, id_program FROM item WHERE id_program = " + program.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	// idk ci toto sa nemoze vymazat --> budeme chciet vsetky body termu bez ohladu
@@ -137,7 +124,6 @@ public class MysqlItemDao implements ItemDao {
 				+ " AND ihc.id_category = " + category.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
 
@@ -162,7 +148,7 @@ public class MysqlItemDao implements ItemDao {
 				+ " AND party.id = " + party.getId();
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 
 	}
 
@@ -170,17 +156,15 @@ public class MysqlItemDao implements ItemDao {
 	public Item getById(Long id) {
 		String sql = "SELECT id, name, info, id_program FROM item WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new ItemRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
-	
+
 	@Override
 	public List<Item> getAll() {
 		String sql = "SELECT id, name, info, id_program FROM item ";
 		List<Item> list = jdbcTemplate.query(sql, new ItemRowMapper());
 		return list;
 	}
-
 
 	private class ItemRowMapper implements RowMapper<Item> {
 

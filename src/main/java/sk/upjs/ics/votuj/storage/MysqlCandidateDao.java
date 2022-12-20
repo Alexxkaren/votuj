@@ -13,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-
-
 public class MysqlCandidateDao implements CandidateDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -45,8 +43,8 @@ public class MysqlCandidateDao implements CandidateDao {
 		}
 		// insert
 		if (candidate.getId() == null) {
-			//List<Term> tt = new ArrayList<>();
-			//tt.add(term);
+			// List<Term> tt = new ArrayList<>();
+			// tt.add(term);
 			SimpleJdbcInsert saveInsert = new SimpleJdbcInsert(jdbcTemplate);
 			saveInsert.withTableName("candidate");
 			saveInsert.usingColumns("name", "surname", "candidate_number", "info", "id_party");
@@ -54,42 +52,36 @@ public class MysqlCandidateDao implements CandidateDao {
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", candidate.getName());
 			values.put("surname", candidate.getSurname());
-			//ZMENA
-			//values.put("candidate_number", candidate.getCandidateNumber());
+			// ZMENA
+			// values.put("candidate_number", candidate.getCandidateNumber());
 			values.put("candidate_number", Integer.parseInt(candidate.getCandidateNumber()));
 			values.put("info", candidate.getInfo());
 			values.put("id_party", candidate.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
-			Candidate candidate2 =  new Candidate(id, candidate.getName(), candidate.getSurname(), candidate.getCandidateNumber(),
-					candidate.getInfo(), candidate.getParty(), termss);
-			//TU DAKDE POTREBUJEM ABY TEN CANDIDATE MAL LIST TERMOV KED JE NOVY!!!!!
-			saveTerms(candidate2); //druhy naviazany save
+			Candidate candidate2 = new Candidate(id, candidate.getName(), candidate.getSurname(),
+					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty(), termss);
+			// TU DAKDE POTREBUJEM ABY TEN CANDIDATE MAL LIST TERMOV KED JE NOVY!!!!!
+			saveTerms(candidate2); // druhy naviazany save
 			return candidate2;
 			// update
 		} else {
 			System.out.println("UPDATED CANDIDATE HAS THIS TERMS:");
 			System.out.println(candidate.getTerms().toString());
 			System.out.println("I ADD CURRENT");
-			//System.out.println(candidate.getTerms().addAll(termss));
-			/*povodne
-			for (Term t : termss) {
-				if (!candidate.getTerms().contains(t)) {
-					candidate.getTerms().add(t);
-				}
-			}*/
-			//nove
+			// System.out.println(candidate.getTerms().addAll(termss));
+			/*
+			 * povodne for (Term t : termss) { if (!candidate.getTerms().contains(t)) {
+			 * candidate.getTerms().add(t); } }
+			 */
+			// nove
 			candidate.setTerms(termss);
-			System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQq");
-			System.out.println("RESULT:");
-			System.out.println(candidate.getTerms().toString());
 			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "
 					+ "WHERE id = ? ";
 			int updated = jdbcTemplate.update(sql, candidate.getName(), candidate.getSurname(),
 					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty().getId(),
 					candidate.getId());
 			if (updated == 1) {
-				String sqlDelete = "DELETE from candidate_has_term " 
-						+ "WHERE id_candidate= " + candidate.getId();
+				String sqlDelete = "DELETE from candidate_has_term " + "WHERE id_candidate= " + candidate.getId();
 				jdbcTemplate.update(sqlDelete);
 				saveTerms(candidate);
 				System.out.println(candidate.getTerms().toString());
@@ -101,18 +93,17 @@ public class MysqlCandidateDao implements CandidateDao {
 	}
 
 	private void saveTerms(Candidate candidate) {
-		//vieme ze termov nebude viac ako 1000
-		//my nemozeme mat kandidata bez termu 
+		// vieme ze termov nebude viac ako 1000
+		// my nemozeme mat kandidata bez termu
 		/*
-		if (candidate.getTerms().isEmpty()) {
-			//throw new NullPointerException("Candidate doesn´t have any term");
-			return;
-		}*/
-		
+		 * if (candidate.getTerms().isEmpty()) { //throw new
+		 * NullPointerException("Candidate doesn´t have any term"); return; }
+		 */
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO candidate_has_term (id_candidate, id_term) VALUES ");
 		for (Term term : candidate.getTerms()) {
-			if (term==null || term.getId()==null) {
+			if (term == null || term.getId() == null) {
 				throw new NullPointerException("Candidate has term that has null id of term or is null");
 			}
 			sb.append("(").append(candidate.getId());
@@ -120,7 +111,7 @@ public class MysqlCandidateDao implements CandidateDao {
 			sb.append("),");
 		}
 		System.out.println(sb.toString());
-		String sql = sb.substring(0,sb.length()-1);
+		String sql = sb.substring(0, sb.length() - 1);
 		System.out.println(sql);
 		jdbcTemplate.update(sql);
 	}
@@ -143,24 +134,22 @@ public class MysqlCandidateDao implements CandidateDao {
 				+ "LEFT JOIN candidate_has_term ON candidate_has_term.id_candidate = candidate.id "
 				+ "WHERE id_party = " + party.getId() + " AND candidate_has_term.id_term = " + term.getId();
 		return jdbcTemplate.query(sql, new CandidateRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	@Override
 	public Candidate getById(Long id) {
 		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate " + "WHERE id = " + id;
 		return jdbcTemplate.queryForObject(sql, new CandidateRowMapper());
-		// TODO unit test !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	}
-	
+
 	@Override
-	public List<Candidate> getAll(){
-		String sql ="SELECT id, name, surname, candidate_number, info, id_party FROM candidate";
+	public List<Candidate> getAll() {
+		String sql = "SELECT id, name, surname, candidate_number, info, id_party FROM candidate";
 		List<Candidate> list = jdbcTemplate.query(sql, new CandidateRowMapper());
 		return list;
 	}
-	
 
 	private class CandidateRowMapper implements RowMapper<Candidate> {
 

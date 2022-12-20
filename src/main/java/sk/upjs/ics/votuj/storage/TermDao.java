@@ -7,12 +7,12 @@ public interface TermDao {
 
 	Term save(Term term) throws NullPointerException, NoSuchElementException; // NAIMPLEMENTOVANE
 
-	boolean delete(Long id) throws ObjectUndeletableException ; // NAIMPLEMENTOVANE
+	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE
 
-	Term getById(Long id); //TODO podla unit testu throws
+	Term getById(Long id);
 
-	List<Term> getAll(); //TODO podla unit testu throws
-	
+	List<Term> getAll();
+
 	List<Term> getByCandidate(Candidate candidate);
 
 }

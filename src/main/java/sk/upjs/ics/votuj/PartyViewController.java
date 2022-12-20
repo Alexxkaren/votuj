@@ -70,7 +70,7 @@ public class PartyViewController {
 	@FXML
 	void initialize() {
 		namePartyLabel.setText(party.getName());
-		
+
 		partyInfoTextArea.textProperty().bindBidirectional(partyFxModel.getInfoProperty());
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
@@ -79,7 +79,6 @@ public class PartyViewController {
 		partyTermComboBox.getSelectionModel().selectFirst();
 		termWatched = partyTermComboBox.getSelectionModel().getSelectedItem();
 
-		
 		List<Program> list_p = new ArrayList<>();
 		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
 		System.out.println(list_p.toString());
@@ -89,15 +88,14 @@ public class PartyViewController {
 			programFxModel = new ProgramFxModel(party, termWatched);
 		}
 		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
-		
+
 		/*
-		List<Program> list = DaoFactory.INSTANCE.getProgramDao()
-				.getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(), party);
-		if (list.size() != 0) {
-			programNameLabel.setText(list.get(0).getName());// tu get name
-		} else {
-			programNameLabel.setText("žiaden program");
-		}*/
+		 * List<Program> list = DaoFactory.INSTANCE.getProgramDao()
+		 * .getByTermParty(partyTermComboBox.getSelectionModel().getSelectedItem(),
+		 * party); if (list.size() != 0) {
+		 * programNameLabel.setText(list.get(0).getName());// tu get name } else {
+		 * programNameLabel.setText("žiaden program"); }
+		 */
 
 		if (party != null) {
 			List<Candidate> list_c = DaoFactory.INSTANCE.getCandidateDao().getByTermParty(party,
@@ -139,8 +137,6 @@ public class PartyViewController {
 		itemsTableView.setItems(itemsModel);
 
 	}
-	
-	
 
 	private void updateItemsTableView(Term termWatched) {
 		List<Item> list_i = new ArrayList<>();

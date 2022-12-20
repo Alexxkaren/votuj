@@ -79,7 +79,7 @@ public enum DaoFactory {
 		}
 		return voteDao;
 	}
-	
+
 	public RegionDao getRegionDao() {
 		if (regionDao == null) {
 			regionDao = new MysqlRegionDao(getJdbcTemplate());
@@ -88,7 +88,6 @@ public enum DaoFactory {
 	}
 
 	private JdbcTemplate getJdbcTemplate() {
-		// každé dao zdieľa jeden jdbc template
 		if (jdbcTemplate == null) {
 			MysqlDataSource dataSource = new MysqlDataSource();
 			if (testing) {

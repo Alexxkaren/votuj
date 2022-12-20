@@ -12,7 +12,6 @@ public class Term {
 	}
 
 	public Term(Long id, Integer since, Integer to) {
-		super();
 		this.id = id;
 		this.since = since;
 		this.to = to;
