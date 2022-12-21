@@ -24,10 +24,7 @@ public class Candidate {
 		this.candidateNumber = candidateNumber;
 		this.info = info;
 		this.party = party;
-		/*
-		 * if (terms !=null) { this.terms = terms; } else { this.terms = new
-		 * ArrayList<>(); }
-		 */
+	
 		this.terms = terms;
 	}
 
@@ -102,7 +99,7 @@ public class Candidate {
 
 	@Override
 	public String toString() {
-		return "(id=" + id + ") " + name + " " + surname;
+		return  name + " " + surname;
 	}
 
 }

@@ -68,8 +68,6 @@ public class PartyViewController {
 	private Label programNameLabel;
 
 	public PartyViewController(Party party, boolean user) {
-		System.out.println("UUUUUUUUUUUUUSEEEEEEEEEEEEEEERRRRRRRRRRRr");
-		System.out.println(user);
 		this.user = user;
 		this.party = party;
 		partyFxModel = new PartyFxModel(party);
@@ -91,7 +89,6 @@ public class PartyViewController {
 			Program chosen = null;
 			List<Program> list_p = new ArrayList<>();
 			list_p = DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-			System.out.println(list_p.toString());
 			for (Program p : list_p) {
 				if (p.isActive()) {
 					chosen = p;
@@ -187,17 +184,7 @@ public class PartyViewController {
 				programNameLabel.setText("žiaden program");
 			}
 		}
-		/*
-		List<Program> list_p = new ArrayList<>();
-		list_p = DaoFactory.INSTANCE.getProgramDao().getByTermParty(termWatched, party);
-		System.out.println(list_p.toString());
-		if (list_p.size() != 0 && list_p.get(0).isActive()) {
-			programFxModel = new ProgramFxModel(list_p.get(0), party);
-		} else {
-			programFxModel = new ProgramFxModel(party, termWatched);
-		}
-		programNameLabel.textProperty().bindBidirectional(programFxModel.getNameProperty());
-	*/
+		
 	}
 
 	private void updateCandidatesListView(Term termWatched) {

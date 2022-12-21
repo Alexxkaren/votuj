@@ -21,6 +21,6 @@
       <TableView fx:id="itemsTableView" layoutX="64.0" layoutY="451.0" prefHeight="116.0" prefWidth="522.0" />
       <TextArea fx:id="partyInfoTextArea" editable="false" layoutX="158.0" layoutY="118.0" prefHeight="74.0" prefWidth="334.0" wrapText="true" />
       <ComboBox fx:id="partyTermComboBox" layoutX="158.0" layoutY="220.0" prefHeight="26.0" prefWidth="334.0" />
-      <Label fx:id="programNameLabel" layoutX="147.0" layoutY="406.0" prefHeight="18.0" prefWidth="468.0" text="nazov programu" />
+      <Label fx:id="programNameLabel" layoutX="168.0" layoutY="406.0" prefHeight="18.0" prefWidth="468.0" text="nazov programu" />
    </children>
 </AnchorPane>

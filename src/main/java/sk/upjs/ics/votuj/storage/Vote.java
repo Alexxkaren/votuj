@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 public class Vote {
 
 	private Long id;
-	// private Integer age;
-	private String age;////////////////////////
+	private String age;
 	private Boolean male;
 	private LocalDateTime date;
 	private Region region;

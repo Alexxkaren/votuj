@@ -17,7 +17,6 @@ public class AdminFxModel {
 
 	public AdminFxModel(Admin admin) {
 		this.id = admin.getId();
-		//setName(admin.getName());
 	}
 
 

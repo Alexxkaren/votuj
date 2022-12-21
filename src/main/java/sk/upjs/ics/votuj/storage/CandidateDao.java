@@ -5,16 +5,14 @@ import java.util.NoSuchElementException;
 
 public interface CandidateDao {
 
-	//Candidate save(Candidate candidate, Term term) throws NoSuchElementException, NullPointerException;
 
-	
-	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE	
+	boolean delete(Long id) throws ObjectUndeletableException; 	
 
-	List<Candidate> getByTermParty(Party party, Term term); //NAIMPLEMENTOVANE
+	List<Candidate> getByTermParty(Party party, Term term); 
 	
-	Candidate getById(Long id); //NAIMPLEMENTOVANE
+	Candidate getById(Long id); 
 	
-	List<Candidate> getAll(); //NAIMPLEMENTOVANE
+	List<Candidate> getAll(); 
 
 	Candidate save(Candidate candidate, List<Term> terms) throws NoSuchElementException, NullPointerException;
 

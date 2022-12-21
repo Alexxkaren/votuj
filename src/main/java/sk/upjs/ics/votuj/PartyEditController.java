@@ -43,7 +43,6 @@ public class PartyEditController {
 	private Party party;
 	private PartyFxModel partyFxModel;
 	private Party savedParty;
-	// private CandidateFxModel candidateFxModel;
 	private ObservableList<Candidate> candidatesModel;
 	private ObservableList<Program> programsModel;
 	private ObservableList<Item> itemsModel;
@@ -499,10 +498,7 @@ public class PartyEditController {
 
 		if (successful) {
 			itemsModel.clear();
-			// idk ze ktore z tych dvoch
 			items = DaoFactory.INSTANCE.getItemDao().getByTermParty(termWatched, party);
-			// items =
-			// DaoFactory.INSTANCE.getItemDao().getByProgram(programsListView.getSelectionModel().getSelectedItem());
 			itemsModel.addAll(items);
 			itemsTableView.setItems(itemsModel);
 		}
@@ -514,8 +510,6 @@ public class PartyEditController {
 		if (item != null) {
 			ItemEditController controller = new ItemEditController(item,
 					programsListView.getSelectionModel().getSelectedItem());
-			// ItemEditController controller = new ItemEditController(item,
-			// programsModel.get(0));
 			showItemEdit(controller, "Editovanie bodu volebného programu");
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -569,9 +563,6 @@ public class PartyEditController {
 
 	@FXML
 	void addProgramButtonClick(ActionEvent event) {
-		// List<Program> allPrograms =
-		// DaoFactory.INSTANCE.getProgramDao().getByParty(party);
-		// for (Program p : allPrograms) {
 		if (!programsModel.isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText(
@@ -631,7 +622,6 @@ public class PartyEditController {
 			} catch (ObjectUndeletableException e) {
 				alert.setContentText("Snažíte sa vymazať program, ktorý má body");
 				alert.show();
-				// e.printStackTrace();
 				return;
 
 			}

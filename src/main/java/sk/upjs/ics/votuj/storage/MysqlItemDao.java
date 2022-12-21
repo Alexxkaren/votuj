@@ -105,9 +105,7 @@ public class MysqlItemDao implements ItemDao {
 		return list;
 	}
 
-	// idk ci toto sa nemoze vymazat --> budeme chciet vsetky body termu bez ohladu
-	// na stranu a program?
-	// asi nn -> tu ptm nerobit unit test
+	
 	@Override
 	public List<Item> getByTerm(Term term) {
 		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
@@ -127,8 +125,7 @@ public class MysqlItemDao implements ItemDao {
 
 	}
 
-	// mozno by sa zisla este taka: --> uvidime ci pouzijeme zatial nerobit unit
-	// test
+
 	@Override
 	public List<Item> getByTermPartyCategory(Term term, Party party, Category category) {
 		String sql = "SELECT item.id, item.name, item.info, item.id_program FROM item "
@@ -172,11 +169,10 @@ public class MysqlItemDao implements ItemDao {
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Item item = new Item();
 			item.setId(rs.getLong("id"));
-			item.setName(rs.getString("name")); // POZOOOOOR TU MOZE BYT AJ NULLL!!!!!!
+			item.setName(rs.getString("name"));
 			item.setInfo(rs.getString("info"));
 			Program program = DaoFactory.INSTANCE.getProgramDao().getById(rs.getLong("id_program"));
 			item.setProgram(program);
-			// skusam
 			List<Category> categories = DaoFactory.INSTANCE.getCategoryDao().getByItem(item);
 			item.setCategories(categories);
 			return item;

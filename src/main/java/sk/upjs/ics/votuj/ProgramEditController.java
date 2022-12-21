@@ -195,9 +195,8 @@ public class ProgramEditController {
 		Program program = programFxModel.getProgram();
 		program.setTerm(termWatched);
 
-		System.out.println("UKLADANY PROGRAM: " + program.toString());
+	
 		program.setParty(party);
-		System.out.println("PO PRIDANI PARTY: " + program.toString());
 		if (activeCheckBox.isSelected())
 			program.setIsActive(true);
 		if (!activeCheckBox.isSelected())

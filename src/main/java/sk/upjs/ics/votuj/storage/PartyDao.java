@@ -5,12 +5,12 @@ import java.util.NoSuchElementException;
 
 public interface PartyDao {
 
-	Party save(Party party) throws NoSuchElementException, NullPointerException; // NAIMPLEMENTOVANE
+	Party save(Party party) throws NoSuchElementException, NullPointerException;
 
-	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE
+	boolean delete(Long id) throws ObjectUndeletableException; 
 
-	List<Party> getAll() throws NoSuchElementException; // naimplementovane
+	List<Party> getAll() throws NoSuchElementException; 
 
-	Party getById(Long id); // NAIMPLEMENTOVANE
+	Party getById(Long id); 
 
 }

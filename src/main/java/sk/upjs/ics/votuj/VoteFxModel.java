@@ -57,13 +57,6 @@ public class VoteFxModel {
 		this.age.set(age);
 	}
 
-	/*
-	 * public Integer getAge() { return this.age.get(); }
-	 * 
-	 * public IntegerProperty getAgeProperty() { return age; }
-	 * 
-	 * public void setAge(Integer age) { this.age.set(age); }
-	 */
 
 	public BooleanProperty getMaleProperty() {
 		return male;

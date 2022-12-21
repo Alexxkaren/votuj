@@ -43,7 +43,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return name + "(id: " + id + ")";
+		return name ;
 	}
 
 	@Override

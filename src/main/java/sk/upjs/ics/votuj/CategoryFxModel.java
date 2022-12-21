@@ -23,7 +23,6 @@ public class CategoryFxModel {
 	private Map<Category, BooleanProperty> categoryMap = new HashMap<>();
 	List<Category> allCategories;
 	private CategoryDao categoryDao;
-	// idk ci toto treba:
 	private ObservableList<Item> items;
 
 	public CategoryFxModel() {

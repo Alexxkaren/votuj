@@ -33,8 +33,7 @@ import sk.upjs.ics.votuj.storage.Program;
 import sk.upjs.ics.votuj.storage.Term;
 
 public class ItemEditController {
-	// TO DO DO BUDUCNA -- AK budeme mat cas tak poupratvat duplicitny a triplicitny
-	// kod do samostatnych metod!!
+	
 	private Program program;
 	private Item savedItem;
 	private Item item;
@@ -90,7 +89,7 @@ public class ItemEditController {
 			// listOfSelectedCategories ;
 		}
 
-		// listOfSelectedCategories = item.getCategories();
+		
 		selectedCategoriesModel.setAll(listOfSelectedCategories);
 		selectedCategoriesListView.setItems(selectedCategoriesModel);
 
@@ -138,7 +137,7 @@ public class ItemEditController {
 	}
 
 	@FXML
-	// sa bude mazat rovno
+	
 	void deleteCategoryButtonClick(ActionEvent event) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Upozornenie!");
@@ -258,9 +257,7 @@ public class ItemEditController {
 				List<Category> categories = DaoFactory.INSTANCE.getCategoryDao().getAll();
 				categoriesModel.addAll(categories);
 				itemCategoryComboBox.setItems(categoriesModel);
-				// UVIDIME CI TOTO
-				// itemCategoryComboBox.getSelectionModel().select(controller.getSavedCategory());
-
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

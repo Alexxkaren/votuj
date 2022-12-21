@@ -55,9 +55,9 @@ public class CategoryEditController {
 			if (category != null) {
 				savedCategory = DaoFactory.INSTANCE.getCategoryDao().save(category);
 			}
-		} catch (NoSuchElementException e) { // ak category je null
+		} catch (NoSuchElementException e) { 
 			e.printStackTrace();
-		} catch (NullPointerException e) {// ak category name je null
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 

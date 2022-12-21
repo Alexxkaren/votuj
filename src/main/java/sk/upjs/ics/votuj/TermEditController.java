@@ -97,11 +97,7 @@ public class TermEditController {
 		try {
 			if (term != null) {
 				savedTerm = DaoFactory.INSTANCE.getTermDao().save(term);
-			} /*
-				 * else { alert.setContentText("Pokúšate sa uložiť neexistujúce obdobie");
-				 * alert.show(); }
-				 */
-			// dead code ------------------> pouvažuj
+			} 
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e) {

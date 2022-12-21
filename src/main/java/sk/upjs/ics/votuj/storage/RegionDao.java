@@ -5,12 +5,12 @@ import java.util.NoSuchElementException;
 
 public interface RegionDao {
 
-	Region save(Region region) throws NoSuchElementException, NullPointerException; // NAIMPLEMENTOVANE
+	Region save(Region region) throws NoSuchElementException, NullPointerException; 
 
-	boolean delete(Long id) throws ObjectUndeletableException; // NAIMPLEMENTOVANE
+	boolean delete(Long id) throws ObjectUndeletableException; 
 
-	Region getById(Long Id); // NAIMPLEMENTOVANE
+	Region getById(Long Id); 
 
-	List<Region> getAll(); // NAIMPLEMENTOVANE
+	List<Region> getAll(); 
 
 }

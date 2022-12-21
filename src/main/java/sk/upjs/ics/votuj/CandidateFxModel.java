@@ -40,9 +40,6 @@ public class CandidateFxModel {
 		setCandidateNumber(candidate.getCandidateNumber());
 		setInfo(candidate.getInfo());
 		setParty(party);
-		// List<Term> terms =
-		// DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
-		// this.terms.addAll(terms);
 		List<Term> tt = DaoFactory.INSTANCE.getTermDao().getByCandidate(candidate);
 		this.terms.addAll(tt);
 		setTerms(this.terms);
@@ -55,10 +52,6 @@ public class CandidateFxModel {
 	}
 
 	public List<Term> getTerms() {
-		/*
-		 * if (terms != null) { return new ArrayList<>(terms); } else { return new
-		 * ArrayList<>(); }
-		 */
 		return new ArrayList<>(terms);
 	}
 
@@ -132,8 +125,7 @@ public class CandidateFxModel {
 
 	public Candidate getCandidate() {
 		return new Candidate(id, getName(), getSurname(), getCandidateNumber(), getInfo(), getParty(), getTerms());
-		// return new Candidate(id, getName(), getSurname(), getCandidateNumber(),
-		// getInfo(), getParty());
+		
 
 	}
 

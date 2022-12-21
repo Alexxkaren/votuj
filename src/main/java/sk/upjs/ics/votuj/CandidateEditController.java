@@ -32,8 +32,8 @@ public class CandidateEditController {
 	private CandidateFxModel candidateFxModel;
 	private ObservableList<Term> termsModel;
 	private ObservableList<Candidate> candidatesModel;
-	private List<Term> listOfSelectedTerms;
-	private ObservableList<Term> selectedTermsModel;
+	private List<Term> listOfSelectedTerms  = new ArrayList<>();;
+	private ObservableList<Term> selectedTermsModel  = FXCollections.observableArrayList(new ArrayList<Term>());
 
 	private DialogPane dialog;
 	String css = this.getClass().getResource("votuj.css").toExternalForm();
@@ -71,15 +71,12 @@ public class CandidateEditController {
 
 	@FXML
 	void initialize() {
-		selectedTermsModel = FXCollections.observableArrayList(new ArrayList<Term>());
-		
 		candidateNameTextField.textProperty().bindBidirectional(candidateFxModel.getNameProperty());
 		candidateNumberTextField.textProperty().bindBidirectional(candidateFxModel.getCandidateNumberProperty());
 		candidateSurnameTextField.textProperty().bindBidirectional(candidateFxModel.getSurnameProperty());
 		candidateInfoTextArea.textProperty().bindBidirectional(candidateFxModel.getInfoProperty());
 		selectedTermsListView.setItems(selectedTermsModel);
 		
-		listOfSelectedTerms = new ArrayList<>();
 
 		List<Term> terms = DaoFactory.INSTANCE.getTermDao().getAll();
 		termsModel = FXCollections.observableArrayList(terms);
@@ -91,16 +88,7 @@ public class CandidateEditController {
 		}
 		selectedTermsModel.setAll(listOfSelectedTerms);
 		selectedTermsListView.setItems(selectedTermsModel);
-		// STARE
-		/*
-		 * if (term != null) { List<Term> terms2 = new ArrayList<>(); terms.add(term);
-		 * termsModel = FXCollections.observableArrayList(terms2); } else { List<Term>
-		 * terms2 = DaoFactory.INSTANCE.getTermDao().getAll(); termsModel =
-		 * FXCollections.observableArrayList(terms2); }
-		 * candidateTermComboBox.setItems(termsModel);
-		 * candidateTermComboBox.getSelectionModel().selectFirst();
-		 */
-
+	
 	}
 
 	@FXML
@@ -177,9 +165,8 @@ public class CandidateEditController {
 		if (candidate.getParty() == null) {
 			alert.setContentText("Politická strana musí byť vyplnená, prosím doplňte.");
 			alert.show();
-			return;
+			return; 
 		}
-		
 		
 		if (termss.isEmpty()) {
 			alert.setContentText("Kandidát musí mať aspoň 1 volebné obdobie");
@@ -189,7 +176,6 @@ public class CandidateEditController {
 
 		try { //&& !listOfSelectedTerms.isEmpty()
 			if (candidate != null ) {
-				// savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate);
 				candidate.setTerms(termss);
 				savedCandidate = DaoFactory.INSTANCE.getCandidateDao().save(candidate, termss);
 	

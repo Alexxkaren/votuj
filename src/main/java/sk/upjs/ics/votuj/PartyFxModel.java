@@ -55,8 +55,7 @@ public class PartyFxModel {
 		}
 	}
 
-	// tento konštruktor sa asi bude moc vymazat este uvidime zatial s anikde
-	// nepouziva
+	
 	public PartyFxModel(Party party, Program program) {
 		this.id = party.getId();
 		setName(party.getName());
@@ -114,10 +113,6 @@ public class PartyFxModel {
 		return new ArrayList<>(programs);
 	}
 
-	/*
-	 * public void setPrograms(ObservableList<Program> programs) { this.programs =
-	 * programs; }
-	 */
 
 	public ObservableList<Candidate> getCandidatesModel() {
 		return candidates;

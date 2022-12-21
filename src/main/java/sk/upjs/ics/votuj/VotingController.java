@@ -62,7 +62,6 @@ public class VotingController {
 	@FXML
 	void submitVoteButtonClick(ActionEvent event) {
 		Vote voteToBeSubmited = new Vote(this.vote, chosenParty);
-		System.out.println(voteToBeSubmited.toString());
 		
 		if(chosenParty==null) {
 			Alert alert = new Alert(AlertType.ERROR);

@@ -8,7 +8,6 @@ public class Item {
 	private String name;
 	private String info;
 	private Program program;
-	// pridavam feature:
 	private List<Category> categories;
 
 	public Item() {
@@ -62,7 +61,7 @@ public class Item {
 		this.program = program;
 	}
 
-	// pridane
+
 	public List<Category> getCategories() {
 		return categories;
 	}
@@ -73,7 +72,7 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", name=" + name + ", program=" + program + ", categories=" + categories + "]";
+		return  name ;
 	}
 
 }

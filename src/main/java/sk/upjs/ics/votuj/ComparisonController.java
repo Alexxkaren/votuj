@@ -33,11 +33,9 @@ import sk.upjs.ics.votuj.storage.Program;
 import sk.upjs.ics.votuj.storage.Term;
 import sk.upjs.ics.votuj.storage.Vote;
 
-public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
+public class ComparisonController { 
 
 	private Vote vote;
-	// private Map<Category, BooleanProperty> inheritedCategories;
-	// private Map<Party, BooleanProperty> inheritedParties;
 	private List<Category> selectedCategories;
 	private List<Party> selectedParties;
 	private ObservableList<Party> partiesModel;
@@ -54,11 +52,7 @@ public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 
 	@FXML
 	private ComboBox<Party> choosePartyComboBox;
-	/*
-	 * public ComparisonController(Vote vote, Map<Category, BooleanProperty> cats,
-	 * Map<Party, BooleanProperty> parts) { this.vote = vote;
-	 * this.inheritedCategories = cats; this.inheritedParties = parts; }
-	 */
+	
 
 	public ComparisonController(Vote vote, List<Category> cats, List<Party> parts) {
 		this.vote = vote;
@@ -68,16 +62,7 @@ public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 
 	@FXML
 	void initialize() {
-		/*
-		 * selectedCategories = new ArrayList<>(); selectedParties = new ArrayList<>();
-		 * 
-		 * for (Category key : inheritedCategories.keySet()) { if
-		 * (inheritedCategories.get(key).get()) { selectedCategories.add(key); } }
-		 * 
-		 * for (Party key : inheritedParties.keySet()) { if
-		 * (inheritedParties.get(key).get()) { selectedParties.add(key); } }
-		 */
-
+		
 		List<Party> parties = selectedParties;
 		partiesModel = FXCollections.observableArrayList(parties);
 		choosePartyComboBox.setItems(partiesModel);
@@ -125,7 +110,6 @@ public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 	}
 
 	void updateItemTableView(Party party) {
-
 		activeProgram = null;
 		List<Program> allPrograms = DaoFactory.INSTANCE.getProgramDao().getByParty(partyWatched);
 		for (Program p : allPrograms) {
@@ -138,8 +122,7 @@ public class ComparisonController { /////////// TABULKA JE ZLEEEE!!!!
 		if (partyWatched != null && activeProgram != null) {
 			for (Category c : selectedCategories) {
 				list_i.addAll(DaoFactory.INSTANCE.getItemDao().getByProgramCategory(activeProgram, c));
-				System.out.println("List kategorii a bodov vybranej strany:");
-				System.out.println(list_i.toString());
+				
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);

@@ -43,7 +43,7 @@ public class Party {
 
 	@Override
 	public String toString() {
-		return name + " (id: " + id + " )";
+		return name;
 	}
 
 	public String toStringInfo() {

@@ -52,26 +52,17 @@ public class MysqlCandidateDao implements CandidateDao {
 			Map<String, Object> values = new HashMap<>();
 			values.put("name", candidate.getName());
 			values.put("surname", candidate.getSurname());
-			// ZMENA
-			// values.put("candidate_number", candidate.getCandidateNumber());
 			values.put("candidate_number", Integer.parseInt(candidate.getCandidateNumber()));
 			values.put("info", candidate.getInfo());
 			values.put("id_party", candidate.getParty().getId());
 			long id = saveInsert.executeAndReturnKey(values).longValue();
 			Candidate candidate2 = new Candidate(id, candidate.getName(), candidate.getSurname(),
 					candidate.getCandidateNumber(), candidate.getInfo(), candidate.getParty(), termss);
-			// TU DAKDE POTREBUJEM ABY TEN CANDIDATE MAL LIST TERMOV KED JE NOVY!!!!!
 			saveTerms(candidate2); // druhy naviazany save
 			return candidate2;
 			// update
 		} else {
 
-			// System.out.println(candidate.getTerms().addAll(termss));
-			/*
-			 * povodne for (Term t : termss) { if (!candidate.getTerms().contains(t)) {
-			 * candidate.getTerms().add(t); } }
-			 */
-			// nove
 			candidate.setTerms(termss);
 			String sql = "UPDATE candidate SET name= ?, surname= ?, candidate_number= ?, info= ?, id_party= ? "
 					+ "WHERE id = ? ";
@@ -92,11 +83,7 @@ public class MysqlCandidateDao implements CandidateDao {
 
 	private void saveTerms(Candidate candidate) {
 		// vieme ze termov nebude viac ako 1000
-		// my nemozeme mat kandidata bez termu
-		/*
-		 * if (candidate.getTerms().isEmpty()) { //throw new
-		 * NullPointerException("Candidate doesn´t have any term"); return; }
-		 */
+		// nemozeme mat kandidata bez termu
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO candidate_has_term (id_candidate, id_term) VALUES ");

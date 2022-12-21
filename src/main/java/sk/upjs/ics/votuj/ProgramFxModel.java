@@ -40,9 +40,7 @@ public class ProgramFxModel {
 		setIsActive(program.isActive());
 		setParty(party);
 		setTerm(program.getTerm());
-		/*
-		 * if (items!=null) { setItems(items); }
-		 */
+		
 
 	}
 
@@ -109,12 +107,9 @@ public class ProgramFxModel {
 	}
 
 	public Program getProgram() {
-		// return new Program(id, getName(), getParty(), getIsActive(),getTerm(),
-		// getItems());
+		
 		return new Program(id, getName(), getParty(), getIsActive(), getTerm());
 
-		// POROZMYSLAJ CI TAM NETREBA KU TOMU KONSTRUKTORU PROGRAMU PRIDAT AJ
-		// LIST ITEMOV
 	}
 
 }

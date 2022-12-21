@@ -114,8 +114,7 @@ public class ChoiceController {
 			return;
 		}
 
-		// ComparisonController controller = new ComparisonController(vote,
-		// selectedCategories, selectedParties);
+		
 		ComparisonController controller = new ComparisonController(vote, selectedCategoriesList, selectedPartiesList);
 
 		try {
